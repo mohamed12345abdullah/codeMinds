@@ -10,7 +10,7 @@ interface Course {
     title: string;
     description: string;
     price: number;
-    imageUrl: string;
+    imageUrl: string ;
     instructor: string;
     students: number;
     rating: number;
@@ -22,7 +22,7 @@ const initialCourses: Course[] = [
         title: 'Introduction to Robotics',
         description: 'Learn the basics of robotics and automation',
         price: 99.99,
-        imageUrl: 'https://via.placeholder.com/300x200?text=Robotics+101',
+        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
         instructor: 'John Smith',
         students: 1500,
         rating: 4.8
@@ -32,7 +32,7 @@ const initialCourses: Course[] = [
         title: 'Advanced Robotics',
         description: 'Deep dive into advanced robotics concepts',
         price: 149.99,
-        imageUrl: 'https://via.placeholder.com/300x200?text=Advanced+Robotics',
+        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
         instructor: 'Jane Doe',
         students: 850,
         rating: 4.9
@@ -42,7 +42,7 @@ const initialCourses: Course[] = [
         title: 'AI and Robotics',
         description: 'Explore the intersection of AI and Robotics',
         price: 199.99,
-        imageUrl: 'https://via.placeholder.com/300x200?text=AI+Robotics',
+        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
         instructor: 'Bob Johnson',
         students: 200,
         rating: 4.9

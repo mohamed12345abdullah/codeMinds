@@ -13,17 +13,17 @@ const sliderSlides = [
     {
         title: 'Learn Without Limits',
         description: 'Start, switch, or advance your career with thousands of courses from expert instructors.',
-        image: '/hero1.jpg'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s'
     },
     {
         title: 'Master New Skills',
         description: 'Explore our comprehensive courses in technology, business, and creative arts.',
-        image: '/hero2.jpg'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s'
     },
     {
         title: 'Join Our Community',
         description: 'Learn from expert instructors and connect with fellow students worldwide.',
-        image: '/hero3.jpg'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s'
     }
 ];
 
@@ -33,7 +33,7 @@ export default function HomePage() {
             id: 1,
             title: 'Web Development Bootcamp',
             description: 'Learn full-stack web development from scratch',
-            image: '/course1.jpg',
+            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
             instructor: 'John Doe',
             students: 1234,
             rating: 4.8
@@ -42,7 +42,7 @@ export default function HomePage() {
             id: 2,
             title: 'Data Science Fundamentals',
             description: 'Master data analysis and machine learning',
-            image: '/course2.jpg',
+            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
             instructor: 'Jane Smith',
             students: 856,
             rating: 4.9
@@ -51,7 +51,7 @@ export default function HomePage() {
             id: 3,
             title: 'Mobile App Development',
             description: 'Build iOS and Android apps with React Native',
-            image: '/course3.jpg',
+            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
             instructor: 'Mike Johnson',
             students: 567,
             rating: 4.7
