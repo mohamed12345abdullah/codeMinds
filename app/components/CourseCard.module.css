@@ -1,0 +1,71 @@
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.content {
+    padding: 1.5rem;
+}
+
+.content h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    color: #1a1a1a;
+}
+
+.content p {
+    margin: 0 0 1rem;
+    color: #666;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.enrollButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.enrollButton:hover {
+    background-color: #0051a2;
+} 

@@ -3,7 +3,7 @@
 import "./login.css";
 import { loginApi } from "../api";
 import { useRef, useState } from "react";
-import NotificationPage from "../notification/page";
+import SimpleNotification from "../components/SimpleNotification";
 import Navbar from "../components/Navbar";
 
 export default function LoginPage() {
@@ -36,13 +36,11 @@ export default function LoginPage() {
         }
 
         try {
-            const data =await loginApi({email, password});
+            const data = await loginApi({email, password});
             showNotification(data.message);
-            // here save the token in the local storage
             localStorage.setItem("token", data.token);
-            // redirect to the home page
             window.location.href = "../";
-        } catch (error) {
+        } catch {
             showNotification("Login failed. Please try again.");
         }
     }
@@ -68,7 +66,7 @@ export default function LoginPage() {
                 />   
                 <button className="button" type="submit">Login</button>
             </form>
-            {notifi && <NotificationPage key={notificationKey} text={notifi} />}
+            {notifi && <SimpleNotification key={notificationKey} text={notifi} />}
         </div>
         </>
     )

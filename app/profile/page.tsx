@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react';
+import Image from 'next/image';
 import styles from './profile.module.css';
 
 import Navbar from '../components/Navbar';
@@ -416,11 +417,13 @@ export default function ProfilePage() {
             <div className={styles.profileContent}>
                 <aside className={styles.sidebar}>
                     <div className={styles.profileImage}>
-                        <img src="/profile.jpg" alt="Profile" />
-                        <button className={styles.editImageButton}>
-                            <FiEdit2 />
-                            تغيير الصورة
-                        </button>
+                        <Image
+                            src="/avatar.jpg"
+                            alt="Profile Avatar"
+                            width={120}
+                            height={120}
+                            className={styles.avatar}
+                        />
                     </div>
                     <div className={styles.userInfo}>
                         <h2>{profileData.name}</h2>

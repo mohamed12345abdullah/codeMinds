@@ -2,39 +2,47 @@
 import styles from './Slider.module.css';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+interface Slide {
+    title: string;
+    description: string;
+    image: string;
+}
 
 interface SliderProps {
-    slides: {
-        title: string;
-        description: string;
-        image: string;
-    }[];
+    slides: Slide[];
 }
 
 export default function Slider({ slides }: SliderProps) {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     const goToPrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     };
 
     const goToNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % slides.length);
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
     };
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % slides.length);
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
         }, 5000);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(timer);
     }, [slides.length]);
 
     return (
         <div className={styles.slider}>
-            <div className={styles.slides} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+            <div className={styles.slides} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                 {slides.map((slide, index) => (
-                    <div key={index} className={styles.slide}>
+                    <div
+                        key={index}
+                        className={`${styles.slide} ${
+                            index === currentSlide ? styles.active : ''
+                        }`}
+                    >
                         <div className={styles.slideContent}>
                             <h1>{slide.title}</h1>
                             <p>{slide.description}</p>
@@ -45,7 +53,15 @@ export default function Slider({ slides }: SliderProps) {
                                 </svg>
                             </Link>
                         </div>
-                        <img src={slide.image} alt={slide.title} className={styles.slideImage} />
+                        <div className={styles.slideImage}>
+                            <Image
+                                src={slide.image}
+                                alt={slide.title}
+                                fill
+                                style={{ objectFit: 'cover' }}
+                                priority={index === 0}
+                            />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -73,17 +89,10 @@ export default function Slider({ slides }: SliderProps) {
                 {slides.map((_, index) => (
                     <button
                         key={index}
-                        className={`${styles.indicator} ${index === currentIndex ? styles.active : ''}`}
-                        onClick={() => setCurrentIndex(index)}
-                    />
-                ))}
-            </div>
-            <div className={styles.indicators}>
-                {slides.map((_, index) => (
-                    <button
-                        key={index}
-                        className={`${styles.indicator} ${index === currentIndex ? styles.active : ''}`}
-                        onClick={() => setCurrentIndex(index)}
+                        className={`${styles.indicator} ${
+                            index === currentSlide ? styles.active : ''
+                        }`}
+                        onClick={() => setCurrentSlide(index)}
                     />
                 ))}
             </div>
