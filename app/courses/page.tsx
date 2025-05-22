@@ -1,13 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getCoursesApi } from '../api';
+import { useState, useEffect } from 'react';
+import NotificationPage from '../notification/page';
 import Navbar from '../components/Navbar';
-import CourseCard from '../components/CourseCard';
 import styles from './courses.module.css';
 import CourseDetailModal from './CourseDetailModal';
-import { useNotification } from '../context/NotificationContext';
-
 interface Course {
     id: number;
     title: string;
@@ -19,58 +16,103 @@ interface Course {
     rating: number;
 }
 
+const initialCourses: Course[] = [
+    {
+        id: 1,
+        title: 'Introduction to Robotics',
+        description: 'Learn the basics of robotics and automation',
+        price: 99.99,
+        imageUrl: 'https://via.placeholder.com/300x200?text=Robotics+101',
+        instructor: 'John Smith',
+        students: 1500,
+        rating: 4.8
+    },
+    {
+        id: 2,
+        title: 'Advanced Robotics',
+        description: 'Deep dive into advanced robotics concepts',
+        price: 149.99,
+        imageUrl: 'https://via.placeholder.com/300x200?text=Advanced+Robotics',
+        instructor: 'Jane Doe',
+        students: 850,
+        rating: 4.9
+    },
+    {
+        id: 3,
+        title: 'AI and Robotics',
+        description: 'Explore the intersection of AI and Robotics',
+        price: 199.99,
+        imageUrl: 'https://via.placeholder.com/300x200?text=AI+Robotics',
+        instructor: 'Bob Johnson',
+        students: 200,
+        rating: 4.9
+    }
+];
+
 export default function CoursesPage() {
-    const [courses, setCourses] = useState<Course[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [courses, setCourses] = useState<Course[]>(initialCourses);
+    const [notifi, setNotifi] = useState('');
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { addNotification } = useNotification();
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const data = await getCoursesApi();
-                setCourses(data);
-            } catch {
-                console.error('Failed to fetch courses');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCourses();
-    }, []);
-
-    const handleEnroll = async (courseId: number) => {
-        try {
-            const course = courses.find(c => c.id === courseId);
-            if (course) {
-                addNotification(`Successfully enrolled in ${course.title}!`, 'success');
-            }
-        } catch {
-            addNotification('Failed to enroll in the course. Please try again.', 'error');
+    const handleEnroll = (courseId: number) => {
+        const course = courses.find(c => c.id === courseId);
+        if (course) {
+            setNotifi(`Enrolled in ${course.title}!`);
+            // Here you would typically make an API call to enroll the user
         }
     };
 
-    if (loading) {
-        return (
-            <>
-                <Navbar />
-                <div className={styles.container}>
-                    <div className={styles.loading}>Loading courses...</div>
-                </div>
-            </>
-        );
-    }
-
     return (
-        <>
+        <div className={styles.courses}>
             <Navbar />
             <div className={styles.container}>
-                <h1>All Courses</h1>
-                <div className={styles.coursesGrid}>
+                <div className={styles.header}>
+                    <h2>Our Courses</h2>
+                    <p>Explore our selection of robotics courses</p>
+                </div>
+
+                <div className={styles.grid}>
                     {courses.map((course) => (
-                        <CourseCard key={course.id} course={course} />
+                        <div key={course.id} className={styles.courseCard}>
+                            <div className={styles.courseImage}>
+                                <img
+                                    src={course.imageUrl}
+                                    alt={course.title}
+                                    className={styles.courseImage}
+                                />
+                            </div>
+                            <div className={styles.courseContent}>
+                                <h3>{course.title}</h3>
+                                <p>{course.description}</p>
+                                <div className={styles.courseMeta}>
+                                    <span>Instructor: {course.instructor}</span>
+                                    <span>{course.students} students</span>
+                                    <span>Rating: {course.rating}/5</span>
+                                </div>
+                                <button 
+                                    className={styles.courseButton}
+                                    onClick={() => {
+                                        setSelectedCourse(course);
+                                        setIsModalOpen(true);
+                                    }}
+                                >
+                                    Learn More
+                                </button>
+                                <div className={styles.coursePrice}>
+                                    <span className={styles.price}>${course.price}</span>
+                                    <button
+                                        onClick={() => handleEnroll(course.id)}
+                                        className={styles.enrollButton}
+                                    >
+                                        Enroll Now
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <path d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -83,9 +125,9 @@ export default function CoursesPage() {
                         setSelectedCourse(null);
                         setIsModalOpen(false);
                     }}
-                    onEnroll={handleEnroll}
                 />
             )}
-        </>
+            {notifi && <NotificationPage text={notifi} />}
+        </div>
     );
 }
