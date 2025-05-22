@@ -1,0 +1,498 @@
+.container {
+    min-height: 100vh;
+    background-color: var(--background);
+    padding: 80px;
+
+}
+
+.mobileMenuToggle {
+    display: none;
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 1000;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--text);
+    transition: var(--transition);
+}
+
+.mobileMenuToggle:hover {
+    color: var(--primary);
+}
+
+.profileHeader {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background-color: var(--card-background);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.profileHeader h1 {
+    color: var(--text);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.profileHeader p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.profileContent {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--card-background);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.profileImage {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary);
+}
+
+.profileImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.editImageButton {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profileImage:hover .editImageButton {
+    opacity: 1;
+}
+
+.userInfo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.userInfo h2 {
+    color: var(--text);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.userInfo p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.sidebarNav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.navButton {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    color: var(--text);
+    background: none;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: right;
+}
+
+.navButton:hover {
+    background-color: var(--hover-background);
+    color: var(--primary);
+}
+
+.navButton.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Main Content */
+.mainContent {
+    background-color: var(--card-background);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section h2 {
+    color: var(--text);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Form Styles */
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+    display: block;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background-color: var(--background);
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.formGroup textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Button Styles */
+.saveButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.saveButton:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Course List */
+.courseList {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.courseCard {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+    background-color: var(--background);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.courseCard:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.courseImage {
+    width: 100%;
+    height: 150px;
+}
+
+.courseImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.courseContent {
+    padding: 1.5rem;
+}
+
+.courseContent h3 {
+    color: var(--text);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.courseContent p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.courseProgress {
+    margin-top: 1rem;
+}
+
+.progressBar {
+    height: 0.5rem;
+    background-color: var(--border);
+    border-radius: 0.25rem;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progressFill {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 0.25rem;
+}
+
+.progressText {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Notification Settings */
+.notificationSettings {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.25rem;
+    border: 2px solid var(--border);
+    cursor: pointer;
+}
+
+/* Notification List */
+.notificationList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notificationItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: var(--background);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.notificationItem:hover {
+    transform: translateX(-4px);
+    box-shadow: var(--shadow-sm);
+}
+
+.notificationContent h3 {
+    color: var(--text);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.notificationContent p {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.notificationTime {
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
+}
+
+.notificationIcon {
+    color: var(--text-tertiary);
+    font-size: 1.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .profileContent {
+        grid-template-columns: 250px 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .profileContent {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+        margin-bottom: 2rem;
+    }
+
+    .courseCard {
+        grid-template-columns: 1fr;
+    }
+
+    .courseImage {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profileHeader {
+        padding: 1rem;
+    }
+
+    .profileHeader h1 {
+        font-size: 1.5rem;
+    }
+
+    .mainContent {
+        padding: 1rem;
+    }
+
+    .section h2 {
+        font-size: 1.25rem;
+    }
+}
+
+.formGroup h3 {
+    color: var(--text);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.formGroup form {
+    background-color: var(--background);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+}
+
+.formGroup form .formGroup {
+    margin-bottom: 1rem;
+}
+
+.formGroup form .formGroup:last-child {
+    margin-bottom: 0;
+}
+
+.formGroup form .saveButton {
+    margin-top: 1rem;
+}
+
+/* Security Settings */
+.formGroup select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background-color: var(--background);
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.formGroup select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.formGroup select option {
+    background-color: var(--background);
+    color: var(--text);
+}
+
+/* Password Change Form */
+.formGroup input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background-color: var(--background);
+    color: var(--text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.formGroup input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+/* Section Dividers */
+.formGroup + .formGroup {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .formGroup form {
+        padding: 1rem;
+    }
+
+    .formGroup h3 {
+        font-size: 1.1rem;
+    }
+} 

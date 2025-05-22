@@ -1,0 +1,175 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba( 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: var(--background);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--text);
+    transition: transform 0.2s;
+}
+
+.closeButton:hover {
+    transform: rotate(90deg);
+}
+
+.courseImage {
+    flex: 0 0 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.courseImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.courseDetails {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.courseDetails h2 {
+    font-size: 2rem;
+    color: var(--text);
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.description {
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+.features {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.featureItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: var(--text-light);
+}
+
+.ctaButtons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.enrollButton {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.enrollButton:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.wishlistButton {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wishlistButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modalContent {
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .courseImage {
+        flex: 0 0 100%;
+        max-width: 400px;
+    }
+
+    .courseDetails {
+        flex: none;
+    }
+
+    .ctaButtons {
+        flex-direction: column;
+    }
+
+    .enrollButton,
+    .wishlistButton {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modalContent {
+        padding: 1rem;
+    }
+
+    .courseDetails h2 {
+        font-size: 1.75rem;
+    }
+
+    .price {
+        font-size: 1.25rem;
+    }
+}

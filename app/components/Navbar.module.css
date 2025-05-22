@@ -1,0 +1,225 @@
+.navbar {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px var(--card-shadow);
+    width: 100%;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+}
+
+.navContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: var(--primary-dark);
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.navLink {
+    color: var(--nav-text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    position: relative;
+}
+
+.navLink::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.navLink:hover {
+    opacity: 1;
+    color: var(--primary);
+}
+
+.navLink:hover::after {
+    width: 100%;
+}
+
+.themeToggle {
+    background: none;
+    border: none;
+    color: var(--nav-text);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.themeToggle:hover {
+    opacity: 1;
+    background-color: var(--hover-bg);
+    color: var(--primary);
+}
+
+.authButtons {
+    display: flex;
+    gap: 1rem;
+    margin-left: 2rem;
+}
+
+.loginButton,
+.signupButton {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.loginButton {
+    color: var(--nav-text);
+    border: 1px solid var(--primary);
+    opacity: 0.8;
+}
+
+.signupButton {
+    background-color: var(--primary);
+    color: var(--background);
+}
+
+.loginButton:hover {
+    opacity: 1;
+    background-color: var(--hover-bg);
+    border-color: var(--primary-dark);
+    color: var(--primary);
+}
+
+.signupButton:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.menuButton {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--nav-text);
+}
+
+.menuIcon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: currentColor;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.menuIcon::before,
+.menuIcon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background-color: currentColor;
+    transition: all 0.3s ease;
+}
+
+.menuIcon::before {
+    transform: translateY(-8px);
+}
+
+.menuIcon::after {
+    transform: translateY(8px);
+}
+
+@media (max-width: 768px) {
+    .menuButton {
+        display: block;
+    }
+
+    .navLinks {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: var(--nav-bg);
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1.5rem;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px var(--card-shadow);
+        backdrop-filter: blur(10px);
+    }
+
+    .navLinks.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .authButtons {
+        margin: 1rem 0 0 0;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .loginButton,
+    .signupButton {
+        text-align: center;
+        width: 100%;
+    }
+
+    .themeToggle {
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .navContainer {
+        padding: 0 1rem;
+    }
+
+    .logo {
+        font-size: 1.25rem;
+    }
+
+    .navLinks {
+        padding: 1rem;
+    }
+}
