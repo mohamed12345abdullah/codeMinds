@@ -1,22 +1,67 @@
 import styles from './CourseDetailModal.module.css';
-
-interface CourseDetailModalProps {
-    course: {
-        id: number;
-        title: string;
-        description: string;
-        price: number;
-        imageUrl: string;
-    };
-    isOpen: boolean;
-    onClose: () => void;
+import NotificationPage from '../notification/page';
+enum Gender {
+    MALE = 'Male',
+    FEMALE = 'Female',
 }
 
-export default function CourseDetailModal({ course, isOpen, onClose }: CourseDetailModalProps) {
+type Student = {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    age: number;
+    gender: Gender;
+    courses?: [] | null;
+
+}
+
+type Group = {
+    _id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    availableSeats: number;
+    totalSeats: number;
+    instructor?: string;
+    students?: [] | null;
+}
+
+type Course = {
+    _id: string;
+    title: string;
+    description: string;
+    price: number|null;
+    imageUrl: string;
+}
+
+
+type CourseDetails = {
+    course: Course;
+    isOpen: boolean;
+    onClose: () => void;
+    avilableGroups?: Group[] | null;
+}
+
+
+
+
+
+
+
+export default function CourseDetailModal({courseDetails,onClose,isOpen}: {courseDetails: CourseDetails,onClose: () => void,isOpen: boolean}) {
     if (!isOpen) return null;
 
+    const handleEnroll = (groupId: string | undefined) => {
+        const group = courseDetails.avilableGroups?.find(g => g._id === groupId);
+        if (group) {
+            console.log(`Enrolled in ${group.name}!`);
+            // Here you would typically make an API call to enroll the user
+        }
+    }; 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <div className={styles.modalOverlay} onClick={onClose}> 
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -25,14 +70,35 @@ export default function CourseDetailModal({ course, isOpen, onClose }: CourseDet
                 </button>
                 
                 <div className={styles.courseImage}>
-                    <img src={course.imageUrl} alt={course.title} />
+                    <img src={courseDetails.course.imageUrl} alt={courseDetails.course.title} />
                 </div>
 
                 <div className={styles.courseDetails}>
-                    <h2>{course.title}</h2>
-                    <p className={styles.price}>${course.price.toFixed(2)}</p>
-                    <p className={styles.description}>{course.description}</p>
-
+                    <h2>{courseDetails.course.title}</h2>
+                    <p className={styles.price}>${courseDetails.course.price?.toFixed(2)}</p>
+                    <p className={styles.description}>{courseDetails.course.description}</p>
+                    {courseDetails.avilableGroups && (
+                        <div className={styles.groups}>
+                            <h3>Available Groups</h3>
+                            <ul>
+                                {courseDetails.avilableGroups.map((group) => (
+                                <>
+                                
+                                    <li key={group._id}>
+                                        <h4>{group.name}</h4>
+                                        <p>Start Date: {group.startDate}</p>
+                                        <p>End Date: {group.endDate}</p>
+                                        <p>Available Seats: {group.availableSeats}</p>
+                                        <p>Total Seats: {group.totalSeats}</p>
+                                        <p>Instructor: {group.instructor}</p>
+                                    </li>
+                                    <button onClick={() => handleEnroll(group._id)} className={styles.enrollButton}>join group</button>
+                                    
+                                </>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                     <div className={styles.features}>
                         <div className={styles.featureItem}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
