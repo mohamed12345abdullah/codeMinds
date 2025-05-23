@@ -12,12 +12,13 @@ export default function Navbar() {
         // Check if user has a theme preference
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
+        console.log(savedTheme);
+        console.log("run useEffect of dark mode");
         if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
             setIsDarkMode(true);
             document.documentElement.setAttribute('data-theme', 'dark');
         }
-    }, []);
+    }, [isDarkMode]);
 
     const toggleDarkMode = () => {
         setIsDarkMode(!isDarkMode);
