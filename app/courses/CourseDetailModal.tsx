@@ -91,8 +91,9 @@ export default function CourseDetailModal({courseDetails,onClose,isOpen}: {cours
                                         <p>Available Seats: {group.availableSeats}</p>
                                         <p>Total Seats: {group.totalSeats}</p>
                                         <p>Instructor: {group.instructor}</p>
+                                        <button onClick={() => handleEnroll(group._id)} className={styles.enrollButton}>join {group.name}</button>
+
                                     </li>
-                                    <button onClick={() => handleEnroll(group._id)} className={styles.enrollButton}>join group</button>
                                     
                                 </>
                                 ))}

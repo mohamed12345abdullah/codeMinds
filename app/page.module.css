@@ -476,3 +476,18 @@ a.secondary {
         padding: 2rem;
     }
 }
+
+
+
+
+.youtube{
+    width: 100%;
+    max-width: 800px;
+    height: 500px;    
+    margin: auto;
+    
+    /* center video */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

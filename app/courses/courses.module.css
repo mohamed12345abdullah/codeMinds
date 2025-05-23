@@ -92,17 +92,55 @@
 }
 
 .coursePrice {
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 2rem 2rem;
     border-top: 1px solid var(--border);
+ 
 }
+
 
 .price {
     font-size: 1.5rem;
     color: var(--primary);
     font-weight: 600;
+    background-color: var(--card-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    cursor: pointer;
+ 
+}
+
+.price:hover {
+    background-color: var(--card-shadow);
+    transform: translateY(-2px);
+}
+
+.courseButton {
+    background-color: var(--card-bg);
+    color: var(--primary);
+    padding: 0.875rem 1.75rem;
+    margin: 1rem;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.courseButton:hover {
+    background-color: var(--card-shadow);
+    transform: translateY(-2px);
 }
 
 .enrollButton {
