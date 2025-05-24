@@ -8,11 +8,12 @@
     z-index: 1000;
     animation: slideIn 2s ease-in-out;
     opacity: 0;
+    transform: translateY(-100%);
 }
 
 @keyframes slideIn {
     0% {
-        transform: translateY(-100%);
+        transform: translateY( -100%);
         opacity: 0;
     }
     20% {
