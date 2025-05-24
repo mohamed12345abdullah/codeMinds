@@ -5,6 +5,7 @@ import NotificationPage from '../notification/page';
 import Navbar from '../components/Navbar';
 import styles from './courses.module.css';
 import CourseDetailModal from './CourseDetailModal';
+import { sendIpApi } from '../apis/auth';
 enum Gender {
     MALE = 'Male',
     FEMALE = 'Female',
@@ -106,6 +107,9 @@ const initialCourses: CourseDetails[] = [
 
 
 export default function CoursesPage() {
+    useEffect(() => {
+        sendIpApi("courses");
+    }, []);
     const [courses, setCourses] = useState<CourseDetails[]>(initialCourses);
     enum notificationStatus { success = "success", error = "error", warning = "warning" };
     const [notifi, setNotifi] = useState({

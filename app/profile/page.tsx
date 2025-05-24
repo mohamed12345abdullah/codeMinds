@@ -6,8 +6,13 @@ import styles from './profile.module.css';
 import Navbar from '../components/Navbar';
 import { FiUser, FiSettings, FiBook, FiBell, FiEdit2, FiSave, FiChevronRight } from 'react-icons/fi';   
 import { userInfo } from 'os';
+import { sendIpApi } from '../apis/auth';
 
 export default function ProfilePage() {
+    useEffect(() => {
+        sendIpApi("profile");
+    }, []);
+
     const [activeTab, setActiveTab] = useState('profile');
     const [isEditing, setIsEditing] = useState(false);
     const [userInfo, setUserInfo] = useState({

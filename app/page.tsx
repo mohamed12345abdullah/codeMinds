@@ -6,8 +6,9 @@ import Navbar from './components/Navbar';
 import NotificationPage from './notification/page'; 
 import Footer from './components/Footer';
 import Slider from './components/Slider';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Courses from './courses/page';
+import { sendIpApi } from './apis/auth';
 
 const sliderSlides = [
     {
@@ -57,6 +58,12 @@ export default function HomePage() {
             rating: 4.7
         }
     ];
+
+    useEffect(() => {
+        //  send the ip of the  gusets to the server to calculate the views
+        sendIpApi("home");
+    },[]);
+    
 
     const videoId = "6BHrCLCnj8A";
     return (

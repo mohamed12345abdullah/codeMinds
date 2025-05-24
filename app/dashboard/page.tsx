@@ -1,10 +1,14 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './dashboard.module.css';
 import Navbar from '../components/Navbar';
+import { sendIpApi } from '../apis/auth';
 
 export default function DashboardPage() {
+    useEffect(() => {
+        sendIpApi("dashboard");
+    }, []);
     const [activeTab, setActiveTab] = useState('overview');
 
     const stats = {

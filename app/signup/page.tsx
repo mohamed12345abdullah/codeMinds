@@ -1,14 +1,18 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import NotificationPage from '../notification/page';
 import Navbar from '../components/Navbar';
 import styles from './signup.module.css';
 import Link from 'next/link';
 import { registerApi } from '../apis/auth';
+import { sendIpApi } from '../apis/auth';
 
 export default function SignUpPage() {
+    useEffect(() => {
+        sendIpApi("signup");
+    },[]);
     enum notificationStatus { success = "success", error = "error", warning = "warning" };
 
     const router = useRouter();
