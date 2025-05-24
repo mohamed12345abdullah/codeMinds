@@ -5,34 +5,26 @@ import styles from './profile.module.css';
 
 import Navbar from '../components/Navbar';
 import { FiUser, FiSettings, FiBook, FiBell, FiEdit2, FiSave, FiChevronRight } from 'react-icons/fi';   
+import { userInfo } from 'os';
 
 export default function ProfilePage() {
     const [activeTab, setActiveTab] = useState('profile');
     const [isEditing, setIsEditing] = useState(false);
-    const [profileData, setProfileData] = useState({
-        name: 'أحمد محمد',
-        email: 'ahmed@example.com',
-        bio: 'مطور ويب متخصص في React و Next.js',
-        location: 'القاهرة، مصر',
-        phone: '+20 123 456 7890',
-        language: 'العربية',
+    const user = JSON.parse(localStorage.getItem("user") || '{}');
+    const [userInfo, setUserInfo] = useState({
+        name: user.name,
+        email: user.email,
+        phone: '',
+        bio: '',
         notifications: {
             email: true,
             push: true,
             marketing: false
-        },
-        privacy: {
-            showEmail: true,
-            showPhone: false,
-            showLocation: true,
-            showBio: true
-        },
-        security: {
-            twoFactor: false,
-            loginNotifications: true,
-            sessionTimeout: '30'
         }
     });
+
+
+    const[userCourses, setUserCourses] = useState(user.courses);
 
     const [passwordData, setPasswordData] = useState({
         currentPassword: '',
@@ -42,14 +34,14 @@ export default function ProfilePage() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setProfileData(prev => ({
+        setUserInfo(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
     const handleNotificationChange = (type: string) => {
-        setProfileData(prev => ({
+        setUserInfo(prev => ({
             ...prev,
             notifications: {
                 ...prev.notifications,
@@ -67,20 +59,20 @@ export default function ProfilePage() {
     };
 
     const handlePrivacyChange = (setting: string) => {
-        setProfileData(prev => ({
+        setUserInfo(prev => ({
             ...prev,
-            privacy: {
-                ...prev.privacy,
-                [setting]: !prev.privacy[setting as keyof typeof prev.privacy]
+            notifications: {
+                ...prev.notifications,
+                [setting]: !prev.notifications[setting as keyof typeof prev.notifications]
             }
         }));
     };
 
     const handleSecurityChange = (setting: string, value: string | boolean) => {
-        setProfileData(prev => ({
+        setUserInfo(prev => ({
             ...prev,
-            security: {
-                ...prev.security,
+            notifications: {
+                ...prev.notifications,
                 [setting]: value
             }
         }));
@@ -118,7 +110,7 @@ export default function ProfilePage() {
                     type="text"
                     id="name"
                     name="name"
-                    value={profileData.name}
+                    value={userInfo.name}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                 />
@@ -129,7 +121,7 @@ export default function ProfilePage() {
                     type="email"
                     id="email"
                     name="email"
-                    value={profileData.email}
+                    value={userInfo.email}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                 />
@@ -139,45 +131,22 @@ export default function ProfilePage() {
                 <textarea
                     id="bio"
                     name="bio"
-                    value={profileData.bio}
+                    value={userInfo.bio}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                 />
             </div>
-            <div className={styles.formGroup}>
-                <label htmlFor="location">الموقع</label>
-                <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={profileData.location}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                />
-            </div>
+     
             <div className={styles.formGroup}>
                 <label htmlFor="phone">رقم الهاتف</label>
                 <input
                     type="tel"
                     id="phone"
                     name="phone"
-                    value={profileData.phone}
+                    value={userInfo.phone}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                 />
-            </div>
-            <div className={styles.formGroup}>
-                <label htmlFor="language">اللغة المفضلة</label>
-                <select
-                    id="language"
-                    name="language"
-                    value={profileData.language}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                >
-                    <option value="العربية">العربية</option>
-                    <option value="English">English</option>
-                </select>
             </div>
             {isEditing ? (
                 <button className={styles.saveButton} onClick={handleSave}>
@@ -207,7 +176,7 @@ export default function ProfilePage() {
                     <label className={styles.checkboxLabel}>
                         <input
                             type="checkbox"
-                            checked={profileData.privacy.showEmail}
+                            checked={userInfo.notifications.email}
                             onChange={() => handlePrivacyChange('showEmail')}
                         />
                         إظهار البريد الإلكتروني
@@ -215,7 +184,7 @@ export default function ProfilePage() {
                     <label className={styles.checkboxLabel}>
                         <input
                             type="checkbox"
-                            checked={profileData.privacy.showPhone}
+                            checked={userInfo.notifications.push}
                             onChange={() => handlePrivacyChange('showPhone')}
                         />
                         إظهار رقم الهاتف
@@ -223,7 +192,7 @@ export default function ProfilePage() {
                     <label className={styles.checkboxLabel}>
                         <input
                             type="checkbox"
-                            checked={profileData.privacy.showLocation}
+                            checked={userInfo.notifications.marketing}
                             onChange={() => handlePrivacyChange('showLocation')}
                         />
                         إظهار الموقع
@@ -231,7 +200,7 @@ export default function ProfilePage() {
                     <label className={styles.checkboxLabel}>
                         <input
                             type="checkbox"
-                            checked={profileData.privacy.showBio}
+                            checked={userInfo.notifications.marketing}
                             onChange={() => handlePrivacyChange('showBio')}
                         />
                         إظهار النبذة الشخصية
@@ -246,32 +215,21 @@ export default function ProfilePage() {
                     <label className={styles.checkboxLabel}>
                         <input
                             type="checkbox"
-                            checked={profileData.security.twoFactor}
-                            onChange={() => handleSecurityChange('twoFactor', !profileData.security.twoFactor)}
+                            checked={userInfo.notifications.email}
+                            onChange={() => handleSecurityChange('email', !userInfo.notifications.email)}
                         />
                         تفعيل المصادقة الثنائية
                     </label>
                     <label className={styles.checkboxLabel}>
                         <input
                             type="checkbox"
-                            checked={profileData.security.loginNotifications}
-                            onChange={() => handleSecurityChange('loginNotifications', !profileData.security.loginNotifications)}
+                            checked={userInfo.notifications.push}
+                            onChange={() => handleSecurityChange('push', !userInfo.notifications.push)}
                         />
                         إشعارات تسجيل الدخول
                     </label>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="sessionTimeout">مدة انتهاء الجلسة (بالدقائق)</label>
-                        <select
-                            id="sessionTimeout"
-                            value={profileData.security.sessionTimeout}
-                            onChange={(e) => handleSecurityChange('sessionTimeout', e.target.value)}
-                        >
-                            <option value="15">15 دقيقة</option>
-                            <option value="30">30 دقيقة</option>
-                            <option value="60">ساعة</option>
-                            <option value="120">ساعتين</option>
-                        </select>
-                    </div>
+                 
+                  
                 </div>
             </div>
 
@@ -319,36 +277,7 @@ export default function ProfilePage() {
                 </form>
             </div>
 
-            {/* إعدادات الإشعارات */}
-            <div className={styles.formGroup}>
-                <h3>إعدادات الإشعارات</h3>
-                <div className={styles.notificationSettings}>
-                    <label className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            checked={profileData.notifications.email}
-                            onChange={() => handleNotificationChange('email')}
-                        />
-                        إشعارات البريد الإلكتروني
-                    </label>
-                    <label className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            checked={profileData.notifications.push}
-                            onChange={() => handleNotificationChange('push')}
-                        />
-                        إشعارات التطبيق
-                    </label>
-                    <label className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            checked={profileData.notifications.marketing}
-                            onChange={() => handleNotificationChange('marketing')}
-                        />
-                        إشعارات التسويق
-                    </label>
-                </div>
-            </div>
+
         </div>
     );
 
@@ -423,8 +352,8 @@ export default function ProfilePage() {
                         </button>
                     </div>
                     <div className={styles.userInfo}>
-                        <h2>{profileData.name}</h2>
-                        <p>{profileData.email}</p>
+                        <h2>{userInfo.name}</h2>
+                        <p>{userInfo.email}</p>
                     </div>
                     <nav className={styles.sidebarNav}>
                         <button

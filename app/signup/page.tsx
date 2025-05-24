@@ -6,6 +6,7 @@ import NotificationPage from '../notification/page';
 import Navbar from '../components/Navbar';
 import styles from './signup.module.css';
 import Link from 'next/link';
+import { registerApi } from '../apis/auth';
 
 export default function SignUpPage() {
     const router = useRouter();
@@ -15,6 +16,7 @@ export default function SignUpPage() {
     const [password, setPassword] = useState('');
     const [notifi, setNotifi] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [responseMsg, setResponseMsg] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -37,14 +39,21 @@ export default function SignUpPage() {
 
         try {
             setIsLoading(true);
-            // Here you would typically make an API call to sign up the user
-            // For now, we'll just simulate success
-            setNotifi('Sign up successful! Redirecting...');
-            setTimeout(() => {
-                router.push('/login');
-            }, 2000);
-        } catch (error) {
-            setNotifi('Sign up failed. Please try again.');
+            const response = await registerApi({
+                name: username,
+                email: email,
+                password: password
+            });
+            setResponseMsg(response.message);
+            setNotifi(response.message);
+            if(responseMsg.includes('Failed to fetch')){
+                setNotifi('Failed to connect to server');
+            }
+
+        } catch (error : any) {
+            let errorMessage = 'An error occurred';
+            errorMessage=error.message;
+            setNotifi(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -95,13 +104,15 @@ export default function SignUpPage() {
                     >
                         {isLoading ? 'Signing up...' : 'Sign up'}
                     </button>
+                    {responseMsg && <p className={styles.importantMsg}>{responseMsg}</p>}
+
                 </form>
                 <p className={styles.link}>
                     Already have an account?{' '}
                     <Link href="/login">Sign in</Link>
                 </p>
             </div>
-            {notifi && <NotificationPage text={notifi} />}
+            {notifi && <NotificationPage searchParams={{text:notifi}} />}
         </div>
     );
 }

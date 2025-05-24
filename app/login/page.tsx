@@ -1,7 +1,7 @@
 'use client'
 
 import "./login.css";
-import { loginApi } from "../api";
+import { loginApi } from "../apis/auth";
 import { useRef, useState } from "react";
 import NotificationPage from "../notification/page";
 import Navbar from "../components/Navbar";
@@ -11,7 +11,7 @@ export default function LoginPage() {
     const passwordRef = useRef<HTMLInputElement>(null);
     const [notifi, setNotifi] = useState('');
     const [notificationKey, setNotificationKey] = useState(0);
-
+    const [responseMsg, setResponseMsg] = useState('');
     const showNotification = (message: string) => {
         setNotifi(message);
         setNotificationKey(prev => prev + 1);
@@ -38,10 +38,15 @@ export default function LoginPage() {
         try {
             const data =await loginApi({email, password});
             showNotification(data.message);
-            // here save the token in the local storage
-            localStorage.setItem("token", data.token);
-            // redirect to the home page
-            window.location.href = "../";
+            setResponseMsg(data.message);
+            if(data.success){
+                // here save the token in the local storage
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+                // redirect to the home page
+                window.location.href = "../profile";
+            }
+            
         } catch (error) {
             showNotification("Login failed. Please try again.");
         }
@@ -67,8 +72,10 @@ export default function LoginPage() {
                     ref={passwordRef} 
                 />   
                 <button className="button" type="submit">Login</button>
+
+                {responseMsg && <p className="importantMsg">{responseMsg}</p>}
             </form>
-            {notifi && <NotificationPage key={notificationKey} text={notifi} />}
+            {notifi && <NotificationPage searchParams={{text:notifi}} />}
         </div>
         </>
     )

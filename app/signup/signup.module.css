@@ -118,3 +118,9 @@
         padding: 0.875rem;
     }
 }
+
+.importantMsg{
+    color: rgb(247, 77, 26);
+    font-size: 0.875rem;
+}
+    
