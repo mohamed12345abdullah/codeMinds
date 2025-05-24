@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import styles from './profile.module.css';
 
 import Navbar from '../components/Navbar';
@@ -10,10 +10,9 @@ import { userInfo } from 'os';
 export default function ProfilePage() {
     const [activeTab, setActiveTab] = useState('profile');
     const [isEditing, setIsEditing] = useState(false);
-    const user = JSON.parse(window.localStorage.getItem("user") || '{}');
     const [userInfo, setUserInfo] = useState({
-        name: user.name,
-        email: user.email,
+        name: '',
+        email: '',
         phone: '',
         bio: '',
         notifications: {
@@ -22,9 +21,16 @@ export default function ProfilePage() {
             marketing: false
         }
     });
+    
+    const[userCourses, setUserCourses] = useState([]);
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user") || '{}');
+        setUserInfo(user);
+        setUserCourses(user.courses);
+    }, []);
 
 
-    const[userCourses, setUserCourses] = useState(user.courses);
 
     const [passwordData, setPasswordData] = useState({
         currentPassword: '',
