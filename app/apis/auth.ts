@@ -112,7 +112,7 @@ const sendIpApi = async (page:string) => {
     try{
     const clientIP = await getClientIP();
     console.log("api function ", page, clientIP)
-    const response = await fetch(`${baseUrl}/view`,{
+    const response = await fetch(`https://code-minds-website.vercel.app/api/users/view`,{
         method: "POST",
         headers: {
             "Content-type": "application/json"
