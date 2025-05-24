@@ -30,32 +30,39 @@ export default function LoginPage() {
         const password = passwordRef.current?.value;
 
         if (!email || !password) {
-            showNotification("Email or password is required", notificationStatus.error);
+            showNotification("Email or password is required", notificationStatus.warning);
+            setResponseMsg("Email or password is required");
             return;
         }
         if (!email.includes("@")) {
-            showNotification("Email must contain @", notificationStatus.error);
+            showNotification("Email must contain @", notificationStatus.warning);
+            setResponseMsg("Email must contain @");
             return;
         }
         if (password.length < 8) {
-            showNotification("Password must be at least 8 characters", notificationStatus.error);
+            showNotification("Password must be at least 8 characters", notificationStatus.warning);
+            setResponseMsg("Password must be at least 8 characters");
             return;
         }
 
         try {
             const data =await loginApi({email, password});
-            showNotification(data.message, notificationStatus.success   );
-            setResponseMsg(data.message);
+       
             if(data.success){
                 // here save the token in the local storage
                 window.localStorage.setItem("token", data.token);
                 window.localStorage.setItem("user", JSON.stringify(data.user));
                 // redirect to the home page
                 window.location.href = "../profile";
+            }else{
+                showNotification(data.message, notificationStatus.error);
+                setResponseMsg(data.message);
             }
             
         } catch (error) {
+            console.log(error);
             showNotification("Login failed. Please try again.", notificationStatus.error    );
+            setResponseMsg("Login failed. Please try again.");
         }
     }
 

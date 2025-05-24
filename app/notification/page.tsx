@@ -25,7 +25,7 @@ export default function NotificationPage(params: notificationParams) {
     
     
     return (
-        <div className="container">
+        <div className="notificationContainer">
         <div key={key} className={status}>
             <h3>{text}</h3>
         </div>
