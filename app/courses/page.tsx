@@ -155,7 +155,8 @@ export default function CoursesPage() {
                                 <h3>{courseDetails.course.title}</h3>
                                 <p>{courseDetails.course.description}</p>
                                 <div className={styles.courseMeta}>
-                                    <span>{courseDetails.avilableGroups?.length} students</span>
+                                    <div> {courseDetails.isOpen ? 'Open' : 'Closed'}</div>
+                                    <div> next group start in {courseDetails.avilableGroups?.[0].startDate}</div>
                                 </div>
                                 <button 
                                     className={styles.courseButton}
