@@ -9,12 +9,19 @@ import Navbar from "../components/Navbar";
 export default function LoginPage() {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const [notifi, setNotifi] = useState('');
-    const [notificationKey, setNotificationKey] = useState(0);
+    enum notificationStatus { success = "success", error = "error", warning = "warning" };
+    const [notifi, setNotifi] = useState({
+        text: '',
+        status: notificationStatus.success,
+        key: Date.now()
+    });
     const [responseMsg, setResponseMsg] = useState('');
-    const showNotification = (message: string) => {
-        setNotifi(message);
-        setNotificationKey(prev => prev + 1);
+    const showNotification = (message: string, status: notificationStatus) => {
+        setNotifi({
+            text: message,
+            status: status,
+            key: Date.now()
+        });
     };
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -23,21 +30,21 @@ export default function LoginPage() {
         const password = passwordRef.current?.value;
 
         if (!email || !password) {
-            showNotification("Email or password is required");
+            showNotification("Email or password is required", notificationStatus.error);
             return;
         }
         if (!email.includes("@")) {
-            showNotification("Email must contain @");
+            showNotification("Email must contain @", notificationStatus.error);
             return;
         }
         if (password.length < 8) {
-            showNotification("Password must be at least 8 characters");
+            showNotification("Password must be at least 8 characters", notificationStatus.error);
             return;
         }
 
         try {
             const data =await loginApi({email, password});
-            showNotification(data.message);
+            showNotification(data.message, notificationStatus.success   );
             setResponseMsg(data.message);
             if(data.success){
                 // here save the token in the local storage
@@ -48,7 +55,7 @@ export default function LoginPage() {
             }
             
         } catch (error) {
-            showNotification("Login failed. Please try again.");
+            showNotification("Login failed. Please try again.", notificationStatus.error    );
         }
     }
 
@@ -75,7 +82,7 @@ export default function LoginPage() {
 
                 {responseMsg && <p className="importantMsg">{responseMsg}</p>}
             </form>
-            {notifi && <NotificationPage searchParams={{text:notifi}} />}
+            {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
         </div>
         </>
     )

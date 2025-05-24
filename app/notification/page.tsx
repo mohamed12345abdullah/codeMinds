@@ -1,11 +1,36 @@
-export const dynamic = "force-dynamic";
 
-import NotificationPage from './NotificationClient';
+'use client'
 
-interface PageProps {
-    searchParams: { [key: string]: string | string[] | undefined }
+
+
+import { useState } from "react";
+import "./styles.css";
+
+enum notificationStatus { success = "success", error = "error", warning = "warning" };
+
+type notificationParams = {
+ 
+    text: string;
+    status: notificationStatus;
+    key: number;
+};
+
+
+export default function NotificationPage(params: notificationParams) {
+
+    const {text, status, key} = params;
+    
+    const [notification, setNotification] = useState(params);   
+    
+    
+    
+    return (
+        <div className="container">
+        <div key={key} className={status}>
+            <h3>{text}</h3>
+        </div>
+        </div>
+    );
+
 }
-
-export default function Page({ searchParams }: PageProps) {
-    return <NotificationPage initialText={searchParams.text as string | undefined} />;
-} 
+    

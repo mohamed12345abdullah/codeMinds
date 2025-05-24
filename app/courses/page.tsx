@@ -107,16 +107,29 @@ const initialCourses: CourseDetails[] = [
 
 export default function CoursesPage() {
     const [courses, setCourses] = useState<CourseDetails[]>(initialCourses);
-    const [notifi, setNotifi] = useState('');
+    enum notificationStatus { success = "success", error = "error", warning = "warning" };
+    const [notifi, setNotifi] = useState({
+        text: '',
+        status: notificationStatus.success,
+        key: Date.now()
+    });
     const [selectedCourse, setSelectedCourse] = useState<CourseDetails | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleEnroll = (courseId: string|null) => {
         const course = courses.find(c => c.course._id === courseId);
         if (course) {
-            setNotifi(`Enrolled in ${course.course.title}!`);
+            showNotification(`Enrolled in ${course.course.title}!`, notificationStatus.success);
             // Here you would typically make an API call to enroll the user
         }
+    };
+
+    const showNotification = (message: string, status: notificationStatus) => {
+        setNotifi({
+            text: message,
+            status: status,
+            key: Date.now()
+        });
     };
 
     return (
@@ -178,7 +191,7 @@ export default function CoursesPage() {
                 isOpen={isModalOpen}
                 />
             )}
-            {notifi && <NotificationPage searchParams={{text:notifi}} />}
+            {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
         </div>
     );
 }

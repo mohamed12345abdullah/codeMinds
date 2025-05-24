@@ -9,31 +9,53 @@ import Link from 'next/link';
 import { registerApi } from '../apis/auth';
 
 export default function SignUpPage() {
+    enum notificationStatus { success = "success", error = "error", warning = "warning" };
+
     const router = useRouter();
     const emailRef = useRef<HTMLInputElement>(null);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [notifi, setNotifi] = useState('');
+    const [notifi, setNotifi] = useState({
+        text: '',
+        status: notificationStatus.success,
+        key: Date.now()
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [responseMsg, setResponseMsg] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setNotifi('');
+        setNotifi({
+            text: '',
+            status: notificationStatus.success,
+            key: Date.now()
+        });
 
         if (!username || !email || !password) {
-            setNotifi('All fields are required');
+            setNotifi({
+                text: 'All fields are required',
+                status: notificationStatus.error,
+                key: Date.now()
+            });
             return;
         }
 
         if (!email.includes('@')) {
-            setNotifi('Please enter a valid email');
+            setNotifi({
+                text: 'Please enter a valid email',
+                status: notificationStatus.warning,
+                key: Date.now()
+            });
             return;
         }
 
         if (password.length < 8) {
-            setNotifi('Password must be at least 8 characters');
+            setNotifi({
+                text: 'Password must be at least 8 characters',
+                status: notificationStatus.warning,
+                key: Date.now()
+            });
             return;
         }
 
@@ -45,15 +67,36 @@ export default function SignUpPage() {
                 password: password
             });
             setResponseMsg(response.message);
-            setNotifi(response.message);
-            if(responseMsg.includes('Failed to fetch')){
-                setNotifi('Failed to connect to server');
+            if (response.success) {
+                setNotifi({
+                    text: response.message,
+                    status: notificationStatus.success,
+                    key: Date.now()
+                });
+            }
+            else {
+                setNotifi({
+                    text: response.message,
+                    status: notificationStatus.error,
+                    key: Date.now()
+                });
+            }
+            if (responseMsg.includes('Failed to fetch')) {
+                setNotifi({
+                    text: 'Failed to connect to server',
+                    status: notificationStatus.error,
+                    key: Date.now()
+                });
             }
 
-        } catch (error : any) {
+        } catch (error: any) {
             let errorMessage = 'An error occurred';
-            errorMessage=error.message;
-            setNotifi(errorMessage);
+            errorMessage = error.message;
+            setNotifi({
+                text: errorMessage,
+                status: notificationStatus.error,
+                key: Date.now()
+            });
         } finally {
             setIsLoading(false);
         }
@@ -99,7 +142,7 @@ export default function SignUpPage() {
                     </div>
                     <button
                         type="submit"
-                        disabled={isLoading}    
+                        disabled={isLoading}
                         className={styles.submitButton}
                     >
                         {isLoading ? 'Signing up...' : 'Sign up'}
@@ -112,7 +155,7 @@ export default function SignUpPage() {
                     <Link href="/login">Sign in</Link>
                 </p>
             </div>
-            {notifi && <NotificationPage searchParams={{text:notifi}} />}
+            {notifi.text!= '' && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
         </div>
     );
 }

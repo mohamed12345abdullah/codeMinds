@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styles from './page.module.css';
 import Navbar from './components/Navbar';
-import NotificationPage from './notification/page';
+import NotificationPage from './notification/page'; 
 import Footer from './components/Footer';
 import Slider from './components/Slider';
 import { useState } from 'react';
