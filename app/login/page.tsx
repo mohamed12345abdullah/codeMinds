@@ -48,8 +48,8 @@ export default function LoginPage() {
             setResponseMsg(data.message);
             if(data.success){
                 // here save the token in the local storage
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user", JSON.stringify(data.user));
+                window.localStorage.setItem("token", data.token);
+                window.localStorage.setItem("user", JSON.stringify(data.user));
                 // redirect to the home page
                 window.location.href = "../profile";
             }

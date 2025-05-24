@@ -10,7 +10,7 @@ import { userInfo } from 'os';
 export default function ProfilePage() {
     const [activeTab, setActiveTab] = useState('profile');
     const [isEditing, setIsEditing] = useState(false);
-    const user = JSON.parse(localStorage.getItem("user") || '{}');
+    const user = JSON.parse(window.localStorage.getItem("user") || '{}');
     const [userInfo, setUserInfo] = useState({
         name: user.name,
         email: user.email,
