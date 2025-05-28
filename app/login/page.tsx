@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 export default function LoginPage() {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const rememberMeRef = useRef<HTMLInputElement>(null);
     enum notificationStatus { success = "success", error = "error", warning = "warning" };
     const [notifi, setNotifi] = useState({
         text: '',
@@ -16,6 +17,7 @@ export default function LoginPage() {
         key: Date.now()
     });
     const [responseMsg, setResponseMsg] = useState('');
+
     const showNotification = (message: string, status: notificationStatus) => {
         setNotifi({
             text: message,
@@ -28,6 +30,7 @@ export default function LoginPage() {
         e.preventDefault();
         const email = emailRef.current?.value;
         const password = passwordRef.current?.value;
+        const rememberMe = rememberMeRef.current?.checked;
 
         if (!email || !password) {
             showNotification("Email or password is required", notificationStatus.warning);
@@ -46,51 +49,68 @@ export default function LoginPage() {
         }
 
         try {
-            const data =await loginApi({email, password});
+            const data = await loginApi({email, password, rememberMe: rememberMe || false});
        
             if(data.success){
-                // here save the token in the local storage
                 window.localStorage.setItem("token", data.token);
                 window.localStorage.setItem("user", JSON.stringify(data.user));
-                // redirect to the home page
                 window.location.href = "../profile";
-            }else{
+            } else {
                 showNotification(data.message, notificationStatus.error);
                 setResponseMsg(data.message);
             }
-            
         } catch (error) {
             console.log(error);
-            showNotification("Login failed. Please try again.", notificationStatus.error    );
+            showNotification("Login failed. Please try again.", notificationStatus.error);
             setResponseMsg("Login failed. Please try again.");
         }
     }
 
     return (
         <>
-        <Navbar />
+            <Navbar />
+            <div className="container">
+                <form onSubmit={handleLogin}>
+                    <h1>Login</h1>
+                    
+                    <div>
+                        <label htmlFor="email">Email</label>
+                        <input 
+                            className="input" 
+                            type="email" 
+                            id="email"
+                            placeholder="Enter your email" 
+                            ref={emailRef} 
+                        />
+                    </div>
 
-        <div className="container">
-            <h1>Login</h1>
-            <form className="form" onSubmit={handleLogin}>
-                <input 
-                    className="input" 
-                    type="email" 
-                    placeholder="Email" 
-                    ref={emailRef} 
-                />   
-                <input 
-                    className="input" 
-                    type="password" 
-                    placeholder="Password"
-                    ref={passwordRef} 
-                />   
-                <button className="button" type="submit">Login</button>
+                    <div>
+                        <label htmlFor="password">Password</label>
+                        <input 
+                            className="input" 
+                            type="password" 
+                            id="password"
+                            placeholder="Enter your password"
+                            ref={passwordRef} 
+                        />
+                    </div>
 
-                {responseMsg && <p className="importantMsg">{responseMsg}</p>}
-            </form>
-            {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
-        </div>
+                    <div className="rememberMe">
+                        <input 
+                            type="checkbox"
+                            id="rememberMe"
+                            ref={rememberMeRef} 
+                            defaultChecked={false}
+                        />
+                        <label htmlFor="rememberMe">Remember me</label>
+                    </div>
+                
+                    <button type="submit">Login</button>
+
+                    {responseMsg && <p className="importantMsg">{responseMsg}</p>}
+                </form>
+                {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
+            </div>
         </>
     )
 }

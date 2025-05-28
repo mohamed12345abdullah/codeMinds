@@ -10,6 +10,7 @@ console.log("baseUrl", baseUrl)
 type loginParams = {
     email: string;
     password: string;
+    rememberMe:boolean;
 }   
 
 type registerParams = {
@@ -38,7 +39,7 @@ const getClientIP = async () => {
 const loginApi= async (params :loginParams)=>{
     try{
     const clientIP = await getClientIP();
-    console.log("api function ")
+    console.log("login api function ",params)
     const response = await fetch(`${baseUrl}/login`,{
         method: "POST",
         headers: {
@@ -47,7 +48,8 @@ const loginApi= async (params :loginParams)=>{
         body: JSON.stringify({
             email: params.email,
             password: params.password,
-            ipAddress: clientIP
+            rememberMe: params.rememberMe,
+            ipAddress: clientIP,
         })
     })
     console.log("after fetch")
@@ -71,11 +73,11 @@ catch(error){
 
 
 const registerApi = async (params :registerParams)=>{
-    console.log("register api")
+    console.log("register api",params)
     console.log("baseUrl", baseUrl)
     try{
     const clientIP = await getClientIP();
-    console.log("api function ")
+    console.log("register api function ",params)
     const response = await fetch(`${baseUrl}/register`,{
         method: "POST",
         headers: {
