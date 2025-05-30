@@ -10,7 +10,8 @@ interface Course {
     updatedAt?: string;
 }
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "https://code-minds-website.vercel.app/api";
+const baseUrl = "http://localhost:4000/api";
 
 // Course API endpoints
  
@@ -44,41 +45,7 @@ const getCourseById = async (id: string): Promise<Course | Error> => {
     }
 }
 
-const createCourse = async (course: Omit<Course, 'id' | 'createdAt' | 'updatedAt'>): Promise<Course | Error> => {
-    try {
-        const response = await fetch(`${baseUrl}/courses`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(course)
-        });
-        if (!response.ok) throw new Error('Failed to create course');
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error creating course:', error);
-        return error as Error;
-    }
-};
 
-const updateCourse = async (id: string, course: Partial<Course>): Promise<Course | Error> => {
-    try {
-        const response = await fetch(`${baseUrl}/courses/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(course)
-        });
-        if (!response.ok) throw new Error('Failed to update course');
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error updating course:', error);
-        return error as Error;
-    }
-};
 
 const deleteCourse = async (id: string): Promise<{ message: string } | Error> => {
     try {
