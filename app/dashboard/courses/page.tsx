@@ -1,268 +1,241 @@
+
+
 'use client'
-
-import Navbar from "@/app/components/Navbar";
-import { createCourse, getCourses, updateCourse } from "@/app/apis/course";
-import { useEffect, useState } from "react";
-import NotificationPage from "@/app/notification/page";
+import React, { useEffect, useState } from "react";
 import "./courses.css"
-enum notificationStatus { success = "success", error = "error", warning = "warning" };
+import { getCourses ,deleteCourse } from "../../apis/course";
 
 
-
-
-const createCourse = async (params:{title:string,description:string,price:number,image:File})=> {
-  try {
-      const response = await fetch(`${baseUrl}/courses`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'multipart/form-data',
-          },
-          body: JSON.stringify({title:params.title,description:params.description,price:params.price,image:params.image})
-      });
-      if (!response.ok) throw new Error('Failed to create course');
-      const data = await response.json();
-      return data;
-  } catch (error) {
-      console.error('Error creating course:', error);
-      return error as Error;
-  }
-};
-
-const updateCourse = async (params:{id: string,title:string,description:string,price:number,image:File})=> {
-  try {
-      const response = await fetch(`${baseUrl}/courses/${params.id}`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'multipart/form-data',
-          },
-          body: JSON.stringify({title:params.title,description:params.description,price:params.price,image:params.image})
-      });
-      if (!response.ok) throw new Error('Failed to update course');
-      const data = await response.json();
-      return data;
-  } catch (error) {
-      console.error('Error updating course:', error);
-      return error as Error;
-  }
-};
-
-
-
-
-
-
-type Course = {
-    _id: string;
-    title: string;
-    description: string;
-    price: number;
-    imageUrl:string ;
+// لو عندك baseUrl ثابت
+// const baseUrl = "https://code-minds-website.vercel.app/api";
+const baseUrl = "http://localhost:4000/api";
+interface FormDataType {
+  _id: string;
+  title: string;
+  description: string;
+  price: string;
+  image: File | null;
 }
 
+interface courseType{
+  _id:string;
+  title:string;
+  description:string;
+  price:string;
+  imageUrl:string;
+}
 
-
-
-export default function CoursesPage() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [courseModalOpen, setCourseModalOpen] = useState(false);
-  const [isAdd, setIsAdd] = useState<boolean>(true);
-  const [formData, setFormData] = useState({
-    _id: '',
-    title: '',
-    description: '',
-    price: '',
-    image:File
+const CourseForm = () => {
+  const [formData, setFormData] = useState<FormDataType>({
+    _id: "",
+    title: "",
+    description: "",
+    price: "",
+    image: null,
   });
 
-  useEffect(()=> {
-    getCourses().then((res) => {
-      console.log(res);
-      if (!res.success) {
-        // NotificationPage({text: res.message, status: notificationStatus.error, key: Date.now()});
-      } else {
-        // NotificationPage({text: "Courses fetched successfully", status: notificationStatus.success, key: Date.now()});
-        setCourses(res.data);
-      }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, files } = e.target as HTMLInputElement;
+
+    if (name === "image" && files && files.length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        image: files[0],
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData._id) {
+      await updateCourse(formData);
+    } else {
+      await createCourse(formData);
+    }
+    closeModal();
+    setFormData({
+      _id: "",
+      title: "",
+      description: "",
+      price: "",
+      image: null,
     });
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const [courses,setCourses]=useState([] as courseType[])     
+  const fetchCourses = async () => {
+    try {
+      const res = await getCourses();
+      setCourses(res.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+  useEffect(() => {
+    fetchCourses();
   }, []);
 
+  const handleDeleteCourse = async (id: string) => {
+    try {
+      await deleteCourse(id);
+      fetchCourses();
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
+  };
+  
+  // Create course with FormData
+const createCourse = async (params: FormDataType) => {
+  try {
+    const formData = new FormData();
+    formData.append("title", params.title);
+    formData.append("description", params.description);
+    formData.append("price", params.price);
+    if (params.image) formData.append("image", params.image);
+    console.log(formData);
+    const response = await fetch(`${baseUrl}/courses`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error("Failed to create course");
+
+    const data = await response.json();
+    console.log("Course created:", data);
+    fetchCourses();
+    return data;
+  } catch (error) {
+    console.error("Error creating course:", error);
+  }
+};
 
 
-  const handleEdit = (course: Course) => {
+// Update course with FormData
+const updateCourse = async (params: FormDataType) => {
+  try {
+    const formData = new FormData();
+    formData.append("title", params.title);
+    formData.append("description", params.description);
+    formData.append("price", params.price);
+    if (params.image) formData.append("image", params.image);
+    console.log(formData);
+    const response = await fetch(`${baseUrl}/courses/${params._id}`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error("Failed to update course");
+
+    const data = await response.json();
+    console.log("Course updated:", data);
+    fetchCourses();
+    return data;
+  } catch (error) {
+    console.error("Error updating course:", error);
+  }
+};
+
+const handleUpdateCourse = async (course: courseType) => {
+  try {
     setFormData({
       _id: course._id,
       title: course.title,
       description: course.description,
-      price: course.price.toString(),
-      image:File
+      price: course.price,
+      image: null,
     });
-    setIsAdd(false);
-    setCourseModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    // e.preventDefault();
-    setCourseModalOpen(false);
-    setFormData({
-      _id: '',
-      title: '',
-      description: '',
-      price: '',
-      image:File  
-    });
-    setIsAdd(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // هنا يمكنك إضافة الكود الخاص بتحديث الكورس
-    console.log(' course data:', formData);
-    if(isAdd){
-      createCourse({title:formData.title,description:formData.description,price:Number(formData.price),image:formData.image}).then((res) => {
-        console.log(res);
-        if (!res.success) {
-          // NotificationPage({text: res.message, status: notificationStatus.error, key: Date.now()});
-        } else {
-          // NotificationPage({text: "Course created successfully", status: notificationStatus.success, key: Date.now()});
-          setCourses([...courses, res]);
-          handleCloseModal();
-        }
-      });
-    }else{
-      const courseData = {
-        id: formData._id,
-        title: formData.title,
-        description: formData.description,
-        price: Number(formData.price),
-        image: formData.image
-      };
-      updateCourse(courseData).then((res) => {
-        console.log(res);
-        if (!res.success) {
-          // setCourses(res.data);
-
-          // NotificationPage({text: res.message, status: notificationStatus.error, key: Date.now()});
-        } else {
-          // NotificationPage({text: "Course updated successfully", status: notificationStatus.success, key: Date.now()});
-          handleCloseModal();
-        }
-      });
-    }
-    handleCloseModal();
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-
+    openModal();
+  } catch (error) {
+    console.error("Error updating course:", error);
+  }
+};
 
   return (
-    <div  className="course-manager-container">
-      {/* <Navbar /> */}
-      <h2>courses Dashboard</h2>
-     
-      <div className="addCourse">
-            <button onClick={() => setCourseModalOpen(true)}>Add Course</button>
-      </div>
-
-       {courses &&   <div className="courses-grid">
-            {courses.map((course) => (
-                <div key={course._id} className="course-card">
-                    <h3>{course.title}</h3>
-                    <p>{course.description}</p>
-                    <p>{course.price}</p>
-                    <img src={course.imageUrl} alt="" />
-                    <button onClick={() => handleEdit(course)}>edit</button>
-                    <button>delete</button>
-                </div>  
-            ))}
-        </div>}
-
-
-        {/* Edit Course Modal */}
-        {courseModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h3 className="modal-title">تعديل الكورس</h3>
-                <button onClick={handleCloseModal} className="close-button">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="modal-form">
-                <div className="form-group">
-                  <label htmlFor="title">عنوان الكورس</label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    required
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="description">وصف الكورس</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    required
-                    className="form-textarea"
-                    rows={4}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="price">السعر</label>
-                  <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    required
-                    min="0"
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="image">الصورة</label>
-                  <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    onChange={handleChange}
-                    required
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="modal-footer">
-                  <button type="button" onClick={handleCloseModal} className="cancel-button">
-                    إلغاء
-                  </button>
-                  <button type="submit" className="submit-button">
-                    حفظ التغييرات
-                  </button>
-                </div>
-              </form>
+    <div className="course-manager-container"> 
+    <button onClick={openModal}>Add Course</button>
+    {
+      <div className="courses">
+        {
+          courses?.map((course) => (
+            <div key={course._id} className="course-card">
+              <img src={course.imageUrl} alt={course.title} className="course-image" />
+              <h3>{course.title}</h3>
+              <p>{course.description}</p>
+              <p>{course.price}</p>
+              <button onClick={() => handleUpdateCourse(course)} >Update</button>
+              <button onClick={() => handleDeleteCourse(course._id)} >Delete</button>
             </div>
-          </div>
-        )}
+          ))
+        }
+      </div>
+    }
+    {
+      isModalOpen && (
+    <form onSubmit={handleSubmit} className="course-form">
+      <div onClick={closeModal} className="close-button"> X </div> 
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        value={formData.title}
+        onChange={handleChange}
+        required
+        className="course-input"
+      />
 
+      <textarea
+        name="description"
+        placeholder="Description"
+        value={formData.description}
+        onChange={handleChange}
+        required
+        className="course-input"
+      />
+
+      <input
+        type="number"
+        name="price"
+        placeholder="Price"
+        value={formData.price}
+        onChange={handleChange}
+        required
+        className="course-input"
+      />
+
+      <input
+        type="file"
+        name="image"
+        accept="image/*"
+        onChange={handleChange}
+        className="course-input"
+      />
+
+      <button
+        type="submit"
+        className="course-button"
+      >
+        {formData._id ? "Update Course" : "Create Course"}
+      </button>
+    </form>
+    )
+    }
     </div>
   );
-}
+};
+
+
+
+
+
+
+export default CourseForm;

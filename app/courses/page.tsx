@@ -6,6 +6,8 @@ import Navbar from '../components/Navbar';
 import styles from './courses.module.css';
 import CourseDetailModal from './CourseDetailModal';
 import { sendIpApi } from '../apis/auth';
+import { getCourses } from '../apis/course';
+
 enum Gender {
     MALE = 'Male',
     FEMALE = 'Female',
@@ -40,15 +42,12 @@ type Course = {
     description: string;
     price: number|null;
     imageUrl: string;
-}
-
-
-type CourseDetails = {
-    course: Course;
     isOpen: boolean;
-    onClose: () => void;
     avilableGroups?: Group[] | null;
 }
+
+
+
 
 const groupA: Group = {
     _id: '1',
@@ -72,58 +71,74 @@ const groupB: Group={
     students: null
 }
 
-const pythonCourse: CourseDetails = {
-    course: {
-    _id: '1',
-    title: 'Python Programming',
-    description: 'Learn the fundamentals of Python programming',
-    price: 99.99,
-    imageUrl: 'https://www.livewireindia.com/blog/wp-content/uploads/2019/03/Python-Programming-training-1024x537.jpg',
-    },
-    isOpen: true,
-    onClose: () => {},
-    avilableGroups: [groupA,groupB]
-}
+// const pythonCourse: CourseDetails = {
+//     course: {
+//     _id: '1',
+//     title: 'Python Programming',
+//     description: 'Learn the fundamentals of Python programming',
+//     price: 99.99,
+//     imageUrl: 'https://www.livewireindia.com/blog/wp-content/uploads/2019/03/Python-Programming-training-1024x537.jpg',
+//     },
+//     isOpen: true,
+//     onClose: () => {},
+//     avilableGroups: [groupA,groupB]
+// }
 
 
-const CppCourse: CourseDetails = {
-    course: {
-    _id: '2',
-    title: 'C++ Programming',
-    description: 'Learn the fundamentals of C++ programming',
-    price: 99.99,
-    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSGePKrQcfI6LjsSHTtm240HjN590eh6K9YQ&s',
-    },
-    isOpen: true,
-    onClose: () => {},
-    avilableGroups: [groupA,groupB]
-}
+// const CppCourse: CourseDetails = {
+//     course: {
+//     _id: '2',
+//     title: 'C++ Programming',
+//     description: 'Learn the fundamentals of C++ programming',
+//     price: 99.99,
+//     imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSGePKrQcfI6LjsSHTtm240HjN590eh6K9YQ&s',
+//     },
+//     isOpen: true,
+//     onClose: () => {},
+//     avilableGroups: [groupA,groupB]
+// }
 
 
-const initialCourses: CourseDetails[] = [
-    pythonCourse,
-    CppCourse
-]
+// const initialCourses: CourseDetails[] = [
+//     pythonCourse,
+//     CppCourse
+// ]
 
 
 export default function CoursesPage() {
     useEffect(() => {
         sendIpApi("courses");
     }, []);
-    const [courses, setCourses] = useState<CourseDetails[]>(initialCourses);
+    const [courses, setCourses] = useState<Course[]>([]);
     enum notificationStatus { success = "success", error = "error", warning = "warning" };
     const [notifi, setNotifi] = useState({
         text: '',
         status: notificationStatus.success,
         key: Date.now()
     });
-    const [selectedCourse, setSelectedCourse] = useState<CourseDetails | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const fetchCourses = async () => {
+        try {
+            const response = await getCourses();
+            setCourses(response.data);
+            // showNotification("Courses fetched successfully!", notificationStatus.success);
+            console.log("Courses fetched successfull================:", response.data);
+        } catch (error) {
+            console.error("Error fetching courses:", error);
+        }
+    };
+    useEffect(() => {
+        fetchCourses(); 
+    }, []);
+
+
     const handleEnroll = (courseId: string|null) => {
-        const course = courses.find(c => c.course._id === courseId);
+        const course = courses.find(c => c._id === courseId);
         if (course) {
-            showNotification(`Enrolled in ${course.course.title}!`, notificationStatus.success);
+            console.log("Enrolled in", course.title);
+            showNotification(`Enrolled in ${course.title}!`, notificationStatus.success);
             // Here you would typically make an API call to enroll the user
         }
     };
@@ -146,21 +161,21 @@ export default function CoursesPage() {
                 </div>
 
                 <div className={styles.grid}>
-                    {courses.map((courseDetails:CourseDetails) => (
-                        <div key={courseDetails.course._id} className={styles.courseCard}>
+                    {courses.map((courseDetails:Course) => (
+                        <div key={courseDetails._id} className={styles.courseCard}>
                             <div className={styles.courseImage}>
                                 <img 
-                                    src={courseDetails.course.imageUrl}
-                                    alt={courseDetails.course.title}
+                                    src={courseDetails.imageUrl}
+                                    alt={courseDetails.title}
                                     className={styles.courseImage}
                                 />
                             </div>
                             <div className={styles.courseContent}>
-                                <h3>{courseDetails.course.title}</h3>
-                                <p>{courseDetails.course.description}</p>
+                                <h3>{courseDetails.title}</h3>
+                                <p>{courseDetails.description}</p>
                                 <div className={styles.courseMeta}>
                                     <div> {courseDetails.isOpen ? 'Open' : 'Closed'}</div>
-                                    <div> next group start in {courseDetails.avilableGroups?.[0].startDate}</div>
+                                    {(courseDetails.avilableGroups && courseDetails.avilableGroups.length > 0) && <div> next group start in {courseDetails.avilableGroups?.[0].startDate}</div>}
                                 </div>
                                 <button 
                                     className={styles.courseButton}
@@ -172,9 +187,9 @@ export default function CoursesPage() {
                                     Learn More
                                 </button>
                                 <div className={styles.coursePrice}>
-                                    <span className={styles.price}>${courseDetails.course.price}</span>
+                                    <span className={styles.price}>${courseDetails.price}</span>
                                     <button
-                                        onClick={() => handleEnroll(courseDetails.course._id || null)}
+                                        onClick={() => handleEnroll(courseDetails._id || null)}
                                         className={styles.enrollButton}
                                     >
                                         Enroll Now
@@ -192,8 +207,8 @@ export default function CoursesPage() {
             {selectedCourse && (
                 <CourseDetailModal 
                 courseDetails={selectedCourse}
-                onClose={() => setIsModalOpen(false)}
                 isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
                 />
             )}
             {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}

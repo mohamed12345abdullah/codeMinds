@@ -1,5 +1,12 @@
 import styles from './CourseDetailModal.module.css';
 import NotificationPage from '../notification/page';
+import { useState } from 'react';
+
+enum notificationStatus{
+    success = 'success',
+    error = 'error',
+    warning = 'warning'
+}
 enum Gender {
     MALE = 'Male',
     FEMALE = 'Female',
@@ -34,13 +41,7 @@ type Course = {
     description: string;
     price: number|null;
     imageUrl: string;
-}
-
-
-type CourseDetails = {
-    course: Course;
     isOpen: boolean;
-    onClose: () => void;
     avilableGroups?: Group[] | null;
 }
 
@@ -50,16 +51,32 @@ type CourseDetails = {
 
 
 
-export default function CourseDetailModal({courseDetails,onClose,isOpen}: {courseDetails: CourseDetails,onClose: () => void,isOpen: boolean}) {
-    if (!isOpen) return null;
 
+export default function CourseDetailModal({courseDetails,onClose,isOpen}: {courseDetails: Course,onClose: () => void,isOpen: boolean}) {
+
+    
+    if (!isOpen) return null;
     const handleEnroll = (groupId: string | undefined) => {
         const group = courseDetails.avilableGroups?.find(g => g._id === groupId);
+        console.log("ENROLL IN COURSE",courseDetails._id);
+        showNotification("Enrolled in course!", notificationStatus.success);
         if (group) {
             console.log(`Enrolled in ${group.name}!`);
             // Here you would typically make an API call to enroll the user
         }
     }; 
+    const [notifi, setNotifi] = useState({
+        text: '',
+        status: notificationStatus.success,
+        key: Date.now()
+    });
+    const showNotification = (message: string, status: notificationStatus) => {
+        setNotifi({
+            text: message,
+            status: status,
+            key: Date.now()
+        });
+    };
     return (
         <div className={styles.modalOverlay} onClick={onClose}> 
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -70,13 +87,13 @@ export default function CourseDetailModal({courseDetails,onClose,isOpen}: {cours
                 </button>
                 
                 <div className={styles.courseImage}>
-                    <img src={courseDetails.course.imageUrl} alt={courseDetails.course.title} />
+                    <img src={courseDetails.imageUrl} alt={courseDetails.title} />
                 </div>
 
                 <div className={styles.courseDetails}>
-                    <h2>{courseDetails.course.title}</h2>
-                    <p className={styles.price}>${courseDetails.course.price?.toFixed(2)}</p>
-                    <p className={styles.description}>{courseDetails.course.description}</p>
+                    <h2>{courseDetails.title}</h2>
+                    <p className={styles.price}>${courseDetails.price?.toFixed(2)}</p>
+                    <p className={styles.description}>{courseDetails.description}</p>
                     {courseDetails.avilableGroups && (
                         <div className={styles.groups}>
                             <h3>Available Groups</h3>
@@ -124,7 +141,7 @@ export default function CourseDetailModal({courseDetails,onClose,isOpen}: {cours
                     </div>
 
                     <div className={styles.ctaButtons}>
-                        <button className={styles.enrollButton}>
+                        <button onClick={() => handleEnroll(courseDetails._id)} className={styles.enrollButton}>
                             Enroll Now
                         </button>
                         <button className={styles.wishlistButton}>
@@ -133,6 +150,7 @@ export default function CourseDetailModal({courseDetails,onClose,isOpen}: {cours
                     </div>
                 </div>
             </div>
+            {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
         </div>
     );
 }

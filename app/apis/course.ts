@@ -10,8 +10,8 @@ interface Course {
     updatedAt?: string;
 }
 
-// const baseUrl = "https://code-minds-website.vercel.app/api";
-const baseUrl = "http://localhost:4000/api";
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api";
 
 // Course API endpoints
  
@@ -54,6 +54,7 @@ const deleteCourse = async (id: string): Promise<{ message: string } | Error> =>
         });
         if (!response.ok) throw new Error('Failed to delete course');
         const data = await response.json();
+        console.log("Course deleted successfully:", data);
         return data;
     } catch (error) {
         console.error('Error deleting course:', error);
@@ -61,5 +62,5 @@ const deleteCourse = async (id: string): Promise<{ message: string } | Error> =>
     }
 };
 
-export {getCourses, getCourseById, createCourse, updateCourse, deleteCourse}
+export {getCourses, getCourseById, deleteCourse}
 
