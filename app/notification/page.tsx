@@ -12,13 +12,13 @@ type notificationParams = {
  
     text: string;
     status: notificationStatus;
-    key: number;
+    k: number;
 };
 
 
 export default function NotificationPage(params: notificationParams) {
 
-    const {text, status, key} = params;
+    const {text, status, k} = params;
     
     const [notification, setNotification] = useState(params);   
     
@@ -26,7 +26,7 @@ export default function NotificationPage(params: notificationParams) {
     
     return (
         <div className="notificationContainer">
-        <div key={key} className={status}>
+        <div key={k} className={status}>
             <h3>{text}</h3>
         </div>
         </div>

@@ -17,6 +17,7 @@ type registerParams = {
     name: string;
     email: string;
     password: string;
+    phone: string;
 }
 
 
@@ -87,6 +88,7 @@ const registerApi = async (params :registerParams)=>{
             name: params.name,
             email: params.email,
             password: params.password,
+            phone: params.phone,
             ipAddress: clientIP
         })
     })

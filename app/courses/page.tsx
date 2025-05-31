@@ -122,11 +122,16 @@ export default function CoursesPage() {
     const fetchCourses = async () => {
         try {
             const response = await getCourses();
+            if(response instanceof Error){
+                showNotification("Error fetching courses!", notificationStatus.error);
+                return;
+            }
             setCourses(response.data);
-            // showNotification("Courses fetched successfully!", notificationStatus.success);
-            console.log("Courses fetched successfull================:", response.data);
+            showNotification("Courses fetched successfully!", notificationStatus.success);
+            console.log("Courses fetched successfull================:", response);
         } catch (error) {
             console.error("Error fetching courses:", error);
+            showNotification("Error fetching courses!", notificationStatus.error);
         }
     };
     useEffect(() => {
@@ -211,7 +216,7 @@ export default function CoursesPage() {
                 onClose={() => setIsModalOpen(false)}
                 />
             )}
-            {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
+            {notifi && <NotificationPage text={notifi.text} status={notifi.status} k={notifi.key} />}
         </div>
     );
 }

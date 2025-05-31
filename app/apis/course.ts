@@ -15,23 +15,24 @@ const baseUrl = "http://localhost:4000/api";
 
 // Course API endpoints
  
-const getCourses=async () => {
+const getCourses = async () => {
     try {
-        const response = await fetch(`${baseUrl}/courses`);
-        if(!response.ok){
-            const res=await response.json();
-            console.log("Failed to fetch courses:",res);
-            throw new Error('Failed to fetch courses');
-
-        }
-        const data = await response.json();
-        console.log("Courses fetched successfully:",data);
-        return data;
+      const response = await fetch(`${baseUrl}/courses`);
+      const data = await response.json();
+  
+      if (!response.ok) {
+        console.log("Failed to fetch courses:", data);
+        throw new Error("Failed to fetch courses");
+      }
+  
+      console.log("Courses fetched successfully:", data);
+      return data;
     } catch (error) {
-        console.error('Error fetching courses:', error);
-        return error ;
+      console.error("Error fetching courses:", error);
+      return error as Error;
     }
-};
+  };
+  
 
 const getCourseById = async (id: string): Promise<Course | Error> => {
     try {

@@ -20,6 +20,7 @@ export default function SignUpPage() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('');
     const [notifi, setNotifi] = useState({
         text: '',
         status: notificationStatus.success,
@@ -68,7 +69,8 @@ export default function SignUpPage() {
             const response = await registerApi({
                 name: username,
                 email: email,
-                password: password
+                password: password,
+                phone: phone
             });
             setResponseMsg(response.message);
             if (response.success) {
@@ -144,6 +146,16 @@ export default function SignUpPage() {
                             className={styles.input}
                         />
                     </div>
+                    <div className={styles.formGroup}>
+                        <input
+                            type="text"
+                            required
+                            placeholder="Phone number"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            className={styles.input}
+                        />
+                    </div>
                     <button
                         type="submit"
                         disabled={isLoading}
@@ -159,7 +171,7 @@ export default function SignUpPage() {
                     <Link href="/login">Sign in</Link>
                 </p>
             </div>
-            {notifi.text!= '' && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
+            {notifi.text!= '' && <NotificationPage text={notifi.text} status={notifi.status} k={notifi.key} />}
         </div>
     );
 }

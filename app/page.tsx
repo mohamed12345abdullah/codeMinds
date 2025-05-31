@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import styles from './page.module.css';
 import Navbar from './components/Navbar';
-import NotificationPage from './notification/page'; 
 import Footer from './components/Footer';
 import Slider from './components/Slider';
 import { useState, useEffect } from 'react';
 import Courses from './courses/page';
 import { sendIpApi } from './apis/auth';
+import NotificationPage from './notification/page';
 
 const sliderSlides = [
     {
@@ -27,38 +27,20 @@ const sliderSlides = [
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s'
     }
 ];
-
+enum notificationStatus { success = "success", error = "error", warning = "warning" };
 export default function HomePage() {
-    const featuredCourses = [
-        {
-            id: 1,
-            title: 'Web Development Bootcamp',
-            description: 'Learn full-stack web development from scratch',
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
-            instructor: 'John Doe',
-            students: 1234,
-            rating: 4.8
-        },
-        {
-            id: 2,
-            title: 'Data Science Fundamentals',
-            description: 'Master data analysis and machine learning',
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
-            instructor: 'Jane Smith',
-            students: 856,
-            rating: 4.9
-        },
-        {
-            id: 3,
-            title: 'Mobile App Development',
-            description: 'Build iOS and Android apps with React Native',
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s',
-            instructor: 'Mike Johnson',
-            students: 567,
-            rating: 4.7
-        }
-    ];
-
+    const [notifi, setNotifi] = useState({
+        text: '',
+        status: notificationStatus.success,
+        k: Date.now()
+    });
+    const showNotification = (message: string, status: notificationStatus) => {
+        setNotifi({
+            text: message,
+            status: status,
+            k: Date.now()
+        });
+    };
     useEffect(() => {
         //  send the ip of the  gusets to the server to calculate the views
         sendIpApi("home");
@@ -164,6 +146,7 @@ export default function HomePage() {
                 </div>
             </section>
             <Footer />
+            <NotificationPage {...notifi} />
         </div>
     );
 }

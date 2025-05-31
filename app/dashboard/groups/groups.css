@@ -1,0 +1,174 @@
+.group-manager-container {
+  max-width: 1200px;
+  margin: 90px auto;
+  padding: 1rem;
+}
+
+.add-group-btn {
+  background-color: var(--primary);
+  color: var(--text);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.add-group-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.group-card {
+  background-color: var(--card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px var(--card-shadow);
+  transition: transform 0.3s ease;
+}
+
+.group-card:hover {
+  transform: translateY(-5px);
+}
+
+.group-card h3 {
+  color: var(--text);
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.group-details {
+  margin-bottom: 1rem;
+}
+
+.group-details p {
+  color: var(--text);
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.group-details strong {
+  color: var(--primary);
+}
+
+.group-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.update-btn, .delete-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.update-btn {
+  background-color: var(--primary);
+  color: var(--text);
+}
+
+.delete-btn {
+  background-color: #e53e3e;
+  color: white;
+}
+
+.update-btn:hover, .delete-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.group-form {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 6px var(--card-shadow);
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+.group-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.group-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--primary);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .group-manager-container {
+    margin: 1rem;
+  }
+
+  .groups-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .group-form {
+    width: 95%;
+    padding: 1.5rem;
+  }
+} 

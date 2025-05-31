@@ -17,6 +17,7 @@
   --input-bg: #ffffff;
   --input-border: #e0e0e0;
   --hover-bg: #f0f0f0;
+  --card: #4163528e;
 }
 
 [data-theme='dark'] {
@@ -37,6 +38,7 @@
   --input-bg: #1E1E1E;
   --input-border: #2C2C2C;
   --hover-bg: #2C2C2C;
+  --card: #48dd9331;
 }
 
 @media (prefers-color-scheme: dark) {

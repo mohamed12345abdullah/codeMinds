@@ -109,7 +109,7 @@ export default function LoginPage() {
 
                     {responseMsg && <p className="importantMsg">{responseMsg}</p>}
                 </form>
-                {notifi && <NotificationPage text={notifi.text} status={notifi.status} key={notifi.key} />}
+                {notifi && <NotificationPage text={notifi.text} status={notifi.status} k={notifi.key} />}
             </div>
         </>
     )
