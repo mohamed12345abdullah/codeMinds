@@ -12,9 +12,11 @@ interface CourseType {
 
 interface InstructorType {
   _id: string;
-  fullName: string;
+  name: string;
   email: string;
-  specialization: string;
+  profileRef: {
+    specialization: string;
+  }
 }
 
 interface GroupType {
@@ -66,9 +68,14 @@ const GroupForm = () => {
     }));
   };
 
+
   const fetchGroups = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/groups");
+      const res = await fetch("http://localhost:4000/api/groups", {
+        headers: {
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      });
       const data = await res.json();
       setGroups(data.data);
     } catch (error) {
@@ -115,10 +122,15 @@ const GroupForm = () => {
         method,
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-          ...formData,
-          instructor: formData.instructorId, // Map instructorId to instructor for backend
+          title: formData.title,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+          totalSeats: formData.totalSeats,
+          courseId: formData.courseId,
+          instructorId: formData.instructorId,
         }),
       });
 
@@ -141,9 +153,15 @@ const GroupForm = () => {
   };
 
   const handleDeleteGroup = async (id: string) => {
+    // confirm to delelte
+    const confirmDelete = window.confirm("Are you sure you want to delete this group?");
+    if (!confirmDelete) return;
     try {
       const response = await fetch(`http://localhost:4000/api/groups/${id}`, {
         method: "DELETE",
+        headers:{
+          'authorization': `Bearer ${window.localStorage.getItem("token")}`,
+        }
       });
 
       if (!response.ok) throw new Error("Failed to delete group");
@@ -180,8 +198,7 @@ const GroupForm = () => {
               <p><strong>Start Date:</strong> {new Date(group.startDate).toLocaleDateString()}</p>
               <p><strong>End Date:</strong> {new Date(group.endDate).toLocaleDateString()}</p>
               <p><strong>Total Seats:</strong> {group.totalSeats}</p>
-              <p><strong>Instructor:</strong> {group.instructor.fullName}</p>
-              <p><strong>Specialization:</strong> {group.instructor.specialization}</p>
+              <p><strong>Instructor:</strong> {group.instructor.name}</p>
             </div>
             <div className="group-actions">
               <button onClick={() => handleUpdateGroup(group)} className="update-btn">
@@ -235,7 +252,7 @@ const GroupForm = () => {
               <option value="">Select Instructor</option>
               {instructors.map((instructor) => (
                 <option key={instructor._id} value={instructor._id}>
-                  {instructor.fullName} - {instructor.specialization}
+                  {`${instructor.name} , ${instructor.profileRef.specialization}`}
                 </option>
               ))}
             </select>

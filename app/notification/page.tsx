@@ -3,7 +3,7 @@
 
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles.css";
 
 enum notificationStatus { success = "success", error = "error", warning = "warning" };
@@ -19,10 +19,8 @@ type notificationParams = {
 export default function NotificationPage(params: notificationParams) {
 
     const {text, status, k} = params;
-    
-    const [notification, setNotification] = useState(params);   
-    
-    
+    console.log("NotificationPage params:", params);
+
     
     return (
         <div className="notificationContainer">

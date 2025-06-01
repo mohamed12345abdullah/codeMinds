@@ -33,6 +33,7 @@ export default function InstructorRequestForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
         body: JSON.stringify(formData),
       });

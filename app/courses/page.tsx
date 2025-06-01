@@ -216,7 +216,7 @@ export default function CoursesPage() {
                 onClose={() => setIsModalOpen(false)}
                 />
             )}
-            {notifi && <NotificationPage text={notifi.text} status={notifi.status} k={notifi.key} />}
-        </div>
+            {notifi && <NotificationPage key={notifi.key} text={notifi.text} status={notifi.status} k={notifi.key} />}
+</div>
     );
 }

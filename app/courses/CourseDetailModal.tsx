@@ -150,7 +150,7 @@ export default function CourseDetailModal({courseDetails,onClose,isOpen}: {cours
                     </div>
                 </div>
             </div>
-            {notifi && <NotificationPage text={notifi.text} status={notifi.status} k={notifi.key} />}
+            {notifi && <NotificationPage key={notifi.key} text={notifi.text} status={notifi.status} k={notifi.key} />}
         </div>
     );
 }
