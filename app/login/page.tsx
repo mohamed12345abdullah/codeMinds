@@ -52,8 +52,7 @@ export default function LoginPage() {
             const data = await loginApi({email, password, rememberMe: rememberMe || false});
        
             if(data.success){
-                window.localStorage.setItem("token", data.token);
-                window.localStorage.setItem("user", JSON.stringify(data.user));
+
                 window.location.href = "../profile";
             } else {
                 showNotification(data.message, notificationStatus.error);

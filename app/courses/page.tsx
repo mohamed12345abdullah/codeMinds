@@ -5,13 +5,30 @@ import NotificationPage from '../notification/page';
 import Navbar from '../components/Navbar';
 import styles from './courses.module.css';
 import CourseDetailModal from './CourseDetailModal';
-import { sendIpApi } from '../apis/auth';
+import { sendIpApi, verifyTokenApi } from '../apis/auth';
 import { getCourses } from '../apis/course';
-
+const baseUrl = "http://localhost:4000/api";
 enum Gender {
     MALE = 'Male',
     FEMALE = 'Female',
 }
+
+
+
+
+// ==================== student form modal ====================
+import StudentFormModal from './studentForm';
+
+
+// In your JSX:
+
+
+// ==================== student form modal ====================
+
+
+
+
+
 
 type Student = {
     _id: string;
@@ -106,6 +123,33 @@ const groupB: Group={
 
 
 export default function CoursesPage() {
+
+        // In your component:
+    const [isModalstudentOpen, setIsModalstudentOpen] = useState(false);
+    const [courseId,setCourseId]=useState<string|null>(null);
+    const handleSubmit = async (data: { age: number; gender: string }) => {
+    // Handle the form submission here
+    console.log(data);
+    setIsModalstudentOpen(false);
+    const response=await fetch(`${baseUrl}/students`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    console.log("Enrolled in course successfully!", result.message);
+    if(result.success){
+        showNotification(result.message, notificationStatus.success);
+
+        handleEnroll(courseId);
+    }else{
+        showNotification(result.message, notificationStatus.error);
+    }
+    };
+
     useEffect(() => {
         sendIpApi("courses");
     }, []);
@@ -136,16 +180,70 @@ export default function CoursesPage() {
     };
     useEffect(() => {
         fetchCourses(); 
+        verifyTokenApi();
     }, []);
 
 
-    const handleEnroll = (courseId: string|null) => {
+    const handleEnroll = async (courseId: string|null) => {
+        try {
+        setCourseId(courseId);
+        const token=localStorage.getItem("token");
+        console.log("token", token);
+        // showNotification("token exists", notificationStatus.success);
+        if(!token){
+            showNotification("Please login first!", notificationStatus.error);
+            console.log("Please login first!");
+            // go to log in 
+            window.location.href = "../login";
+            return;
+        }
+        const user=JSON.parse(localStorage.getItem("user")||"");
+        console.log("user", user);
+        if(!user){
+            showNotification("Please login first!", notificationStatus.error);
+            return;
+        }    
+
+        if(user.role!="student"){  
+            showNotification("Please complete your profile first!", notificationStatus.warning);
+            setIsModalstudentOpen(true);
+        }
+
         const course = courses.find(c => c._id === courseId);
         if (course) {
             console.log("Enrolled in", course.title);
             showNotification(`Enrolled in ${course.title}!`, notificationStatus.success);
             // Here you would typically make an API call to enroll the user
+            const response=await fetch(`${baseUrl}/students/enroll`,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({
+                    courseId: courseId,
+                })
+            });
+            const result = await response.json();
+            const {message,data,success}=result;
+            console.log("Enrolled in course successfully!", result);
+            if(success){
+                showNotification(message, notificationStatus.success);
+            }else if(response.status==401){
+                    showNotification("Please login first!", notificationStatus.warning);
+                    location.href="../login";
+            }else if(response.status==403){
+                showNotification("Please complete your profile first!", notificationStatus.warning);
+                setIsModalstudentOpen(true);
+            }
+            else{
+                showNotification(message, notificationStatus.error);
+            }
         }
+    } catch (error) {
+        console.error("Error enrolling in course:", error);
+        showNotification("Error enrolling in course!", notificationStatus.error);
+    }
     };
 
     const showNotification = (message: string, status: notificationStatus) => {
@@ -155,6 +253,16 @@ export default function CoursesPage() {
             key: Date.now()
         });
     };
+
+    useEffect(() => {
+        console.log("verify token");
+        const token=localStorage.getItem("token");
+        if(!token){
+            showNotification("Please login first!", notificationStatus.error);
+            return;
+        }
+        // verifyTokenApi();
+    }, []);
 
     return (
         <div className={styles.courses}>
@@ -217,6 +325,12 @@ export default function CoursesPage() {
                 />
             )}
             {notifi && <NotificationPage key={notifi.key} text={notifi.text} status={notifi.status} k={notifi.key} />}
+            
+            {isModalstudentOpen && <StudentFormModal
+            isOpen={isModalstudentOpen}
+            onClose={() => setIsModalstudentOpen(false)}
+            onSubmit={handleSubmit}
+            />}
 </div>
     );
 }

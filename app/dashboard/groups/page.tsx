@@ -19,6 +19,23 @@ interface InstructorType {
   }
 }
 
+interface StudentType {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  profileRef: {
+    age: number;
+  }
+}
+
+interface requestType {
+  _id: string;
+ couurse:CourseType;
+ student:StudentType;
+ status:string;
+}
+
 interface GroupType {
   _id: string;
   title: string;
@@ -27,6 +44,7 @@ interface GroupType {
   totalSeats: number;
   instructor: InstructorType;
   course: CourseType;
+  students: StudentType[];
 }
 
 interface FormDataType {
@@ -54,6 +72,9 @@ const GroupForm = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [instructors, setInstructors] = useState<InstructorType[]>([]);
+  const [requests, setRequests] = useState<requestType[]>([]);
+  const [selectedCourseId, setSelectedCourseId] = useState<string>("");
+  const [draggedRequest, setDraggedRequest] = useState<requestType | null>(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -103,10 +124,28 @@ const GroupForm = () => {
     }
   };
 
+  const fetchStudents = async () => {
+    try {
+      const res = await fetch("http://localhost:4000/api/students/requests/accepted", {
+        headers: {
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      console.log("students:", data);
+      if(data.success){
+        setRequests(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
+  };
+
   useEffect(() => {
     fetchGroups();
     fetchCourses();
     fetchInstructors();
+    fetchStudents();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -185,13 +224,79 @@ const GroupForm = () => {
     openModal();
   };
 
+  const handleDragStart = (request: requestType) => {
+    setDraggedRequest(request);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = async (groupId: string) => {
+    if (!draggedRequest) return;
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/groups/addStudent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ 
+          reqToEnrollId: draggedRequest._id,
+          groupId, 
+          studentId: draggedRequest.student._id 
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to add student to group");
+
+      await fetchGroups();
+      setDraggedRequest(null);
+    } catch (error) {
+      console.error("Error adding student to group:", error);
+    }
+  };
+
+  const filteredGroups = groups.filter(group => 
+    selectedCourseId ? group.course._id === selectedCourseId : true
+  );
+
+  const filteredStudents = requests.filter(request =>
+    selectedCourseId ? request.couurse._id === selectedCourseId : true
+  );
+
   return (
+    <>
     <div className="group-manager-container">
       <button onClick={openModal} className="add-group-btn">Add Group</button>
       
+      <div className="course-tabs">
+        <button 
+          className={`tab-btn ${!selectedCourseId ? 'active' : ''}`}
+          onClick={() => setSelectedCourseId("")}
+        >
+          All Courses
+        </button>
+        {courses.map(course => (
+          <button
+            key={course._id}
+            className={`tab-btn ${selectedCourseId === course._id ? 'active' : ''}`}
+            onClick={() => setSelectedCourseId(course._id)}
+          >
+            {course.title}
+          </button>
+        ))}
+      </div>
+
       <div className="groups-grid">
-        {groups?.map((group) => (
-          <div key={group._id} className="group-card">
+        {filteredGroups?.map((group) => (
+          <div 
+            key={group._id} 
+            className="group-card"
+            onDragOver={handleDragOver}
+            onDrop={() => handleDrop(group._id)}
+          >
             <h3>{group.title}</h3>
             <div className="group-details">
               <p><strong>Course:</strong> {group.course.title}</p>
@@ -199,6 +304,21 @@ const GroupForm = () => {
               <p><strong>End Date:</strong> {new Date(group.endDate).toLocaleDateString()}</p>
               <p><strong>Total Seats:</strong> {group.totalSeats}</p>
               <p><strong>Instructor:</strong> {group.instructor.name}</p>
+              
+              <div className="group-students">
+                <h4>Students in Group ({group.students?.length || 0})</h4>
+                <div className="students-in-group">
+                  {group.students?.map(student => (
+                    <div key={student._id} className="student-in-group">
+                      <p>{student.name}</p>
+                      <p className="student-email">{student.email}</p>
+                    </div>
+                  ))}
+                  {(!group.students || group.students.length === 0) && (
+                    <p className="no-students">No students in this group yet</p>
+                  )}
+                </div>
+              </div>
             </div>
             <div className="group-actions">
               <button onClick={() => handleUpdateGroup(group)} className="update-btn">
@@ -210,6 +330,25 @@ const GroupForm = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="students-container">
+        <h3>Students</h3>
+        <div className="students-list">
+          {filteredStudents.map(student => (
+            <div
+              key={student._id} 
+              className="student-card"
+              draggable
+              onDragStart={() => handleDragStart(student)}
+            >
+              <p><strong>Name:</strong> {student.student.name}</p>
+              <p><strong>Email:</strong> {student.student.email}</p>
+              <p><strong>Phone:</strong> {student.student.phone}</p>
+              <p><strong>Age:</strong> {student.student.profileRef.age}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {isModalOpen && (
@@ -292,6 +431,7 @@ const GroupForm = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

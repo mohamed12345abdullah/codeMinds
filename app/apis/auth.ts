@@ -54,15 +54,15 @@ const loginApi= async (params :loginParams)=>{
         })
     })
     console.log("after fetch")
+    const data = await response.json();
     if(response.ok){
-        console.log("ok response")
-        const data = await response.json();
         console.log("login success", data);
-        return data;
+        window.localStorage.setItem("token", data.token);
+        console.log("token", localStorage.getItem("token"));
+        window.localStorage.setItem("user", JSON.stringify(data.user));
+        console.log("user", localStorage.getItem("user"));
+        return data ;
     }else{
-        // throw new Error("Failed to login");
-        const data = await response.json();
-        console.log(" fail to log in ",data )
         return data;
     }
 }
@@ -146,5 +146,36 @@ catch(error){
 
 
 
+const verifyTokenApi = async () => {
+    try{
+    const response = await fetch(`${baseUrl}/verifyToken`,{
+        method: "GET",
+        headers: {
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        }
+    })
+    if(response.ok){
+        console.log("ok response")
+        const data = await response.json();
+        console.log("verify token success", data);
+        localStorage.setItem("user", JSON.stringify(data.user));
+    
+    }else{
+        // throw new Error("Failed to login");
+        const data = await response.json();
+        console.log(" fail to verify token ",data )
+        // localStorage.removeItem("token");
+        // localStorage.removeItem("user");
+    }
+}
+catch(error){
+    console.log(error)
+    return error;
+}
+}
 
-export { loginApi, registerApi, sendIpApi   };
+
+
+
+export { loginApi, registerApi, sendIpApi, verifyTokenApi };
