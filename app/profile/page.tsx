@@ -5,6 +5,12 @@ import styles from './profile.module.css';
 import Navbar from '../components/Navbar';
 import { FiUser, FiBook, FiVideo, FiCalendar, FiChevronDown } from 'react-icons/fi';
 import { verifyTokenApi } from '../apis/auth';
+import { useRouter } from 'next/navigation';
+
+interface VerifyTokenResponse {
+    success: boolean;
+    message?: string;
+}
 
 interface Lecture {
     _id: string;
@@ -47,12 +53,30 @@ export default function ProfilePage() {
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
     const [expandedLectures, setExpandedLectures] = useState<Set<string>>(new Set());
+    const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
-        verifyTokenApi();
-        const user = JSON.parse(localStorage.getItem("user") || '{}');
-        setUserInfo(user);
-    }, []);
+        const fetchUserData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await verifyTokenApi() as VerifyTokenResponse;
+                if (!response.success) {
+                    router.push('/login');
+                    return;
+                }
+                const user = JSON.parse(localStorage.getItem("user") || '{}');
+                setUserInfo(user);
+            } catch (error) {
+                console.error('Error verifying token:', error);
+                router.push('/login');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, [router]);
 
     const toggleGroup = (groupId: string) => {
         const newExpandedGroups = new Set(expandedGroups);

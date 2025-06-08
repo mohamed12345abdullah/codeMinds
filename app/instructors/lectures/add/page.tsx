@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './add.module.css';
 import { FiUpload, FiPlus, FiX } from 'react-icons/fi';
@@ -22,7 +22,7 @@ interface Group {
     };
 }
 
-export default function AddLecture() {
+function AddLectureContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const groupId = searchParams.get('groupId');
@@ -283,5 +283,13 @@ export default function AddLecture() {
                 </form>
             </div>
         </>
+    );
+}
+
+export default function AddLecturePage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <AddLectureContent />
+        </Suspense>
     );
 } 
