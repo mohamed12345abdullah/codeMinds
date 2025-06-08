@@ -6,6 +6,13 @@ import styles from './add.module.css';
 import { FiUpload, FiPlus, FiX } from 'react-icons/fi';
 import Navbar from '../../../components/Navbar';
 
+
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api/auth";
+console.log("baseUrl", baseUrl)
+
+
+
 interface Group {
     _id: string;
     title: string;
@@ -39,7 +46,7 @@ export default function AddLecture() {
             }
 
             try {
-                const response = await fetch(`http://localhost:4000/api/groups/${groupId}`);
+                const response = await fetch(`${baseUrl}/groups/${groupId}`);
                 const result = await response.json();
                 if (result.success) {
                     setGroup(result.data);
@@ -96,7 +103,7 @@ export default function AddLecture() {
         }
 
         try {
-            const response = await fetch('http://localhost:4000/api/upload/videos', {
+            const response = await fetch(`${baseUrl}/upload/videos`, {
                 method: 'POST',
                 body: formData
             });
@@ -116,7 +123,7 @@ export default function AddLecture() {
         if (!groupId || !group) return;
 
         try {
-            const response = await fetch('http://localhost:4000/api/lectures', {
+            const response = await fetch(`${baseUrl}/lectures`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

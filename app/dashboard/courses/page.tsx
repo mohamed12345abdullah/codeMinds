@@ -7,8 +7,8 @@ import { getCourses ,deleteCourse } from "../../apis/course";
 
 
 // لو عندك baseUrl ثابت
-// const baseUrl = "https://code-minds-website.vercel.app/api";
-const baseUrl = "http://localhost:4000/api";
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api";
 interface FormDataType {
   _id: string;
   title: string;

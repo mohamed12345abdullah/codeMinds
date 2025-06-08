@@ -4,6 +4,15 @@
 import React, { useState } from "react";
 import  "./instructor.css";
 import Navbar from "../components/Navbar";
+
+
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api/auth";
+console.log("baseUrl", baseUrl)
+
+
+
+
 export default function InstructorRequestForm() {
   const [formData, setFormData] = useState({
     specialization: "",
@@ -29,7 +38,7 @@ export default function InstructorRequestForm() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:4000/api/instructor", {
+      const res = await fetch(`${baseUrl}/instructor`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

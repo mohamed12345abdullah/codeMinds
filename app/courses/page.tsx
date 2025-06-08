@@ -7,7 +7,8 @@ import styles from './courses.module.css';
 import CourseDetailModal from './CourseDetailModal';
 import { sendIpApi, verifyTokenApi } from '../apis/auth';
 import { getCourses } from '../apis/course';
-const baseUrl = "http://localhost:4000/api";
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api";
 enum Gender {
     MALE = 'Male',
     FEMALE = 'Female',

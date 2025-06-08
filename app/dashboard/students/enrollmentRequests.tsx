@@ -4,6 +4,13 @@ import { useState, useEffect } from 'react';
 import styles from './enrollmentRequests.module.css';
 import NotificationPage from '../../notification/page';
 
+
+
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api/auth";
+console.log("baseUrl", baseUrl)
+
+
 enum notificationStatus {
     success = 'success',
     error = 'error',
@@ -54,7 +61,7 @@ export default function EnrollmentRequests() {
     };
     const fetchRequests = async () => {
         try {
-            const response = await fetch('http://localhost:4000/api/students/requests', {
+            const response = await fetch(`${baseUrl}/students/requests`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -78,7 +85,7 @@ export default function EnrollmentRequests() {
 
     const handleRequest = async (requestId: string, action: 'accept' | 'reject') => {
         try {
-            const response = await fetch(`http://localhost:4000/api/students/requests/${action}`, {
+            const response = await fetch(`${baseUrl}/students/requests/${action}`, {
                 method: 'PUT',
                 body: JSON.stringify({ requestId }),
                 headers: {
