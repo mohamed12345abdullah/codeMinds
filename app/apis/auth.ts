@@ -160,6 +160,7 @@ const verifyTokenApi = async () => {
         const data = await response.json();
         console.log("verify token success", data);
         localStorage.setItem("user", JSON.stringify(data.user));
+        return true;
     
     }else{
         // throw new Error("Failed to login");
@@ -167,11 +168,12 @@ const verifyTokenApi = async () => {
         console.log(" fail to verify token ",data )
         // localStorage.removeItem("token");
         // localStorage.removeItem("user");
+        return false;
     }
 }
 catch(error){
     console.log(error)
-    return error;
+    return false;
 }
 }
 

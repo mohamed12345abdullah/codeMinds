@@ -60,8 +60,8 @@ export default function ProfilePage() {
         const fetchUserData = async () => {
             try {
                 setIsLoading(true);
-                const response = await verifyTokenApi() as VerifyTokenResponse;
-                if (!response.success) {
+                const verified = await verifyTokenApi();
+                if (!verified) {
                     router.push('/login');
                     return;
                 }
