@@ -10,8 +10,8 @@ interface Course {
     updatedAt?: string;
 }
 
-// const baseUrl = "https://code-minds-website.vercel.app/api";
-const baseUrl = "http://localhost:4000/api";
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api";
 
 // Course API endpoints
  
