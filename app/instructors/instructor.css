@@ -1,12 +1,12 @@
 .instructorFormContainer {
 
   max-width: 800px;
-  /* margin: 90px auto; */
+  margin: 90px auto;
   padding: 1rem;
   background-color: var(--card);
   border-radius: 12px;
   box-shadow: 0 4px 6px var(--card-shadow);
-  /* margin-top: 80px; */
+  margin-top: 80px;
 }
 
 .instructorFormContainer h2 {
