@@ -52,9 +52,9 @@ export default function Navbar() {
                     <Link href="/courses" className={styles.navLink}>
                         Courses
                     </Link>
-                    <Link href="/dashboard" className={styles.navLink}>
+                    {/* <Link href="/dashboard" className={styles.navLink}>
                         Dashboard
-                    </Link>
+                    </Link> */}
                     <Link href="/profile" className={styles.navLink}>
                         Profile
                     </Link>
