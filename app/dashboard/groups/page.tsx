@@ -2,6 +2,16 @@
 import React, { useEffect, useState } from "react";
 import "./groups.css";
 
+// local url
+// const baseUrl = "http://localhost:4000/api";
+
+// production url
+const baseUrl = "https://code-minds-website.vercel.app/api";
+
+import NotificationPage from "../../notification/page";
+
+enum notificationStatus { success = "success", error = "error", warning = "warning" };
+
 interface CourseType {
   _id: string;
   title: string;
@@ -76,6 +86,12 @@ const GroupForm = () => {
   const [selectedCourseId, setSelectedCourseId] = useState<string>("");
   const [draggedRequest, setDraggedRequest] = useState<requestType | null>(null);
 
+  const [notification, setNotification] = useState<{ message: string; status: notificationStatus; k: number } | null>(null);
+
+  const showNotification = (message: string, status: notificationStatus) => {
+    setNotification({ message, status, k: Date.now() });
+  };
+  
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -92,7 +108,7 @@ const GroupForm = () => {
 
   const fetchGroups = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/groups", {
+      const res = await fetch(`${baseUrl}/groups`, {
         headers: {
           authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
@@ -106,7 +122,7 @@ const GroupForm = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/courses");
+      const res = await fetch(`${baseUrl}/courses`);
       const data = await res.json();
       setCourses(data.data);
     } catch (error) {
@@ -116,7 +132,7 @@ const GroupForm = () => {
 
   const fetchInstructors = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/instructor");
+      const res = await fetch(`${baseUrl}/instructor`);
       const data = await res.json();
       setInstructors(data.data);
     } catch (error) {
@@ -126,7 +142,7 @@ const GroupForm = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/students/requests/accepted", {
+      const res = await fetch(`${baseUrl}/students/requests/accepted`, {
         headers: {
           authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
@@ -152,8 +168,8 @@ const GroupForm = () => {
     e.preventDefault();
     try {
       const url = formData._id
-        ? `http://localhost:4000/api/groups/${formData._id}`
-        : "http://localhost:4000/api/groups";
+        ? `${baseUrl}/groups/${formData._id}`
+        : `${baseUrl}/groups`;
       
       const method = formData._id ? "PUT" : "POST";
 
@@ -196,7 +212,7 @@ const GroupForm = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this group?");
     if (!confirmDelete) return;
     try {
-      const response = await fetch(`http://localhost:4000/api/groups/${id}`, {
+      const response = await fetch(`${baseUrl}/groups/${id}`, {
         method: "DELETE",
         headers:{
           'authorization': `Bearer ${window.localStorage.getItem("token")}`,
@@ -236,7 +252,7 @@ const GroupForm = () => {
     if (!draggedRequest) return;
 
     try {
-      const response = await fetch(`http://localhost:4000/api/groups/addStudent`, {
+      const response = await fetch(`${baseUrl}/groups/addStudent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -431,6 +447,9 @@ const GroupForm = () => {
         </div>
       )}
     </div>
+    {notification && (
+      <NotificationPage key={notification.k} text={notification.message} status={notification.status} k={notification.k} />
+    )}
     </>
   );
 };

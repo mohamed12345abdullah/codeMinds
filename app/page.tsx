@@ -14,17 +14,17 @@ const sliderSlides = [
     {
         title: 'Learn Without Limits',
         description: 'Start, switch, or advance your career with thousands of courses from expert instructors.',
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s'
+        image: 'https://scontent-fra3-1.xx.fbcdn.net/v/t39.30808-6/503472462_1092284656287676_2826380328404199033_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BFIrsDlyJrcQ7kNvwFAnxwq&_nc_oc=AdnQM2CusaBsdKzFlHaeqm5Xjac2fgv1NarylYzRMnmndlmLKEFTF0WfoBf4WdmKsjY&_nc_zt=23&_nc_ht=scontent-fra3-1.xx&_nc_gid=it1tkwZTJ848Sako6EGbIA&oh=00_AfNmSs267fD-buZFvK_QlDfhM-B0ZI1YrRnsfsGaIlFrrQ&oe=684B9258'
     },
     {
         title: 'Master New Skills',
         description: 'Explore our comprehensive courses in technology, business, and creative arts.',
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s'
+        image: 'https://res.cloudinary.com/dhaj9qyjv/image/upload/v1749405033/codeminds/tntax0rxhmtcndvthdtu.jpg'
     },
     {
         title: 'Join Our Community',
         description: 'Learn from expert instructors and connect with fellow students worldwide.',
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE31gWvZSwCc8zgb5576G0MhUbWqabUB8qIQ&s'
+        image: 'https://res.cloudinary.com/dhaj9qyjv/image/upload/v1749404648/codeminds/d0r4kyotyiqgn1zruyqs.jpg'
     }
 ];
 enum notificationStatus { success = "success", error = "error", warning = "warning" };
@@ -127,9 +127,9 @@ export default function HomePage() {
                         <p>Study at your own pace, anywhere and anytime</p>
                     </div>
                     <div className={styles.featureCard}>
-                        <h3>Certificate of Completion</h3>
-                        <p>Get certified and showcase your skills</p>
-                    </div>
+                        <h3>Interactive Learning</h3>
+                        <p>Engage with interactive content and real-time feedback</p>
+                    </div> 
                 </div>
             </section>
 

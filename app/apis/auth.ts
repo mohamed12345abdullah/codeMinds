@@ -1,8 +1,8 @@
 import { config } from 'dotenv';
 config();
 
-// const baseUrl = "https://code-minds-website.vercel.app/api/auth";
-const baseUrl = "http://localhost:4000/api/auth";
+const baseUrl = "https://code-minds-website.vercel.app/api/auth";
+// const baseUrl = "http://localhost:4000/api/auth";
 console.log("baseUrl", baseUrl)
 
 
