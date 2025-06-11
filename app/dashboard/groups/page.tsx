@@ -108,7 +108,7 @@ const GroupForm = () => {
 
   const fetchGroups = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/groups`, {
+      const res = await fetch(`${baseUrl}/groups`, {
         method: "GET",
         headers: {
           authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -117,10 +117,13 @@ const GroupForm = () => {
       if(!res.ok){
         if(res.status === 401){
           showNotification("Unauthorized", notificationStatus.error);
+          window.location.href = '/login';
+
         }else if(res.status === 403){
           showNotification("Forbidden", notificationStatus.error);
+          window.location.href = '/login';
+
         }
-        window.location.href = '/login';
         return;
       }
       const data = await res.json();
@@ -149,10 +152,11 @@ const GroupForm = () => {
       if(!res.ok){
         if(res.status === 401){
           showNotification("Unauthorized", notificationStatus.error);
+          window.location.href = '/login';
         }else if(res.status === 403){
           showNotification("Forbidden", notificationStatus.error);
+          window.location.href = '/login';
         }
-        window.location.href = '/login';
         return;
       }
       const data = await res.json();
@@ -165,24 +169,28 @@ const GroupForm = () => {
   const fetchInstructors = async () => {
     try {
       const res = await fetch(`${baseUrl}/instructor`, {
+        method: "GET",
         headers: {
+
           authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
       });
       if(!res.ok){
         if(res.status === 401){
           showNotification("Unauthorized", notificationStatus.error);
+          window.location.href = '/login';
         }else if(res.status === 403){
           showNotification("Forbidden", notificationStatus.error);
+          window.location.href = '/login';
         }
-        window.location.href = '/login';
         return;
       }
       const data = await res.json();
+      console.log("instructors:", data.data); 
       setInstructors(data.data);
       showNotification("Instructors fetched successfully", notificationStatus.success);
-    } catch (error) {
-      console.error("Error fetching instructors:", error);
+    } catch (error: any) {
+      console.error("Error fetching instructors:", error.message);
       showNotification("Error fetching instructors", notificationStatus.error);
     }
   };
@@ -197,10 +205,11 @@ const GroupForm = () => {
       if(!res.ok){
         if(res.status === 401){
           showNotification("Unauthorized", notificationStatus.error);
+          window.location.href = '/login';
         }else if(res.status === 403){
           showNotification("Forbidden", notificationStatus.error);
+          window.location.href = '/login';
         }
-        window.location.href = '/login';
         return;
       }
       const data = await res.json();

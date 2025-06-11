@@ -7,7 +7,7 @@ import Navbar from "../components/Navbar";
 
 
 const baseUrl = "https://code-minds-website.vercel.app/api";
-// const baseUrl = "http://localhost:4000/api/auth";
+// const baseUrl = "http://localhost:4000/api";
 console.log("baseUrl", baseUrl)
 
 

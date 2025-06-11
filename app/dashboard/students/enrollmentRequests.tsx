@@ -69,10 +69,13 @@ export default function EnrollmentRequests() {
             if(!response.ok){
                 if(response.status === 401){
                     showNotification("Unauthorized", notificationStatus.error);
+                    window.location.href = '/login';
                 }else if(response.status === 403){
                     showNotification("Forbidden", notificationStatus.error);
+                    // window.location.href = '/login';
                 }
-                window.location.href = '/login';
+                const res=await response.json();  
+                console.log("res", res)
                 return;
             }
             
@@ -103,6 +106,16 @@ export default function EnrollmentRequests() {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if(!response.ok){
+                if(response.status === 401){
+                    showNotification("Unauthorized", notificationStatus.error);
+                    window.location.href = '/login';
+                }else if(response.status === 403){
+                    showNotification("Forbidden", notificationStatus.error);
+                    window.location.href = '/login';
+                }
+                return;
+            }
             const data = await response.json();
             if (data.success) {
                 fetchRequests();
