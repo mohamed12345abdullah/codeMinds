@@ -61,6 +61,10 @@ export default function InstructorRequestForm() {
         });
       } else {
         alert("failed to send the request ❌ : " + (response?.message || "try again"));
+        if(res.status === 401){
+          alert("Unauthorized ❌");
+          window.location.href = "/login";
+        }
       }
     } catch (error) {
       alert("failed to connect to the server ❌");

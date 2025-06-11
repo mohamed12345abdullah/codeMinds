@@ -58,6 +58,9 @@ export default function Navbar() {
                     <Link href="/profile" className={styles.navLink}>
                         Profile
                     </Link>
+                    <Link href="/instructors" className={styles.navLink}>
+                        join as instructor
+                    </Link> 
                     <button 
                         className={styles.themeToggle}
                         onClick={toggleDarkMode}

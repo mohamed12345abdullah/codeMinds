@@ -57,7 +57,7 @@
 }
 
 .activeTab {
-    background-color: #4F46E5;
+    background-color: var(--primary-color);
     color: white;
 }
 
@@ -104,35 +104,35 @@
 }
 
 .acceptButton {
-    background-color: #10B981;
+    background-color: var(--success-color);
     color: white;
 }
 
 .acceptButton:hover {
-    background-color: #059669;
+    background-color: var(--success-color-hover);
 }
 
 .rejectButton {
-    background-color: #EF4444;
+    background-color: var(--error-color);
     color: white;
 }
 
 .rejectButton:hover {
-    background-color: #DC2626;
+    background-color: var(--error-color-hover);
 }
 
 .pending {
-    color: #F59E0B;
+    color: var(--warning-color);
     font-weight: 500;
 }
 
 .accepted {
-    color: #10B981;
+    color: var(--success-color);
     font-weight: 500;
 }
 
 .rejected {
-    color: #EF4444;
+    color: var(--error-color);
     font-weight: 500;
 }
 
@@ -140,19 +140,19 @@
     text-align: center;
     padding: 2rem;
     font-size: 1.25rem;
-    color: #666;
+    color: var(--text-color);
 }
 
 .error {
     text-align: center;
     padding: 2rem;
-    color: #EF4444;
+    color: var(--error-color);
     font-size: 1.25rem;
 }
 
 .noRequests {
     text-align: center;
-    color: #666;
+    color: var(--text-color);
     grid-column: 1 / -1;
     padding: 2rem;
 }

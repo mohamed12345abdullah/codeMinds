@@ -4,7 +4,8 @@
 import React, { useEffect, useState } from "react";
 import "./courses.css"
 import { getCourses ,deleteCourse } from "../../apis/course";
-
+// import "./courses.module.css";
+import NavbarPage from "../../components/Navbar";
 
 // لو عندك baseUrl ثابت
 const baseUrl = "https://code-minds-website.vercel.app/api";
@@ -162,6 +163,7 @@ const handleUpdateCourse = async (course: courseType) => {
 
   return (
     <div className="course-manager-container"> 
+    <NavbarPage />
     <button onClick={openModal}>Add Course</button>
     {
       <div className="courses">
@@ -172,8 +174,8 @@ const handleUpdateCourse = async (course: courseType) => {
               <h3>{course.title}</h3>
               <p>{course.description}</p>
               <p>{course.price}</p>
-              <button onClick={() => handleUpdateCourse(course)} >Update</button>
-              <button onClick={() => handleDeleteCourse(course._id)} >Delete</button>
+              <button className="update-button" onClick={() => handleUpdateCourse(course)} >Update</button>
+              <button className="delete-button" onClick={() => handleDeleteCourse(course._id)} >Delete</button>
             </div>
           ))
         }

@@ -108,21 +108,53 @@ const GroupForm = () => {
 
   const fetchGroups = async () => {
     try {
-      const res = await fetch(`${baseUrl}/groups`, {
+      const res = await fetch(`http://localhost:4000/api/groups`, {
+        method: "GET",
         headers: {
           authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
       });
+      if(!res.ok){
+        if(res.status === 401){
+          showNotification("Unauthorized", notificationStatus.error);
+        }else if(res.status === 403){
+          showNotification("Forbidden", notificationStatus.error);
+        }
+        window.location.href = '/login';
+        return;
+      }
       const data = await res.json();
-      setGroups(data.data);
+      if(data.success){
+        showNotification("Groups fetched successfully", notificationStatus.success);
+        if(data.data.length >0){
+          console.log("groups:", data.data);
+          setGroups(data.data);
+        }else{
+          showNotification("No groups found", notificationStatus.warning);
+        }
+      }
     } catch (error) {
       console.error("Error fetching groups:", error);
+      showNotification("Error fetching groups", notificationStatus.error);
     }
   };
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch(`${baseUrl}/courses`);
+      const res = await fetch(`${baseUrl}/courses`, {
+        headers: {
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      });
+      if(!res.ok){
+        if(res.status === 401){
+          showNotification("Unauthorized", notificationStatus.error);
+        }else if(res.status === 403){
+          showNotification("Forbidden", notificationStatus.error);
+        }
+        window.location.href = '/login';
+        return;
+      }
       const data = await res.json();
       setCourses(data.data);
     } catch (error) {
@@ -132,28 +164,58 @@ const GroupForm = () => {
 
   const fetchInstructors = async () => {
     try {
-      const res = await fetch(`${baseUrl}/instructor`);
+      const res = await fetch(`${baseUrl}/instructor`, {
+        headers: {
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      });
+      if(!res.ok){
+        if(res.status === 401){
+          showNotification("Unauthorized", notificationStatus.error);
+        }else if(res.status === 403){
+          showNotification("Forbidden", notificationStatus.error);
+        }
+        window.location.href = '/login';
+        return;
+      }
       const data = await res.json();
       setInstructors(data.data);
+      showNotification("Instructors fetched successfully", notificationStatus.success);
     } catch (error) {
       console.error("Error fetching instructors:", error);
+      showNotification("Error fetching instructors", notificationStatus.error);
     }
   };
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch(`${baseUrl}/students/requests/accepted`, {
+      const res = await fetch(`${baseUrl}/requests/accepted`, {
         headers: {
           authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
       });
+      if(!res.ok){
+        if(res.status === 401){
+          showNotification("Unauthorized", notificationStatus.error);
+        }else if(res.status === 403){
+          showNotification("Forbidden", notificationStatus.error);
+        }
+        window.location.href = '/login';
+        return;
+      }
       const data = await res.json();
       console.log("students:", data);
       if(data.success){
-        setRequests(data.data);
+        showNotification("Students fetched successfully", notificationStatus.success);
+        if(data.data.length >0){
+          // setRequests(data.data);
+        }else{
+          showNotification("No students found", notificationStatus.warning);
+        }
       }
     } catch (error) {
       console.error("Error fetching students:", error);
+      showNotification("Error fetching students", notificationStatus.error);
     }
   };
 
@@ -305,8 +367,9 @@ const GroupForm = () => {
         ))}
       </div>
 
-      <div className="groups-grid">
-        {filteredGroups?.map((group) => (
+      {filteredGroups.length > 0 ? (
+        <div className="groups-grid">
+        { filteredGroups?.map((group) => (
           <div 
             key={group._id} 
             className="group-card"
@@ -315,11 +378,11 @@ const GroupForm = () => {
           >
             <h3>{group.title}</h3>
             <div className="group-details">
-              <p><strong>Course:</strong> {group.course.title}</p>
-              <p><strong>Start Date:</strong> {new Date(group.startDate).toLocaleDateString()}</p>
-              <p><strong>End Date:</strong> {new Date(group.endDate).toLocaleDateString()}</p>
+              <p><strong>Course:</strong> {group.course.title?group.course.title:"not found"}</p>
+              <p><strong>Start Date:</strong> {new Date(group.startDate).toLocaleDateString()?new Date(group.startDate).toLocaleDateString():"not found"}</p>
+              <p><strong>End Date:</strong> {new Date(group.endDate).toLocaleDateString()?new Date(group.endDate).toLocaleDateString():"not found"}</p>
               <p><strong>Total Seats:</strong> {group.totalSeats}</p>
-              <p><strong>Instructor:</strong> {group.instructor.name}</p>
+              <p><strong>Instructor:</strong> {group.instructor.name?group.instructor.name:"not found"}</p>
               
               <div className="group-students">
                 <h4>Students in Group ({group.students?.length || 0})</h4>
@@ -347,7 +410,10 @@ const GroupForm = () => {
           </div>
         ))}
       </div>
-
+      ) : (
+        <p>No groups found</p>
+      )}
+ 
       <div className="students-container">
         <h3>Students</h3>
         <div className="students-list">

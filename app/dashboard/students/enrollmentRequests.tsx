@@ -61,11 +61,21 @@ export default function EnrollmentRequests() {
     };
     const fetchRequests = async () => {
         try {
-            const response = await fetch(`${baseUrl}/students/requests`, {
+            const response = await fetch(`${baseUrl}/requests`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            if(!response.ok){
+                if(response.status === 401){
+                    showNotification("Unauthorized", notificationStatus.error);
+                }else if(response.status === 403){
+                    showNotification("Forbidden", notificationStatus.error);
+                }
+                window.location.href = '/login';
+                return;
+            }
+            
             const data = await response.json();
             if (data.success) {
                 setRequests(data.data);
@@ -85,7 +95,7 @@ export default function EnrollmentRequests() {
 
     const handleRequest = async (requestId: string, action: 'accept' | 'reject') => {
         try {
-            const response = await fetch(`${baseUrl}/students/requests/${action}`, {
+            const response = await fetch(`${baseUrl}/requests/${action}`, {
                 method: 'PUT',
                 body: JSON.stringify({ requestId }),
                 headers: {

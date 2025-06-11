@@ -1,8 +1,9 @@
 .container {
-    padding: 2rem;
-    margin-top: 80px;
-    min-height: calc(100vh - 80px);
-    background-color: var(--background);
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text);
+    padding: 0;
+    margin: 0;
 }
 
 .mobileMenuToggle {
@@ -24,14 +25,30 @@
 }
 
 .profileHeader {
-    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+    padding: 4rem 2rem;
     text-align: center;
+    position: relative;
+    margin-bottom: 0;
+}
+
+.profileHeader::before {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: var(--background);
+    clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
 }
 
 .profileHeader h1 {
-    color: var(--text);
-    font-size: 2rem;
-    font-weight: 600;
+    color: white;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .profileHeader p {
@@ -40,230 +57,136 @@
 
 .profileContent {
     max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Sidebar */
-.sidebar {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px var(--card-shadow);
-    height: fit-content;
-}
-
-.profileImage {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.profileImage img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
-}
-
-.editImageButton {
-    background-color: var(--card-bg);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0 auto;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.editImageButton:hover {
-    background-color: var(--hover-bg);
-    border-color: var(--primary);
-}
-
-.userInfo {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.userInfo h2 {
-    color: var(--text);
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.userInfo p {
-    color: var(--text-light);
-}
-
-.sidebarNav {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.navButton {
-    background-color: transparent;
-    color: var(--text);
-    border: none;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: right;
-}
-
-.navButton:hover {
-    background-color: var(--hover-bg);
-}
-
-.navButton.active {
-    background-color: var(--card);
-    color: var(--primary);
-}
-
-/* Main Content */
-.mainContent {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px var(--card-shadow);
+    margin: -50px auto 0;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .section {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 2rem;
+    background: #2c3e50;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     margin-bottom: 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .section h2 {
+    font-size: 1.8rem;
     color: var(--text);
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin: 0;
+    padding: 2rem;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .infoGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 0;
 }
 
 .infoItem {
-    background-color: var(--background);
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+    padding: 2rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.infoItem:hover {
+    background: var(--background);
+}
+
+.infoItem:last-child {
+    border-bottom: none;
+}
+
+.infoItem:nth-child(2n) {
+    border-right: none;
 }
 
 .infoItem label {
     display: block;
-    color: var(--text-secondary);
+    color: #6c757d;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
-}
-
-.infoItem p {
-    color: var(--text);
-    font-size: 1.1rem;
     font-weight: 500;
 }
 
-/* Groups List Styles */
+.infoItem p {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
 .groupsList {
-    display: grid;
-    gap: 1.5rem;
+    padding: 0;
 }
 
 .groupCard {
-    background-color: var(--background);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.groupCard:last-child {
+    border-bottom: none;
 }
 
 .groupHeader {
-    padding: 1.5rem;
-    background-color: var(--card-bg);
+    padding: 1.5rem 2rem;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--background);
     transition: all 0.3s ease;
 }
 
 .groupHeader:hover {
-    background-color: var(--hover);
+    background: var(--background);
 }
 
 .groupHeader h3 {
-    color: var(--text);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    color: #2c3e50;
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .groupDates {
     display: flex;
-    gap: 1.5rem;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-}
-
-.groupDates span {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    gap: 2rem;
+    color: #6c757d;
+    font-size: 0.9rem;
 }
 
 .groupContent {
+    background: var(--background);
     padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
 }
 
-.groupContent.expanded {
-    padding: 1.5rem;
-    max-height: 2000px;
-}
-
-/* Lectures List Styles */
 .lecturesList {
-    margin-top: 1rem;
-}
-
-.lecturesList h4 {
-    color: var(--text);
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border);
+    padding: 0;
 }
 
 .lectureCard {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    margin-bottom: 1rem;
-    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    background: var(--background);
+    transition: all 0.3s ease;
+}
+
+.lectureCard:last-child {
+    border-bottom: none;
 }
 
 .lectureHeader {
-    padding: 1rem 1.5rem;
-    background-color: var(--background);
+    padding: 1.5rem 2rem;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -272,83 +195,71 @@
 }
 
 .lectureHeader:hover {
-    background-color: var(--hover);
+    background: var(--background);
 }
 
 .lectureHeader h5 {
+    font-size: 1.1rem;
     color: var(--text);
-    font-size: 1.2rem;
-    font-weight: 600;
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-}
-
-.lectureDate {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+    gap: 0.8rem;
 }
 
 .lectureContent {
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.lectureContent.expanded {
-    padding: 1.5rem;
-    max-height: 2000px;
+    padding: 2rem;
+    background: var(--background);
 }
 
 .lectureDescription {
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
+    color: var(--text-light);
     line-height: 1.6;
+    margin-bottom: 1.5rem;
 }
 
-.videosList, .objectivesList {
+.videosList {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border);
-}
-
-.videosList h6, .objectivesList h6 {
-    color: var(--text);
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
 .videoLinks {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 1rem;
 }
 
 .videoLink {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
     color: var(--primary);
     text-decoration: none;
-    padding: 0.75rem 1.25rem;
-    background-color: var(--background);
-    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    background: var(--background);
+    border-radius: 8px;
     transition: all 0.3s ease;
     font-weight: 500;
 }
 
 .videoLink:hover {
-    background-color: var(--primary);
+    background: var(--primary);
     color: white;
     transform: translateY(-2px);
+}
+
+.objectivesList {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.objectivesList h6 {
+    color: var(--text);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
 }
 
 .objectivesList ul {
@@ -358,8 +269,8 @@
 }
 
 .objectivesList li {
-    color: var(--text-secondary);
-    margin-bottom: 0.75rem;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
     padding-right: 1.5rem;
     position: relative;
     line-height: 1.5;
@@ -377,112 +288,29 @@
     text-align: center;
     color: var(--text);
     font-size: 1.2rem;
-    padding: 2rem;
-}
-
-/* Toggle Icons */
-.toggleIcon {
-    transition: transform 0.3s ease;
-}
-
-.toggleIcon.expanded {
-    transform: rotate(180deg);
-}
-
-/* Notification Settings */
-.notificationSettings {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.checkboxLabel {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--text);
-    cursor: pointer;
-}
-
-.checkboxLabel input[type="checkbox"] {
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 0.25rem;
-    border: 2px solid var(--border);
-    cursor: pointer;
-}
-
-/* Notification List */
-.notificationList {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.notificationItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: var(--background);
-    border-radius: 0.75rem;
-    transition: all 0.3s ease;
-}
-
-.notificationItem:hover {
-    transform: translateX(-4px);
-    box-shadow: var(--shadow-sm);
-}
-
-.notificationContent h3 {
-    color: var(--text);
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-}
-
-.notificationContent p {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    margin-bottom: 0.25rem;
-}
-
-.notificationTime {
-    color: var(--text-tertiary);
-    font-size: 0.75rem;
-}
-
-.notificationIcon {
-    color: var(--text-tertiary);
-    font-size: 1.25rem;
+    padding: 3rem;
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-    .profileContent {
-        grid-template-columns: 250px 1fr;
-    }
-}
-
 @media (max-width: 768px) {
-    .container {
-        padding: 1rem;
+    .profileHeader {
+        padding: 3rem 1.5rem;
+    }
+
+    .profileHeader h1 {
+        font-size: 2.5rem;
     }
 
     .profileContent {
-        grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-        position: static;
-        margin-bottom: 2rem;
-    }
-
-    .section {
-        padding: 1.5rem;
+        padding: 0 1.5rem;
     }
 
     .infoGrid {
         grid-template-columns: 1fr;
+    }
+
+    .infoItem {
+        border-right: none;
     }
 
     .groupDates {
@@ -492,35 +320,27 @@
 
     .lectureHeader {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1rem;
         align-items: flex-start;
-    }
-
-    .videoLinks {
-        flex-direction: column;
-    }
-
-    .videoLink {
-        width: 100%;
-        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
     .profileHeader {
-        padding: 1rem;
+        padding: 2rem 1rem;
     }
 
     .profileHeader h1 {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 
-    .mainContent {
-        padding: 1rem;
+    .profileContent {
+        padding: 0 1rem;
     }
 
     .section h2 {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
+        padding: 1.5rem;
     }
 }
 
