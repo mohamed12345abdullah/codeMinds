@@ -9,6 +9,7 @@ import "./groups.css";
 const baseUrl = "https://code-minds-website.vercel.app/api";
 
 import NotificationPage from "../../notification/page";
+import Navbar from "@/app/components/Navbar";
 
 enum notificationStatus { success = "success", error = "error", warning = "warning" };
 
@@ -355,6 +356,7 @@ const GroupForm = () => {
 
   return (
     <>
+    <Navbar />
     <div className="group-manager-container">
       <button onClick={openModal} className="add-group-btn">Add Group</button>
       

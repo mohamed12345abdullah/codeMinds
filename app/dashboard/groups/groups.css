@@ -1,7 +1,9 @@
 .group-manager-container {
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
   padding: 20px;
   max-width: 1200px;
-  margin: 0 auto;
 }
 
 .course-tabs {
@@ -14,17 +16,18 @@
 
 .tab-btn {
   padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f0f0f0;
+  border: 1px solid var(--card-shadow);
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  color: var(--text);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.3s ease;
 }
 
 .tab-btn.active {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--card);
+  color: var(--text);
 }
 
 .groups-grid {
@@ -35,24 +38,24 @@
 }
 
 .group-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 8px;
   padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px var(--card-shadow);
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+  border: 2px solid var(--border);
 }
 
 .group-card.drag-over {
-  border-color: #007bff;
-  background-color: #f8f9fa;
+  border-color: var(--primary);
+  background-color: var(--card);
 }
 
 .students-container {
-  background: white;
+  background: var(--card-bg);
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px var(--card-shadow);
 }
 
 .students-list {
@@ -63,25 +66,27 @@
 }
 
 .student-card {
-  background: #f8f9fa;
+  background: var(--card-bg);
   border-radius: 6px;
   padding: 12px;
   cursor: move;
   transition: all 0.2s ease;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--border);
 }
 
 .student-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--card-shadow);
 }
 
 .student-card p {
   margin: 5px 0;
+  color: var(--text);
 }
 
 .group-details {
   margin: 15px 0;
+  color: var(--text);
 }
 
 .group-actions {
@@ -92,39 +97,39 @@
 
 .update-btn, .delete-btn {
   padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid var(--card-bg);
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .update-btn {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--primary);
+  color: var(--text);
 }
 
 .delete-btn {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--primary);
+  color: var(--text);
 }
 
 .update-btn:hover, .delete-btn:hover {
-  opacity: 0.9;
+  background-color: var(--primary-dark);
 }
 
 .add-group-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
+  background-color: var(--primary);
+  color: var(--text);
+  border: 1px solid var(--card-bg);
   padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   margin-bottom: 20px;
   transition: all 0.2s ease;
 }
 
 .add-group-btn:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-dark);
 }
 
 /* Modal styles */
@@ -139,15 +144,17 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
 .group-form {
-  background: white;
+  background: var(--card-bg);
   padding: 20px;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
   position: relative;
+  box-shadow: 0 4px 6px var(--card-shadow);
 }
 
 .close-button {
@@ -156,30 +163,32 @@
   right: 10px;
   cursor: pointer;
   font-size: 20px;
-  color: #666;
+  color: var(--text-light);
 }
 
 .group-input {
   width: 100%;
   padding: 8px;
   margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid var(--card-bg);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text);
 }
 
 .submit-btn {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: var(--primary);
+  color: var(--text);
+  border: 1px solid var(--card-bg);
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 10px;
 }
 
 .submit-btn:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-dark);
 }
 
 /* Responsive Design */
@@ -201,11 +210,11 @@
 .group-students {
   margin-top: 15px;
   padding-top: 15px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--card-bg);
 }
 
 .group-students h4 {
-  color: #333;
+  color: var(--text);
   margin-bottom: 10px;
   font-size: 1rem;
 }
@@ -221,99 +230,100 @@
 }
 
 .students-in-group::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--background);
   border-radius: 3px;
 }
 
 .students-in-group::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--primary);
   border-radius: 3px;
 }
 
 .students-in-group::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--primary-dark);
 }
 
 .student-in-group {
-  background: #f8f9fa;
+  background: var(--card-bg);
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 8px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--card-bg);
 }
 
 .student-in-group p {
   margin: 0;
   font-size: 0.9rem;
+  color: var(--text);
 }
 
 .student-in-group .student-email {
-  color: #666;
+  color: var(--text-light);
   font-size: 0.8rem;
   margin-top: 4px;
 }
 
 .no-students {
-  color: #666;
+  color: var(--text-light);
   font-style: italic;
   text-align: center;
   padding: 10px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  border: 1px dashed #dee2e6;
+  background: var(--card-bg);
+  border-radius: 8px;
+  border: 1px dashed var(--card-bg);
 }
 
 .no-groups-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    background-color: #f8f9fa;
-    border-radius: 15px;
-    margin: 2rem 0;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background-color: var(--card-bg);
+  border-radius: 15px;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 2px 4px var(--card-shadow);
 }
 
 .no-groups-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-    color: #6c757d;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
 }
 
 .no-groups-title {
-    font-size: 1.8rem;
-    color: #343a40;
-    margin-bottom: 1rem;
-    font-weight: 600;
+  font-size: 1.8rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+  font-weight: 600;
 }
 
 .no-groups-message {
-    font-size: 1.1rem;
-    color: #6c757d;
-    margin-bottom: 2rem;
-    max-width: 500px;
-    line-height: 1.6;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+  max-width: 500px;
+  line-height: 1.6;
 }
 
 .add-first-group-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--primary);
+  color: var(--text);
+  border: 1px solid var(--card-bg);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px var(--card-shadow);
 }
 
 .add-first-group-btn:hover {
-    background-color: var(--primary-color-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--card-shadow);
 } 

@@ -2,14 +2,15 @@
 
 
 'use client';
+
 import { useState, useEffect } from 'react';
 import EnrollmentRequests from './enrollmentRequests';
+import Navbar from '@/app/components/Navbar';
+import './students.css'
 export default function StudentsPage() {
     return (
-        <div>
-            <h1>Students Page</h1>
-
-
+        <div className='students-container'>
+            <Navbar/>
 
             <EnrollmentRequests/>
             
