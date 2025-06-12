@@ -5,11 +5,14 @@ import { loginApi } from "../apis/auth";
 import { useRef, useState } from "react";
 import NotificationPage from "../notification/page";
 import Navbar from "../components/Navbar";
+import ForgotPasswordModal from "./forgerPasswordModal";
 
 export default function LoginPage() {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const rememberMeRef = useRef<HTMLInputElement>(null);
+    const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     enum notificationStatus { success = "success", error = "error", warning = "warning" };
     const [notifi, setNotifi] = useState({
         text: '',
@@ -52,7 +55,6 @@ export default function LoginPage() {
             const data = await loginApi({email, password, rememberMe: rememberMe || false});
        
             if(data.success){
-
                 window.location.href = "../profile";
             } else {
                 showNotification(data.message, notificationStatus.error);
@@ -68,7 +70,7 @@ export default function LoginPage() {
     return (
         <>
             <Navbar />
-            <div className="container">
+            <div className="login-container">
                 <form onSubmit={handleLogin}>
                     <h1>Login</h1>
                     
@@ -83,15 +85,23 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    <div>
+                    <div className="password-container">
                         <label htmlFor="password">Password</label>
-                        <input 
-                            className="input" 
-                            type="password" 
-                            id="password"
-                            placeholder="Enter your password"
-                            ref={passwordRef} 
-                        />
+                        <div className="password-input-wrapper">
+                            <input 
+                                className="input" 
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                placeholder="Enter your password"
+                                ref={passwordRef} 
+                            />
+                            <p
+                                className="password-toggle"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </p>
+                        </div>
                     </div>
 
                     <div className="rememberMe">
@@ -103,11 +113,21 @@ export default function LoginPage() {
                         />
                         <label htmlFor="rememberMe">Remember me</label>
                     </div>
+                    <div id="forgetPassword"
+                    onClick={() => setIsForgotPasswordModalOpen(true)}
+                    >
+                            Forgot Password?
+                    </div>
                 
                     <button type="submit">Login</button>
 
                     {responseMsg && <p className="importantMsg">{responseMsg}</p>}
                 </form>
+
+                <ForgotPasswordModal 
+                    isOpen={isForgotPasswordModalOpen}
+                    onClose={() => setIsForgotPasswordModalOpen(false)}
+                />
                 {notifi && <NotificationPage text={notifi.text} status={notifi.status} k={notifi.key} />}
             </div>
         </>

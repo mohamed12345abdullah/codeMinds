@@ -1,4 +1,4 @@
-.container{
+.login-container{
     margin-top: 50px;
     display: flex;
     flex-direction: column;
@@ -16,39 +16,45 @@ form{
     max-width: 400px;
     gap: 15px;
     padding: 30px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.925);
+    border: 1px solid var(--primary);
+    border-radius: 12px;
+    box-shadow: 0 2px 4px #06eb11;
+    background-color: var(--card-bg);
+    transition: all 0.3s ease;
+}
+form:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px #06eb11;
 }
 
-h1{
+.login-container h1{
     text-align: center;
     margin-bottom: 25px;
     font-size: 28px;
 }
 
-.input{
+.login-container .input{
     width: 100%;
     padding: 12px;
-    border: 1px solid #dbecba;
+    border: 1px solid var(--border);
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease;
 }
 
-.input:focus {
+.login-container .input:focus {
     outline: none;
-    border-color: #4a90e2;
+    border-color: var(--primary);
 }
 
-label {
+.login-container label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
-    color: #333;
+    color: var(--text);
 }
 
-.rememberMe{
+.login-container .rememberMe{
     display: flex;
     align-items: center;
     gap: 8px;
@@ -59,17 +65,42 @@ label {
     width: 18px;
     height: 18px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-.rememberMe label {
+.login-container .rememberMe input[type="checkbox"]:checked {
+    border-color: var(--primary);
+    background-color: var(--primary);
+}
+
+.login-container .rememberMe input[type="checkbox"]:checked + label {
+    color: var(--primary);
+}
+
+.login-container .rememberMe label {
     margin: 0;
     cursor: pointer;
+    font-size: 16px;
 }
 
-button{
+.login-container #forgetPassword{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: var(--text);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.login-container #forgetPassword:hover{
+    color: var(--primary);
+}
+
+.login-container button{
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 4px var(--card-shadow);
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
@@ -79,7 +110,10 @@ button{
 
 button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--card-shadow);
+    border-color: var(--primary);
+    background-color: var(--primary);
+    color: var(--text);
 }
 
 .importantMsg{
@@ -121,6 +155,37 @@ button:hover {
         transform: translateY(-100%);
         opacity: 0;
     }
+}
+
+.password-container {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 5px;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.password-toggle:hover {
+    color: var(--text);
+    transform: translateY(-50%);
+    transition: color 0.2s;
 }
 
 
