@@ -1,5 +1,4 @@
 .instructorFormContainer {
-
   max-width: 800px;
   margin: 90px auto;
   padding: 1rem;
@@ -29,7 +28,6 @@
   color: var(--text);
   font-weight: 500;
   font-size: 1rem;
-  
 }
 
 .instructorFormInput {
@@ -126,6 +124,47 @@
   .instructorFormButton {
     padding: 0.75rem 1.5rem;
   }
+}
+
+.file-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-input {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text);
+  cursor: pointer;
+  width: 100%;
+}
+
+.file-input::-webkit-file-upload-button {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 1rem;
+  transition: background-color 0.2s;
+}
+
+.file-input::-webkit-file-upload-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.file-name {
+  color: var(--text);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 
