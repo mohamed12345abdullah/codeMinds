@@ -218,7 +218,7 @@ const GroupForm = () => {
       if(data.success){
         showNotification("Students fetched successfully", notificationStatus.success);
         if(data.data.length >0){
-          // setRequests(data.data);
+          setRequests(data.data);
         }else{
           showNotification("No students found", notificationStatus.warning);
         }
