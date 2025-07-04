@@ -54,6 +54,7 @@ export default function ProfilePage() {
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
     const [expandedLectures, setExpandedLectures] = useState<Set<string>>(new Set());
     const [isLoading, setIsLoading] = useState(true);
+    const [openVideo, setOpenVideo] = useState<{ [lectureId: string]: number | null }>({});
     const router = useRouter();
 
     useEffect(() => {
@@ -96,6 +97,22 @@ export default function ProfilePage() {
             newExpandedLectures.add(lectureId);
         }
         setExpandedLectures(newExpandedLectures);
+    };
+
+    // Helper to get embeddable URL
+    const getEmbedUrl = (url: string) => {
+        // YouTube
+        const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
+        if (ytMatch) {
+            return `https://www.youtube.com/embed/${ytMatch[1]}`;
+        }
+        // Google Drive
+        const gdMatch = url.match(/drive\.google\.com\/file\/d\/([\w-]+)\/?.*/);
+        if (gdMatch) {
+            return `https://drive.google.com/file/d/${gdMatch[1]}/preview`;
+        }
+        // Default fallback
+        return url;
     };
 
     if (!userInfo) {
@@ -217,16 +234,28 @@ export default function ProfilePage() {
                                                                 </h6>
                                                                 <div className={styles.videoLinks}>
                                                                     {lecture.videos.map((video, index) => (
-                                                                        <a 
-                                                                            key={index}
-                                                                            href={video}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                            className={styles.videoLink}
-                                                                        >
-                                                                            <FiVideo />
-                                                                            فيديو {index + 1}
-                                                                        </a>
+                                                                        <div key={index}>
+                                                                            <button
+                                                                                type="button"
+                                                                                className={styles.videoLink}
+                                                                                onClick={() => setOpenVideo((prev) => ({ ...prev, [lecture._id]: prev[lecture._id] === index ? null : index }))}
+                                                                                style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+                                                                            >
+                                                                                <FiVideo />
+                                                                                فيديو {index + 1}
+                                                                            </button>
+                                                                            {openVideo[lecture._id] === index && (
+                                                                                <div className={styles.responsiveIframeWrapper}>
+                                                                                    <iframe
+                                                                                        src={getEmbedUrl(video)}
+                                                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                                        allowFullScreen
+                                                                                        title={`lecture-video-${index}`}
+                                                                                        style={{ border: 0 }}
+                                                                                    />
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
                                                                     ))}
                                                                 </div>
                                                             </div>
