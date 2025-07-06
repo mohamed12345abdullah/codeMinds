@@ -36,7 +36,8 @@ export default function InstructorsRequests() {
   const fetchInstructors = async () => {
     try {
       const lacalUrl="http://localhost:4000"
-      const response = await fetch(`${lacalUrl}/api/instructor`);
+      const baseUrl
+      const response = await fetch(`https://code-minds-website.vercel.app/api/instructor`);
       const data = await response.json();
       if (data.success) {
         setInstructors(data.data);
