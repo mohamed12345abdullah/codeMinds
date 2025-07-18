@@ -35,8 +35,8 @@ export default function InstructorsRequests() {
 
   const fetchInstructors = async () => {
     try {
-      const lacalUrl="http://localhost:4000"
-      const baseUrl
+ 
+
       const response = await fetch(`https://code-minds-website.vercel.app/api/instructor`);
       const data = await response.json();
       if (data.success) {
@@ -80,10 +80,9 @@ export default function InstructorsRequests() {
 
   const handleReject = async (instructorId: string, profileRefId: string) => {
     try {
-        const localUrl="http://localhost:4000"
-      const response = await fetch(`${localUrl}/api/instructor/${profileRefId}/status`, {
+      const response = await fetch(`https://code-minds-website.vercel.app/api/instructor/${profileRefId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {  
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
