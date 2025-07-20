@@ -8,7 +8,7 @@ const baseUrl = "https://code-minds-website.vercel.app/api";
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './dashboardInstructor.module.css';
-import { FiUsers, FiBook, FiPlus, FiEdit2, FiTrash2, FiX } from 'react-icons/fi';
+import { FiUsers, FiBook, FiPlus, FiEdit2, FiTrash2, FiX, FiVideo } from 'react-icons/fi';
 import Navbar from '../../components/Navbar';
 import NotificationPage from '../../notification/page';
 
@@ -434,18 +434,25 @@ export default function InstructorDashboard() {
                                                             {lecture.objectives}
                                                         </ul>
                                                     </div>
-                                                    {lecture.videos && lecture.videos.length > 0 && (
-                                                        <div className={styles.lectureVideos}>
-                                                            <h5>الفيديوهات:</h5>
-                                                            <ul>
+                                                    {lecture.videos.length > 0 && (
+                                                        <div className={styles.videosList}>
+                                                            <h6>
+                                                                <FiVideo />
+                                                                الفيديوهات
+                                                            </h6>
+                                                            <div className={styles.videoLinks}>
                                                                 {lecture.videos.map((video, index) => (
-                                                                    <li key={index}>
-                                                                        <a href={video} target="_blank" rel="noopener noreferrer">
-                                                                            فيديو {index + 1}
-                                                                        </a>
-                                                                    </li>
+                                                                    <div key={index} className={styles.responsiveIframeWrapper}>
+                                                                        <iframe
+                                                                            src={getEmbedUrl(video)}
+                                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                            allowFullScreen
+                                                                            title={`lecture-video-${index}`}
+                                                                            style={{ border: 0 }}
+                                                                        />
+                                                                    </div>
                                                                 ))}
-                                                            </ul>
+                                                            </div>
                                                         </div>
                                                     )}
                                                     <button
@@ -550,4 +557,19 @@ export default function InstructorDashboard() {
             )}
         </>
     );
+}
+
+function getEmbedUrl(url: string) {
+    // YouTube
+    const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/);
+    if (ytMatch) {
+        return `https://www.youtube.com/embed/${ytMatch[1]}`;
+    }
+    // Google Drive
+    const gdMatch = url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+    if (gdMatch) {
+        return `https://drive.google.com/file/d/${gdMatch[1]}/preview`;
+    }
+    // Default fallback
+    return url;
 }
