@@ -6,12 +6,11 @@
 // production url
 const baseUrl = "https://code-minds-website.vercel.app/api";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './dashboardInstructor.module.css';
 import { FiUsers, FiBook, FiPlus, FiEdit2, FiTrash2, FiX } from 'react-icons/fi';
 import Navbar from '../../components/Navbar';
 import NotificationPage from '../../notification/page';
-
 
 
 enum notificationStatus { success = "success", error = "error", warning = "warning" };
@@ -68,6 +67,7 @@ export default function InstructorDashboard() {
         createdAt: '',
         updatedAt: ''
     });
+    const [editingLecture, setEditingLecture] = useState<Lecture | null>(null);
     const [notification, setNotification] = useState<{ message: string; state:notificationStatus; k: number } | null>(null);
     const showNotification = (message: string, state: notificationStatus) => {
         setNotification({ message, state ,k: Date.now()  });
@@ -214,6 +214,56 @@ export default function InstructorDashboard() {
             videos: prev.videos.map((url, i) => i === index ? value : url)
         }));
     };
+
+    const handleEditLecture = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!editingLecture) return;
+        try {
+            const response = await fetch(`${baseUrl}/groups/editLecToGroup/${selectedGroup?._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({...editingLecture, lectureId: editingLecture._id})
+            });
+            const result = await response.json();
+            if (result.success) {
+                showNotification("تم تعديل المحاضرة بنجاح!", notificationStatus.success);
+
+                // إعادة جلب بيانات المجموعات (rerender)
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const updatedResponse = await fetch(`${baseUrl}/groups/instructorGroups/${user._id}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+                const updatedResult = await updatedResponse.json();
+                if (updatedResult.success) {
+                    setGroups(updatedResult.data);
+                    setSelectedGroup(updatedResult.data.find((g: Group) => g._id === selectedGroup?._id) || null);
+                }
+
+                setEditingLecture(null); // إغلاق المودال
+            } else {
+                showNotification("فشل في تعديل المحاضرة", notificationStatus.error);
+            }
+        } catch (error) {
+            showNotification("حدث خطأ أثناء التعديل", notificationStatus.error);
+        }
+    };
+
+    const editModalRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (editingLecture && editModalRef.current) {
+            editModalRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, [editingLecture]);
 
     return (
         <>
@@ -398,6 +448,12 @@ export default function InstructorDashboard() {
                                                             </ul>
                                                         </div>
                                                     )}
+                                                    <button
+                                                        className={styles.editButton}
+                                                        onClick={() => setEditingLecture(lecture)}
+                                                    >
+                                                        <FiEdit2 /> تعديل
+                                                    </button>
                                                 </div>
                                             ))
                                         )}
@@ -408,6 +464,87 @@ export default function InstructorDashboard() {
                     </div>
                 )}
             </div>
+            {editingLecture && (
+                <div ref={editModalRef} className={styles.lectureForm}>
+                    <h3>تعديل المحاضرة</h3>
+                    <form onSubmit={handleEditLecture}>
+                        <div className={styles.formGroup}>
+                            <label>عنوان المحاضرة</label>
+                            <input
+                                type="text"
+                                value={editingLecture.title}
+                                onChange={e => setEditingLecture(prev => prev ? { ...prev, title: e.target.value } : prev)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>تاريخ المحاضرة</label>
+                            <input
+                                type="date"
+                                value={editingLecture.date}
+                                onChange={e => setEditingLecture(prev => prev ? { ...prev, date: e.target.value } : prev)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>وصف المحاضرة</label>
+                            <textarea
+                                value={editingLecture.description}
+                                onChange={e => setEditingLecture(prev => prev ? { ...prev, description: e.target.value } : prev)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>أهداف المحاضرة</label>
+                            <textarea
+                                value={editingLecture.objectives}
+                                onChange={e => setEditingLecture(prev => prev ? { ...prev, objectives: e.target.value } : prev)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>فيديوهات المحاضرة</label>
+                            {editingLecture.videos.map((video, index) => (
+                                <div key={index} className={styles.videoInput}>
+                                    <input
+                                        type="url"
+                                        value={video}
+                                        onChange={e => setEditingLecture(prev => prev ? { ...prev, videos: prev.videos.map((url, i) => i === index ? e.target.value : url) } : prev)}
+                                        placeholder="رابط الفيديو"
+                                        required
+                                    />
+                                    {index > 0 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setEditingLecture(prev => prev ? { ...prev, videos: prev.videos.filter((_, i) => i !== index) } : prev)}
+                                            className={styles.removeButton}
+                                        >
+                                            <FiX />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={() => setEditingLecture(prev => prev ? { ...prev, videos: [...prev.videos, ''] } : prev)}
+                                className={styles.addButton}
+                            >
+                                <FiPlus />
+                                إضافة فيديو
+                            </button>
+                        </div>
+
+                        <div className={styles.formActions}>
+                            <button type="submit" className={styles.submitButton}>حفظ التعديلات</button>
+                            <button type="button" onClick={() => setEditingLecture(null)} className={styles.cancelButton}>إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            )}
             {notification && (
                 <NotificationPage key={notification.k} text={notification.message} status={notification.state} k={notification.k} />
             )}

@@ -137,10 +137,30 @@ export default function ProfilePage() {
                 <div className={styles.profileContent}>
                     {/* User Info Section */}
                     <div className={styles.section}>
-                        <h2>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <FiUser />
                             معلومات المستخدم
-                        </h2>
+                          </h2>
+                          {userInfo?.role === 'instructor' && (
+                            <button
+                              className={styles.dashboardBtn}
+                              onClick={() => router.push('/instructors/dashboard')}
+                              style={{ marginRight: 0 }}
+                            >
+                              لوحة تحكم المحاضر
+                            </button>
+                          )}
+                          {userInfo?.role === 'admin' && (
+                            <button
+                              className={styles.dashboardBtn}
+                              onClick={() => router.push('/dashboard')}
+                              style={{ marginRight: 0 }}
+                            >
+                              لوحة تحكم المدير
+                            </button>
+                          )}
+                        </div>
                         <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
                                 <label>الاسم</label>

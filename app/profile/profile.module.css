@@ -471,3 +471,29 @@
         min-height: 180px;
     }
 } 
+
+/* زر لوحة التحكم في البروفايل */
+.dashboardBtn {
+    background: linear-gradient(90deg, #4f46e5 0%, #148543 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    margin-right: 0;
+    margin-left: 8px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dashboardBtn:hover {
+    background: linear-gradient(90deg, #3730a3 0%, #0e5c2f 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.15);
+} 
