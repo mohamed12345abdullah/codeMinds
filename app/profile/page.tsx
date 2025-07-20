@@ -151,7 +151,7 @@ export default function ProfilePage() {
                               لوحة تحكم المحاضر
                             </button>
                           )}
-                          {userInfo?.role === 'admin' && (
+                          {(userInfo?.role === 'admin' || userInfo?.role === 'manager') && (
                             <button
                               className={styles.dashboardBtn}
                               onClick={() => router.push('/dashboard')}
