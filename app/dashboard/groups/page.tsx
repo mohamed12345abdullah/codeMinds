@@ -10,6 +10,7 @@ const baseUrl = "https://code-minds-website.vercel.app/api";
 
 import NotificationPage from "../../notification/page";
 import Navbar from "@/app/components/Navbar";
+import { get } from "http";
 
 enum notificationStatus { success = "success", error = "error", warning = "warning" };
 
@@ -42,7 +43,7 @@ interface StudentType {
 
 interface requestType {
   _id: string;
- couurse:CourseType;
+ course:CourseType;
  student:StudentType;
  status:string;
 }
@@ -214,11 +215,12 @@ const GroupForm = () => {
         return;
       }
       const data = await res.json();
-      console.log("students:", data);
+      console.log("requests:", data.data);
       if(data.success){
         showNotification("Students fetched successfully", notificationStatus.success);
         if(data.data.length >0){
           setRequests(data.data);
+
         }else{
           showNotification("No students found", notificationStatus.warning);
         }
@@ -349,9 +351,11 @@ const GroupForm = () => {
   const filteredGroups = groups.filter(group => 
     selectedCourseId ? group.course._id === selectedCourseId : true
   );
-
+  
+  console.log("requests is================== ",requests)
+  console.log("selectedCourseId is================== ",selectedCourseId)
   const filteredStudents = requests.filter(request =>
-    selectedCourseId ? request.couurse._id === selectedCourseId : true
+    selectedCourseId ? request.course._id === selectedCourseId : true
   );
 
   return (

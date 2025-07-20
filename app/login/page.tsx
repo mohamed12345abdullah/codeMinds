@@ -2,10 +2,12 @@
 
 import "./login.css";
 import { loginApi } from "../apis/auth";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import NotificationPage from "../notification/page";
 import Navbar from "../components/Navbar";
 import ForgotPasswordModal from "./forgerPasswordModal";
+import { verifyTokenApi } from "../apis/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -20,6 +22,21 @@ export default function LoginPage() {
         key: Date.now()
     });
     const [responseMsg, setResponseMsg] = useState('');
+    const router = useRouter();
+
+    useEffect(() => {
+        // استقبال التوكن من الرابط بعد تسجيل الدخول بجوجل
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        if (token) {
+            localStorage.setItem('token', token);
+            // جلب بيانات المستخدم وتخزينها
+            (async () => {
+                await verifyTokenApi();
+                router.push("/profile");
+            })();
+        }
+    }, [router]);
 
     const showNotification = (message: string, status: notificationStatus) => {
         setNotifi({
