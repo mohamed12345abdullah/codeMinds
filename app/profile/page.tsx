@@ -58,6 +58,28 @@ export default function ProfilePage() {
     const router = useRouter();
 
     useEffect(() => {
+        // التقاط التوكن وبيانات المستخدم من الرابط وتخزينهم في localStorage
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        const userParam = params.get('user');
+        if (token) {
+            localStorage.setItem('token', token);
+            if (userParam) {
+                try {
+                    const user = JSON.parse(decodeURIComponent(userParam));
+                    localStorage.setItem('user', JSON.stringify(user));
+                } catch (e) {}
+            }
+            // تحقق من التوكن وجلب بيانات المستخدم من السيرفر
+            (async () => {
+                await verifyTokenApi();
+                // إعادة تحميل الصفحة لإزالة التوكن من الرابط وتحديث الحالة
+                window.location.replace('/profile');
+            })();
+        }
+    }, []);
+
+    useEffect(() => {
         const fetchUserData = async () => {
             try {
                 setIsLoading(true);
