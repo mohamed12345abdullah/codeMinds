@@ -4,7 +4,9 @@ import "./instructor.css";
 import Navbar from "../components/Navbar";
 import { verifyTokenApi } from "../apis/auth";
 
-const baseUrl = "http://localhost:4000/api";
+
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api";
 
 export default function InstructorRequestForm() {
   const [formData, setFormData] = useState({
