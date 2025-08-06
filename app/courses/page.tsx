@@ -163,6 +163,7 @@ export default function CoursesPage() {
     });
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showMore, setShowMore] = useState(false);
 
     const fetchCourses = async () => {
         try {
@@ -275,7 +276,7 @@ export default function CoursesPage() {
                 </div>
 
                 <div className={styles.grid}>
-                    {courses.map((courseDetails:Course) => (
+                    {courses.slice(0, showMore ? courses.length : 3).map((courseDetails:Course) => (
                         <div key={courseDetails._id} className={styles.courseCard}>
                             <div className={styles.courseImage}>
                                 <img 
@@ -316,6 +317,38 @@ export default function CoursesPage() {
                         </div>
                     ))}
                 </div>
+                {courses.length > 3 && (
+                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                        <button
+                            onClick={() => setShowMore(!showMore)}
+                            style={{
+                                background: 'linear-gradient(90deg, #4f46e5 0%, #148543 100%)',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '10px',
+                                padding: '12px 32px',
+                                fontSize: '1.1rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                boxShadow: '0 2px 8px rgba(79, 70, 229, 0.08)',
+                                transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s',
+                                letterSpacing: '0.5px'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'linear-gradient(90deg, #3730a3 0%, #0e5c2f 100%)';
+                                e.currentTarget.style.transform = 'translateY(-2px) scale(1.04)';
+                                e.currentTarget.style.boxShadow = '0 4px 16px rgba(79, 70, 229, 0.15)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'linear-gradient(90deg, #4f46e5 0%, #148543 100%)';
+                                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                                e.currentTarget.style.boxShadow = '0 2px 8px rgba(79, 70, 229, 0.08)';
+                            }}
+                        >
+                            {showMore ? 'Show Less' : 'Show More'}
+                        </button>
+                    </div>
+                )}
             </div>
 
             {selectedCourse && (
