@@ -36,6 +36,13 @@ export default function DashboardPage() {
             icon: <FiCreditCard />,
             path: '/dashboard/subscriptions',
             color: '#FF9800'
+        },
+        {
+            title: "groups on lovable",
+            description: "show all groups",
+            icon: <FiCreditCard />,
+            path: `https://code-camp-companion.lovable.app/?token=${localStorage.getItem('token')}`,
+            color: '#FF9800'
         }
     ];
 
