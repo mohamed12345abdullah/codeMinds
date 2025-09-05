@@ -68,7 +68,11 @@ function JoinContent() {
     }
 
     const joinCourse = async () => {
-        if (!token) return; // Don't join if no token
+        if (!token) {
+            // go to log in page
+            window.location.href = `/login`;
+            return;
+        }; // Don't join if no token
         try {
             const response = await fetch(`${baseUrl}/groups/join/${groupId}`,
                 {
@@ -157,7 +161,6 @@ function JoinContent() {
                     // You can forward data to a dedicated endpoint here if needed
                     // For now, proceed to the dedicated student form page
                     setIsStudentModalOpen(false);
-                    router.push('/courses/studentForm');
                 }}
             />
         </div>

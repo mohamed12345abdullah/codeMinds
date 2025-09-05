@@ -72,64 +72,71 @@ export default function CompleteDateOfInstructor({ isOpen, onClose, onSubmit }: 
     <div style={{
       position: "fixed",
       inset: 0,
-      background: "rgba(0,0,0,0.5)",
+      background: "rgba(2, 6, 23, 0.6)",
+      backdropFilter: "blur(4px)",
+      WebkitBackdropFilter: "blur(4px)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       zIndex: 1000,
+      padding: 16,
     }}>
       <div style={{
-        background: "#fff",
-        color: "#111827",
-        borderRadius: 12,
-        width: "min(520px, 92vw)",
+        background: "var(--card-bg)",
+        color: "var(--text)",
+        border: "1px solid var(--border)",
+        borderRadius: 14,
+        width: "min(560px, 96vw)",
         padding: 20,
-        boxShadow: "0 10px 24px rgba(0,0,0,0.2)",
+        boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <h3 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>Complete Your Profile</h3>
-          <button onClick={onClose} style={{ background: "transparent", border: 0, cursor: "pointer", fontSize: 18 }}>×</button>
+          <h3 style={{ fontSize: 20, fontWeight: 800, margin: 0 }}>Complete your profile</h3>
+          <button onClick={onClose} aria-label="Close"
+            style={{ background: "transparent", border: 0, cursor: "pointer", fontSize: 22, color: "var(--text-light)" }}>×</button>
         </div>
         {serverError && (
           <div style={{
-            marginBottom: 8,
+            marginBottom: 10,
             padding: 10,
-            borderRadius: 8,
+            borderRadius: 10,
             border: '1px solid #92400e',
-            background: '#fff7ed',
-            color: '#9a3412',
+            background: '#451a03',
+            color: '#fed7aa',
             fontSize: 14,
           }}>{serverError}</div>
         )}
         <form onSubmit={handleSubmit} style={{ display: "grid", gap: 12 }}>
           <label style={{ display: "grid", gap: 6 }}>
-            <span style={{ fontSize: 14, color: "#374151" }}>Age</span>
+            <span style={{ fontSize: 13, color: "var(--text-light)" }}>Age</span>
             <input
               type="number"
               value={age}
               onChange={(e) => setAge(e.target.value)}
               min={5}
               max={50}
-              style={{ padding: 10, borderRadius: 8, border: "1px solid #D1D5DB" }}
+              style={{ padding: 10, borderRadius: 10, border: "1px solid var(--border)", background: "#0b1220", color: "var(--text)" }}
             />
-            {errors.age && <span style={{ color: "#DC2626", fontSize: 12 }}>{errors.age}</span>}
+            {errors.age && <span style={{ color: "#fca5a5", fontSize: 12 }}>{errors.age}</span>}
           </label>
           <label style={{ display: "grid", gap: 6 }}>
-            <span style={{ fontSize: 14, color: "#374151" }}>Gender</span>
+            <span style={{ fontSize: 13, color: "var(--text-light)" }}>Gender</span>
             <select
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              style={{ padding: 10, borderRadius: 8, border: "1px solid #D1D5DB" }}
+              style={{ padding: 10, borderRadius: 10, border: "1px solid var(--border)", background: "#0b1220", color: "var(--text)" }}
             >
               <option value="">Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
-            {errors.gender && <span style={{ color: "#DC2626", fontSize: 12 }}>{errors.gender}</span>}
+            {errors.gender && <span style={{ color: "#fca5a5", fontSize: 12 }}>{errors.gender}</span>}
           </label>
           <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 6 }}>
-            <button type="button" onClick={onClose} disabled={submitting} style={{ padding: "8px 12px", borderRadius: 8, background: "#F3F4F6", border: "1px solid #E5E7EB", cursor: "pointer" }}>Cancel</button>
-            <button type="submit" disabled={submitting} style={{ padding: "8px 12px", borderRadius: 8, background: submitting ? "#9ca3af" : "#4F46E5", color: "#fff", border: "1px solid transparent", cursor: submitting ? "not-allowed" : "pointer" }}>{submitting ? 'Submitting...' : 'Continue'}</button>
+            <button type="button" onClick={onClose} disabled={submitting}
+              style={{ padding: "10px 14px", borderRadius: 10, background: "#0f172a", border: "1px solid var(--border)", color: "var(--text)", cursor: "pointer" }}>Cancel</button>
+            <button type="submit" disabled={submitting}
+              style={{ padding: "10px 14px", borderRadius: 10, background: submitting ? "#475569" : "var(--primary)", color: "#fff", border: "1px solid transparent", cursor: submitting ? "not-allowed" : "pointer" }}>{submitting ? 'Submitting...' : 'Continue'}</button>
           </div>
         </form>
       </div>
