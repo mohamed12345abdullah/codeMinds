@@ -28,7 +28,7 @@ interface GroupResponse {
   message?: string;
 }
 
-export default function ManageLecturesPage() {
+function ManageLecturesContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const groupId = searchParams.get("groupId") || "";
@@ -308,5 +308,13 @@ export default function ManageLecturesPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ManageLecturesPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 20, textAlign: 'center' }}>Loading...</div>}>
+      <ManageLecturesContent />
+    </Suspense>
   );
 }
