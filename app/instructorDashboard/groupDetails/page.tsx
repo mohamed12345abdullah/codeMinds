@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./groubDetails.module.css";
@@ -54,7 +54,7 @@ interface ApiResponse<T> {
   data: T;
 }
 
-export default function GroupDetails() {
+function GroupDetailsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get("id") || "";
@@ -249,5 +249,13 @@ export default function GroupDetails() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function GroupDetails() {
+  return (
+    <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
+      <GroupDetailsContent />
+    </Suspense>
   );
 }
