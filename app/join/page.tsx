@@ -4,6 +4,9 @@ const baseUrl = "https://code-minds-website.vercel.app/api";
 // const baseUrl = "http://localhost:4000/api";
 // search params
 
+
+import CompleteDateOfInstructor from "./completeDateOfInstructor";
+
 interface Group {
     _id: string;
     title: string;
@@ -21,6 +24,7 @@ function JoinContent() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [token, setToken] = useState<string>('');
+    const [isStudentModalOpen, setIsStudentModalOpen] = useState<boolean>(false);
     const searchParams = useSearchParams();
     const groupId = searchParams.get("code");
     const router = useRouter();
@@ -81,9 +85,9 @@ function JoinContent() {
             } else if (response.status === 401) {
                 window.location.href = `/login`;
             } else if (response.status === 404 && result?.message === "student not found") {
-                // here go to join as instructor 
-                window.location.href = `/courses/studentForm`;
-                setError("Invalid or expired code");
+                // Open the student info modal instead of redirecting
+                setIsStudentModalOpen(true);
+                return;
             } else {
                 alert(result?.message || "Failed to join");
             }
@@ -146,6 +150,16 @@ function JoinContent() {
                     <div style={{ color: 'var(--text-light)' }}>No group found for this code.</div>
                 )}
             </div>
+            <CompleteDateOfInstructor
+                isOpen={isStudentModalOpen}
+                onClose={() => setIsStudentModalOpen(false)}
+                onSubmit={(data) => {
+                    // You can forward data to a dedicated endpoint here if needed
+                    // For now, proceed to the dedicated student form page
+                    setIsStudentModalOpen(false);
+                    router.push('/courses/studentForm');
+                }}
+            />
         </div>
     );
 }
