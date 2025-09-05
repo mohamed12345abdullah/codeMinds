@@ -1,5 +1,5 @@
 /* Dark Sky Blue Theme */
-:root {
+.dashboard {
   --bg: #0f172a; /* dark blue background */
   --card: #1e293b; /* dark blue card */
   --text: #f1f5f9; /* light text */
@@ -9,11 +9,8 @@
   --primary: #3b82f6; /* bright blue */
   --primary-dark: #1d4ed8; /* darker */
   --primary-soft: #1e3a8a; /* dark soft */
-}
-
-
-body {
   background: var(--bg);
+  min-height: 100vh;
 }
 /* Page container */
 .container {
