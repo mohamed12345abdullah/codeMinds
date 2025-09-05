@@ -1,23 +1,22 @@
 :root {
   /* Light Theme */
-
-  --background: #d2ddd3;
-  --foreground: #121212;
+  --background: #121212;
+  --foreground: #E0E0E0;
   --primary: #00C853;
   --primary-dark: #00E676;
   --secondary: #69F0AE;
   --accent: #64DD17;
-  --text: #121212;
-  --text-light: #666666;
-  --border: #e0e0e0;
-  --card-bg:#aec2a1;
+  --text: #E0E0E0;
+  --text-light: #A0A0A0;
+  --border: #2C2C2C;
+  --card-bg: #1E1E1E;
   --card-shadow: #06eb11;
-  --nav-bg: #ffffff;
-  --nav-text: #121212;
-  --input-bg: #ffffff;
-  --input-border: #e0e0e0;
-  --hover-bg: #f0f0f0;
-  --card: #4163528e;
+  --nav-bg: #1E1E1E;
+  --nav-text: #E0E0E0;
+  --input-bg: #1E1E1E;
+  --input-border: #2C2C2C;
+  --hover-bg: #2C2C2C;
+  --card: #48dd9331;
 }
 
 [data-theme='dark'] {

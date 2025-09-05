@@ -4,11 +4,13 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './add.module.css';
 import { FiUpload, FiPlus, FiX } from 'react-icons/fi';
-import Navbar from '../../../components/Navbar';
+import Navbar from '../../components/Navbar';
 
 
 const baseUrl = "https://code-minds-website.vercel.app/api";
 // const baseUrl = "http://localhost:4000/api/auth";
+
+
 console.log("baseUrl", baseUrl)
 
 

@@ -5,8 +5,8 @@ import Navbar from "../components/Navbar";
 import NotificationPage from "../notification/page";
 import { useState, useEffect } from "react";
 import styles from "./question.module.css";
-// const baseUrl = "https://code-minds-website.vercel.app/api";
-const baseUrl = "http://localhost:4000/api";
+const baseUrl = "https://code-minds-website.vercel.app/api";
+// const baseUrl = "http://localhost:4000/api";
 
 
 

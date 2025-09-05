@@ -43,6 +43,13 @@ export default function DashboardPage() {
             icon: <FiCreditCard />,
             path: `https://code-camp-companion.lovable.app/?token=${localStorage.getItem('token')}`,
             color: '#FF9800'
+        },
+        {
+            title: "progress",
+            description: "show progress of groups",
+            icon: <FiCreditCard />,
+            path: '/dashboard/progress',
+            color: '#FF9800'
         }
     ];
 

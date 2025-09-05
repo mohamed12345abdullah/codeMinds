@@ -167,7 +167,7 @@ export default function ProfilePage() {
                           {userInfo?.role === 'instructor' && (
                             <button
                               className={styles.dashboardBtn}
-                              onClick={() => router.push('/instructors/dashboard')}
+                              onClick={() => router.push('/instructorDashboard')}
                               style={{ marginRight: 0 }}
                             >
                               لوحة تحكم المحاضر
