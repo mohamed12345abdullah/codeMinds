@@ -50,6 +50,8 @@ function JoinContent() {
                 setGroup(result.data);
             } else if (response.status === 401) {
                 window.location.href = `/login`;
+            } else if (response.status === 404) {
+                setError("Invalid or expired code");
             } else {
                 setError(result?.message || "Invalid or expired code");
             }
@@ -78,6 +80,10 @@ function JoinContent() {
                 window.location.href = `/profile`;
             } else if (response.status === 401) {
                 window.location.href = `/login`;
+            } else if (response.status === 404 && result?.message === "student not found") {
+                // here go to join as instructor 
+                window.location.href = `/courses/studentForm`;
+                setError("Invalid or expired code");
             } else {
                 alert(result?.message || "Failed to join");
             }
