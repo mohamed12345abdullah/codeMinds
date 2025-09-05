@@ -6,7 +6,7 @@ const baseUrl = "https://code-minds-website.vercel.app/api";
 
 
 import CompleteDateOfInstructor from "./completeDateOfInstructor";
-
+import navbarPage from "../components/Navbar";
 interface Group {
     _id: string;
     title: string;
@@ -36,7 +36,11 @@ function JoinContent() {
         }
     }, []);
     const fetchGroup = async () => {
-        if (!token) return; // Don't fetch if no token
+        // if (!token) {
+        //     console.log("No token");
+        //     window.location.href = `/login`;
+        //     return;
+        // } // Don't fetch if no token
         try {
             setLoading(true);
             setError(null);
@@ -68,11 +72,11 @@ function JoinContent() {
     }
 
     const joinCourse = async () => {
-        if (!token) {
-            // go to log in page
-            window.location.href = `/login`;
-            return;
-        }; // Don't join if no token
+        // if (!token) {
+        //     // go to log in page
+        //     window.location.href = `/login`;
+        //     return;
+        // }; // Don't join if no token
         try {
             const response = await fetch(`${baseUrl}/groups/join/${groupId}`,
                 {
@@ -100,11 +104,13 @@ function JoinContent() {
         }
     }
     useEffect(() => {
-        if (token) {
+  
             fetchGroup();
-        }
-    }, [token]);
+     
+    }, []);
     return (
+       
+
         <div style={{
             minHeight: '100vh',
             background: 'var(--background)',
@@ -164,6 +170,7 @@ function JoinContent() {
                 }}
             />
         </div>
+    
     );
 }
 
