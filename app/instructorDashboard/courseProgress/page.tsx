@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import type React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./courseProgress.module.css";
@@ -67,7 +67,7 @@ interface ApiResponse<T> {
   message?: string;
 }
 
-export default function CourseProgress({ params }: { params?: { id?: string } }) {
+function CourseProgressContent({ params }: { params?: { id?: string } }) {
   const router = useRouter();
   const search = useSearchParams();
   const idFromParams = params?.id;
@@ -349,5 +349,13 @@ export default function CourseProgress({ params }: { params?: { id?: string } })
         </div>
       )}
     </div>
+  );
+}
+
+export default function CourseProgress({ params }: { params?: { id?: string } }) {
+  return (
+    <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
+      <CourseProgressContent params={params} />
+    </Suspense>
   );
 }
