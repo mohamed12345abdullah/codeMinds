@@ -16,14 +16,23 @@ interface Group {
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 
-export default function Join() {
+function JoinContent() {
     const [group, setGroup] = useState<Group | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [token, setToken] = useState<string>('');
     const searchParams = useSearchParams();
     const groupId = searchParams.get("code");
     const router = useRouter();
+
+    useEffect(() => {
+        // Only access localStorage on the client side
+        if (typeof window !== 'undefined') {
+            setToken(localStorage.getItem('token') || '');
+        }
+    }, []);
     const fetchGroup = async () => {
+        if (!token) return; // Don't fetch if no token
         try {
             setLoading(true);
             setError(null);
@@ -32,7 +41,7 @@ export default function Join() {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+                        authorization: `Bearer ${token}`,
                     },
                 }
             )
@@ -53,13 +62,14 @@ export default function Join() {
     }
 
     const joinCourse = async () => {
+        if (!token) return; // Don't join if no token
         try {
             const response = await fetch(`${baseUrl}/groups/join/${groupId}`,
                 {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+                        authorization: `Bearer ${token}`,
                     },
                 }
             )
@@ -76,8 +86,10 @@ export default function Join() {
         }
     }
     useEffect(() => {
-        fetchGroup();
-    }, []);
+        if (token) {
+            fetchGroup();
+        }
+    }, [token]);
     return (
         <div style={{
             minHeight: '100vh',
@@ -129,5 +141,24 @@ export default function Join() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function Join() {
+    return (
+        <Suspense fallback={
+            <div style={{
+                minHeight: '100vh',
+                background: 'var(--background)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 16,
+            }}>
+                <div style={{ color: 'var(--text-light)' }}>Loading...</div>
+            </div>
+        }>
+            <JoinContent />
+        </Suspense>
     );
 }
