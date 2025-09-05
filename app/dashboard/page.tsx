@@ -1,12 +1,21 @@
 'use client';
 
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { FiBook, FiUsers, FiLayers, FiCreditCard } from 'react-icons/fi';
 import styles from './dashboard.module.css';
 import NavbarPage from "../components/Navbar";
 
 export default function DashboardPage() {
     const router = useRouter();
+    const [token, setToken] = useState<string>('');
+
+    useEffect(() => {
+        // Only access localStorage on the client side
+        if (typeof window !== 'undefined') {
+            setToken(localStorage.getItem('token') || '');
+        }
+    }, []);
 
     const dashboardItems = [
         {
@@ -41,7 +50,7 @@ export default function DashboardPage() {
             title: "groups on lovable",
             description: "show all groups",
             icon: <FiCreditCard />,
-            path: `https://code-camp-companion.lovable.app/?token=${localStorage.getItem('token')}`,
+            path: token ? `https://code-camp-companion.lovable.app/?token=${token}` : '/dashboard',
             color: '#FF9800'
         },
         {
@@ -69,7 +78,13 @@ export default function DashboardPage() {
                     <div 
                         key={index} 
                         className={styles.card}
-                        onClick={() => router.push(item.path)}
+                        onClick={() => {
+                            if (item.path.startsWith('http')) {
+                                window.open(item.path, '_blank');
+                            } else {
+                                router.push(item.path);
+                            }
+                        }}
                         style={{ '--card-color': item.color } as React.CSSProperties}
                     >
                         <div className={styles.iconWrapper}>
