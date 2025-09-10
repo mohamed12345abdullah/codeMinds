@@ -2,6 +2,14 @@
 import { useState, useEffect } from 'react';
 import styles from './profile.module.css';
 
+
+import { useRouter } from 'next/navigation';
+import { verifyTokenApi } from '../apis/auth';
+import NavbarPage from '../components/Navbar';
+import InstructorDashboard from '../instructorDashboard/page';
+import Link from 'next/link';
+
+
 // Define TypeScript interfaces based on the API response
 interface User {
   _id: string;
@@ -89,6 +97,51 @@ const ProfilePage = () => {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [expandedLectures, setExpandedLectures] = useState<Set<string>>(new Set());
   const [expandedProgress, setExpandedProgress] = useState<Set<string>>(new Set());
+  const router = useRouter();
+
+    useEffect(() => {
+        // التقاط التوكن وبيانات المستخدم من الرابط وتخزينهم في localStorage
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        const userParam = params.get('user');
+        if (token) {
+            localStorage.setItem('token', token);
+            if (userParam) {
+                try {
+                    const user = JSON.parse(decodeURIComponent(userParam));
+                    localStorage.setItem('user', JSON.stringify(user));
+                } catch (e) {}
+            }
+            // تحقق من التوكن وجلب بيانات المستخدم من السيرفر
+            (async () => {
+                await verifyTokenApi();
+                // إعادة تحميل الصفحة لإزالة التوكن من الرابط وتحديث الحالة
+                window.location.replace('/profile');
+            })();
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                setLoading(true);
+                const verified = await verifyTokenApi();
+                if (!verified) {
+                    router.push('/login');
+                    return;
+                }
+                const user = JSON.parse(localStorage.getItem("user") || '{}');
+                setUserData(user);
+            } catch (error) {
+                console.error('Error verifying token:', error);
+                router.push('/login');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, [router]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -197,6 +250,8 @@ const ProfilePage = () => {
   const { profileRef } = userData.user;
 
   return (
+    <>
+    <NavbarPage />
     <div className={styles.profileContainer}>
       <div className={styles.profileHeader}>
         <div className={styles.userInfoCard}>
@@ -210,6 +265,23 @@ const ProfilePage = () => {
               <span>Age: {profileRef.age}</span>
               <span>Gender: {profileRef.gender}</span>
               <span>Member since: {formatDate(userData.user.createdAt)}</span>
+              {(
+                userData.user.role === 'instructor' ? (
+                  // here go to instrudtor dash board 
+                  <Link href="/instructorDashboard">  
+                  <button >Go to Instructor Dashboard</button>
+                  </Link>
+                ) : null
+              )}
+
+              {(
+                userData.user.role === 'manager' ? (
+                  // here go to manager dash board 
+                  <Link href="/dashboard">  
+                  <button >Go to Manager Dashboard</button>
+                  </Link>
+                ) : null
+              )}
             </div>
           </div>
         </div>
@@ -482,7 +554,7 @@ const ProfilePage = () => {
       </div>
     </div>
 
-    
+    </>
   );
 };
 
