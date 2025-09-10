@@ -131,6 +131,12 @@ const ProfilePage = () => {
                     return;
                 }
                 const user = JSON.parse(localStorage.getItem("user") || '{}');
+                if(user.role === 'instructor'){
+                    router.push('/instructorDashboard');
+                }
+                if(user.role === 'manager'){
+                    router.push('/dashboard');
+                }
                 setUserData(user);
             } catch (error) {
                 console.error('Error verifying token:', error);
