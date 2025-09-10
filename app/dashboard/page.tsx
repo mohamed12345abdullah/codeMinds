@@ -46,13 +46,13 @@ export default function DashboardPage() {
             path: '/dashboard/subscriptions',
             color: '#FF9800'
         },
-        // {
-        //     title: "groups on lovable",
-        //     description: "show all groups",
-        //     icon: <FiCreditCard />,
-        //     path: token ? `https://code-camp-companion.lovable.app/?token=${token}` : '/dashboard',
-        //     color: '#FF9800'
-        // },
+        {
+            title: "groups on lovable",
+            description: "show all groups",
+            icon: <FiCreditCard />,
+            path: token ? `https://code-camp-companion.lovable.app/?token=${token}` : '/dashboard',
+            color: '#FF9800'
+        },
         {
             title: "progress",
             description: "show progress of groups",

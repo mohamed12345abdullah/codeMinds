@@ -1,499 +1,661 @@
-.container {
-    min-height: 100vh;
-    background: var(--background);
-    color: var(--text);
-    padding: 0;
-    margin: 0;
+/* ProfilePage.module.css - Blue Dark Night Sky Theme */
+.profileContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #e6e6ff;
+  background: linear-gradient(135deg, #0a192f 0%, #0d1b2a 50%, #1b263b 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  opacity: 0.8;
 }
 
-.mobileMenuToggle {
-    display: none;
-    position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 1000;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    color: var(--text);
-    transition: var(--transition);
+/* Add a moon effect */
+.profileContainer::before {
+  content: "";
+  position: fixed;
+  top: 50px;
+  right: 50px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #f8f7ff 0%, #d6e4ff 30%, transparent 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 40px 15px rgba(255, 255, 255, 0.3);
+  z-index: 0;
+  opacity: 0.8;
+  animation: pulseMoon 8s infinite alternate;
 }
 
-.mobileMenuToggle:hover {
-    color: var(--primary);
+@keyframes pulseMoon {
+  0% {
+    box-shadow: 0 0 40px 15px rgba(255, 255, 255, 0.3);
+    opacity: 0.8;
+  }
+  100% {
+    box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.4);
+    opacity: 1;
+  }
+}
+
+/* Add some stars */
+.profileContainer::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 210px 60px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 250px 90px, #eee, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 290px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 330px 70px, #eee, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 380px 50px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  z-index: 0;
+  opacity: 0.6;
+  animation: twinkle 8s infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.4; }
+  100% { opacity: 0.8; }
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #a8d0e6;
+  position: relative;
+  z-index: 2;
+}
+
+.error {
+  color: #ff6b6b;
 }
 
 .profileHeader {
-    background: linear-gradient(135deg, #141516, #148543);
-    padding: 4rem 2rem;
-    text-align: center;
-    position: relative;
-    margin-bottom: 0;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 2;
 }
 
-.profileHeader::before {
-    content: '';
-    position: absolute;
-    bottom: -50px;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: var(--background);
-    clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+.userInfoCard {
+  display: flex;
+  align-items: center;
+  background: rgba(26, 36, 56, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 25px;
+  color: #e6e6ff;
+  box-shadow: 0 8px 32px rgba(13, 27, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-.profileHeader h1 {
-    color: white;
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.userInfoCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(66, 135, 245, 0.1) 0%, rgba(21, 101, 192, 0.2) 100%);
+  z-index: -1;
 }
 
-.profileHeader p {
-    color: var(--text-light);
+.userAvatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(100, 181, 246, 0.3);
+  margin-right: 25px;
+  box-shadow: 0 0 20px rgba(100, 181, 246, 0.4);
+}
+
+.userDetails h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e6f7ff;
+  text-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
+}
+
+.userRole {
+  margin: 0 0 12px 0;
+  text-transform: capitalize;
+  font-style: italic;
+  opacity: 0.9;
+  color: #89c2ef;
+}
+
+.userEmail, .userPhone {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #c5d9f1;
+}
+
+.userMeta {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.userMeta span {
+  background: rgba(41, 98, 158, 0.3);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #c5d9f1;
+  border: 1px solid rgba(100, 181, 246, 0.2);
 }
 
 .profileContent {
-    max-width: 1200px;
-    margin: -50px auto 0;
-    padding: 0 2rem;
-    position: relative;
-    z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  position: relative;
+  z-index: 2;
 }
 
-.section {
-    background: var(--card-bg);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px var(--card);
-    margin-bottom: 2rem;
-    overflow: hidden;
+.contentSection {
+  background: rgba(26, 36, 56, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(13, 27, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.section h2 {
-    font-size: 1.8rem;
-    color: var(--text);
-    margin: 0;
-    padding: 2rem;
-    background: var(--background);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+.contentSection h2 {
+  margin-top: 0;
+  color: #89c2ef;
+  border-bottom: 2px solid rgba(100, 181, 246, 0.3);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px rgba(100, 181, 246, 0.3);
 }
 
-.infoGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 0;
+.coursesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
 }
 
-.infoItem {
-    padding: 2rem;
-    border: 1px solid var(--card-shadow);
-    transition: all 0.3s ease;
+.courseCard {
+  background: rgba(41, 98, 158, 0.2);
+  padding: 15px;
+  border-radius: 12px;
+  border-left: 4px solid #64b5f6;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(100, 181, 246, 0.2);
 }
 
-.infoItem:hover {
-    background: var(--background);
+.courseCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(13, 27, 42, 0.6);
+  background: rgba(41, 98, 158, 0.3);
 }
 
-/* .infoItem:last-child {
-    border-bottom: none;
-}
-
-.infoItem:nth-child(2n) {
-    border-right: none;
-} */
-
-.infoItem label {
-    display: block;
-    color: var(--text);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-.infoItem p {
-    color: #4f79a3;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0;
+.courseCard h3 {
+  margin: 0;
+  color: #e6f7ff;
 }
 
 .groupsList {
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .groupCard {
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s ease;
-}
-
-.groupCard:last-child {
-    border-bottom: none;
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(26, 36, 56, 0.6);
 }
 
 .groupHeader {
-    padding: 1.5rem 2rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--background);
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: rgba(41, 98, 158, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .groupHeader:hover {
-    background: var(--background);
+  background: rgba(41, 98, 158, 0.3);
 }
 
 .groupHeader h3 {
-    font-size: 1.3rem;
-    color: #2c3e50;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  margin: 0;
+  color: #e6f7ff;
+  flex-grow: 1;
 }
 
-.groupDates {
-    display: flex;
-    gap: 2rem;
-    color: #6c757d;
-    font-size: 0.9rem;
+.toggleIcon {
+  margin: 0 15px;
+  font-weight: bold;
+  color: #89c2ef;
+}
+
+.dateRange {
+  color: #89c2ef;
+  font-size: 14px;
+  margin-right: 15px;
+}
+
+.lectureCount {
+  background: rgba(100, 181, 246, 0.3);
+  color: #e6f7ff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .groupContent {
-    background: var(--background);
-    padding: 0;
+  padding: 20px;
+  background: rgba(26, 36, 56, 0.4);
 }
 
 .lecturesList {
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .lectureCard {
-    border-bottom: 1px solid var(--border);
-    background: var(--background);
-    transition: all 0.3s ease;
-}
-
-.lectureCard:last-child {
-    border-bottom: none;
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(26, 36, 56, 0.5);
 }
 
 .lectureHeader {
-    padding: 1.5rem 2rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: rgba(41, 98, 158, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .lectureHeader:hover {
-    background: var(--background);
+  background: rgba(41, 98, 158, 0.3);
 }
 
-.lectureHeader h5 {
-    font-size: 1.1rem;
-    color: var(--text);
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
+.lectureHeader h4 {
+  margin: 0;
+  color: #e6f7ff;
+  flex-grow: 1;
+}
+
+.lectureDate {
+  color: #89c2ef;
+  font-size: 14px;
+  margin-right: 15px;
 }
 
 .lectureContent {
-    padding: 2rem;
-    background: var(--background);
+  padding: 20px;
+  background: rgba(26, 36, 56, 0.3);
 }
 
 .lectureDescription {
-    color: var(--text-light);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
+  margin: 0 0 15px 0;
+  line-height: 1.5;
+  color: #c5d9f1;
 }
 
-.videosList {
-    width: 100%;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
+.lectureVideos {
+  margin: 20px 0;
 }
 
-.videoLinks {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    width: 100%;
+.lectureVideos h5 {
+  margin: 0 0 15px 0;
+  color: #89c2ef;
+  font-size: 16px;
+}
+
+.videoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.videoContainer {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.videoEmbed {
+  width: 100%;
+  height: 200px;
+  border: none;
+  border-radius: 12px;
 }
 
 .videoLink {
-    border: 1px solid #4caf50;
-    color: #4caf50;
-    background: transparent;
-    border-radius: 8px;
-    padding: 10px 24px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  padding: 15px;
+  background: rgba(41, 98, 158, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(100, 181, 246, 0.2);
 }
 
-.videoLink:hover {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
+.videoLink a {
+  color: #64b5f6;
+  text-decoration: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.3s ease;
 }
 
-.objectivesList {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
+.videoLink a:hover {
+  color: #90caf9;
+  text-decoration: underline;
 }
 
-.objectivesList h6 {
-    color: var(--text);
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+.videoLink a::before {
+  content: "▶";
+  font-size: 12px;
 }
 
-.objectivesList ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.lectureObjectives {
+  margin-top: 20px;
 }
 
-.objectivesList li {
-    color: var(--text-light);
-    margin-bottom: 0.8rem;
-    padding-right: 1.5rem;
-    position: relative;
-    line-height: 1.5;
+.lectureObjectives h5 {
+  margin: 0 0 10px 0;
+  color: #89c2ef;
+  font-size: 16px;
 }
 
-.objectivesList li::before {
-    content: "•";
-    position: absolute;
-    right: 0;
-    color: var(--primary);
-    font-size: 1.2rem;
+.lectureObjectives ul {
+  margin: 0;
+  padding-left: 20px;
 }
 
-.loading {
+.lectureObjectives li {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #c5d9f1;
+}
+
+.noLectures {
+  color: #89c2ef;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Progress Section Styles */
+.progressList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.progressCard {
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(26, 36, 56, 0.6);
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: rgba(41, 98, 158, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.progressHeader:hover {
+  background: rgba(41, 98, 158, 0.3);
+}
+
+.progressHeader h3 {
+  margin: 0;
+  color: #e6f7ff;
+  flex-grow: 1;
+}
+
+.progressStatsOverview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.progressPercentage {
+  font-weight: bold;
+  color: #64b5f6;
+  font-size: 14px;
+}
+
+.lectureCount {
+  color: #89c2ef;
+  font-size: 12px;
+}
+
+.progressDetails {
+  padding: 20px;
+  background: rgba(26, 36, 56, 0.4);
+}
+
+.progressBar {
+  height: 10px;
+  background: rgba(41, 98, 158, 0.2);
+  border-radius: 5px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #64b5f6 0%, #42a5f5 100%);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
+}
+
+.lectureProgressList {
+  margin-top: 20px;
+}
+
+.lectureProgressList h4 {
+  margin: 0 0 15px 0;
+  color: #89c2ef;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.3);
+  padding-bottom: 10px;
+}
+
+.lectureProgressItem {
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: rgba(26, 36, 56, 0.5);
+}
+
+.lectureProgressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.lectureProgressHeader h5 {
+  margin: 0;
+  color: #e6f7ff;
+  flex-grow: 1;
+}
+
+.attendanceStatus {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.attendanceStatus.present {
+  background: rgba(76, 175, 80, 0.2);
+  color: #a5d6a7;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.attendanceStatus.absent {
+  background: rgba(244, 67, 54, 0.2);
+  color: #ef9a9a;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.lectureProgressDetails {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.progressInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoLabel {
+  font-weight: bold;
+  color: #89c2ef;
+  font-size: 14px;
+}
+
+.infoValue {
+  color: #c5d9f1;
+  font-size: 14px;
+}
+
+.taskStatus {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.taskStatus.pending {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ffcc80;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.taskStatus.submitted {
+  background: rgba(76, 175, 80, 0.2);
+  color: #a5d6a7;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .profileContainer {
+    padding: 15px;
+  }
+  
+  .profileContainer::before {
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .userInfoCard {
+    flex-direction: column;
     text-align: center;
-    color: var(--text);
-    font-size: 1.2rem;
-    padding: 3rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .profileHeader {
-        padding: 3rem 1.5rem;
-    }
-
-    .profileHeader h1 {
-        font-size: 2.5rem;
-    }
-
-    .profileContent {
-        padding: 0 1.5rem;
-    }
-
-    .infoGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .infoItem {
-        border-right: none;
-    }
-
-    .groupDates {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .lectureHeader {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-    }
-}
-
-@media (max-width: 480px) {
-    .profileHeader {
-        padding: 2rem 1rem;
-    }
-
-    .profileHeader h1 {
-        font-size: 2rem;
-    }
-
-    .profileContent {
-        padding: 0 1rem;
-    }
-
-    .section h2 {
-        font-size: 1.5rem;
-        padding: 1.5rem;
-    }
-}
-
-.formGroup h3 {
-    color: var(--text);
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    font-weight: 500;
-}
-
-.formGroup form {
-    background-color: var(--background);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border);
-}
-
-.formGroup form .formGroup {
-    margin-bottom: 1rem;
-}
-
-.formGroup form .formGroup:last-child {
-    margin-bottom: 0;
-}
-
-.formGroup form .saveButton {
-    margin-top: 1rem;
-}
-
-/* Security Settings */
-.formGroup select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    background-color: var(--background);
-    color: var(--text);
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.formGroup select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px var(--primary-light);
-}
-
-.formGroup select option {
-    background-color: var(--background);
-    color: var(--text);
-}
-
-/* Password Change Form */
-.formGroup input[type="password"] {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    background-color: var(--background);
-    color: var(--text);
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.formGroup input[type="password"]:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px var(--primary-light);
-}
-
-/* Section Dividers */
-.formGroup + .formGroup {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .formGroup form {
-        padding: 1rem;
-    }
-
-    .formGroup h3 {
-        font-size: 1.1rem;
-    }
-}
-
-.responsiveIframeWrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    margin: 24px auto 32px auto;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
-    background: #000;
-    border-radius: 16px;
-}
-
-.responsiveIframeWrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 16px;
-    background: #000;
-    min-height: 320px;
-}
-
-.videosList, .videoLinks {
-    width: 100%;
-    display: block;
-}
-
-@media (max-width: 600px) {
-    .responsiveIframeWrapper {
-        max-width: 100vw;
-        padding-bottom: 56vw;
-        min-height: 180px;
-        border-radius: 8px;
-    }
-    .responsiveIframeWrapper iframe {
-        border-radius: 8px;
-        min-height: 180px;
-    }
-} 
-
-/* زر لوحة التحكم في البروفايل */
-.dashboardBtn {
-    background: linear-gradient(90deg, #4f46e5 0%, #148543 100%);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 32px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    padding: 20px;
+  }
+  
+  .userAvatar {
     margin-right: 0;
-    margin-left: 8px;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .userMeta {
+    justify-content: center;
+  }
+  
+  .groupHeader, .lectureHeader, .progressHeader {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .progressStatsOverview {
+    align-items: flex-start;
+    order: 3;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .infoRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  
+  .coursesGrid, .progressGrid, .videoGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .videoEmbed {
+    height: 180px;
+  }
 }
 
-.dashboardBtn:hover {
-    background: linear-gradient(90deg, #3730a3 0%, #0e5c2f 100%);
-    transform: translateY(-2px) scale(1.04);
-    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.15);
-} 
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(13, 27, 42, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 181, 246, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 181, 246, 0.7);
+}

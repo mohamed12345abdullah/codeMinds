@@ -199,7 +199,7 @@ function GroupDetailsContent() {
               Lectures ({group.lectures?.length ?? 0})
             </h3>
             <Link href={`/instructorDashboard/manageLectures?groupId=${group._id}&groupTitle=${group.title}`} className={styles.link}>
-              manage lectures
+              <button className={styles.button}>Manage Lectures</button>
             </Link>
             {group.lectures && group.lectures.length > 0 ? (
               <ul className={styles.list}>
