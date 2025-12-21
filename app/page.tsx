@@ -14,7 +14,7 @@ const sliderSlides = [
     {
         title: 'Learn Without Limits',
         description: 'Start, switch, or advance your career with thousands of courses from expert instructors.',
-        image: 'https://scontent-fra3-1.xx.fbcdn.net/v/t39.30808-6/503472462_1092284656287676_2826380328404199033_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BFIrsDlyJrcQ7kNvwFAnxwq&_nc_oc=AdnQM2CusaBsdKzFlHaeqm5Xjac2fgv1NarylYzRMnmndlmLKEFTF0WfoBf4WdmKsjY&_nc_zt=23&_nc_ht=scontent-fra3-1.xx&_nc_gid=it1tkwZTJ848Sako6EGbIA&oh=00_AfNmSs267fD-buZFvK_QlDfhM-B0ZI1YrRnsfsGaIlFrrQ&oe=684B9258'
+        image: 'https://res.cloudinary.com/dhaj9qyjv/image/upload/v1766353652/android-chrome-512x512_hp3dug.png'
     },
     {
         title: 'Master New Skills',
