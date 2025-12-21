@@ -75,7 +75,7 @@ interface CourseProgress {
 interface Profile {
   _id: string;
   user: string;
-  age: number;
+  age: number ;
   gender: string;
   courses: Course[];
   groups: Group[];
