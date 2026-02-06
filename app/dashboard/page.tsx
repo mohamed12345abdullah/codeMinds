@@ -59,6 +59,13 @@ export default function DashboardPage() {
             icon: <FiCreditCard />,
             path: '/dashboard/progress',
             color: '#FF9800'
+        },
+        {
+            title: "add student",
+            description: "add new student",
+            icon: <FiUsers />,
+            path: '/dashboard/add-student',
+            color: '#6aff00ff'
         }
     ];
 

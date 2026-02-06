@@ -16,7 +16,7 @@ export default function InstructorRequestForm() {
     github: "",
     linkedin: "",
     coursesCanTeach: "",
-    cv: null as File | null,
+    cvLink: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -38,10 +38,10 @@ export default function InstructorRequestForm() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "cv" && e.target.files?.[0]) {
-      const file = e.target.files[0];
-      setFormData({ ...formData, cv: file });
-      setFileName(file.name);
+    if (e.target.name === "cvLink" && e.target.value) {
+      const link = e.target.value;
+      setFormData({ ...formData, cvLink: link });
+      setFileName(link);
       setErrors({ ...errors, cv: "" });
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,8 +52,8 @@ export default function InstructorRequestForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.cv) {
-      setErrors({ ...errors, cv: "CV file is required" });
+    if (!formData.cvLink) {
+      setErrors({ ...errors, cvLink: "CV link is required" });
       return;
     }
 
@@ -84,7 +84,7 @@ export default function InstructorRequestForm() {
           github: "",
           linkedin: "",
           coursesCanTeach: "",
-          cv: null,
+          cvLink: "",
         });
         setFileName("");
       } else {
@@ -124,7 +124,7 @@ export default function InstructorRequestForm() {
         {renderInput("GitHub link", "github")}
         {renderInput("LinkedIn link", "linkedin")}
         {renderInput("Courses you can teach", "coursesCanTeach")}
-        {renderFileInput("CV", "cv")}
+        {renderFileInput("CV link", "cvLink")}
         <button
           type="submit"
           disabled={isSubmitting}
@@ -164,10 +164,11 @@ export default function InstructorRequestForm() {
         <label className="instructorFormLabel">{label}</label>
         <div className="instructorFormInput file-input-container">
           <input
-            type="file"
+            type="link"
             name={name}
+            value={formData[name as keyof typeof formData] as string}
             onChange={handleChange}
-            accept=".pdf,.doc,.docx"
+            
             className={`file-input ${
               errors[name] ? "border-red-500" : "border-gray-300"
             }`}

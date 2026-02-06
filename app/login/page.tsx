@@ -57,11 +57,11 @@ export default function LoginPage() {
             setResponseMsg("Email or password is required");
             return;
         }
-        if (!email.includes("@")) {
-            showNotification("Email must contain @", notificationStatus.warning);
-            setResponseMsg("Email must contain @");
-            return;
-        }
+        // if (!email.includes("@")) {
+        //     showNotification("Email must contain @", notificationStatus.warning);
+        //     setResponseMsg("Email must contain @");
+        //     return;
+        // }
         if (password.length < 8) {
             showNotification("Password must be at least 8 characters", notificationStatus.warning);
             setResponseMsg("Password must be at least 8 characters");
@@ -95,7 +95,7 @@ export default function LoginPage() {
                         <label htmlFor="email">Email</label>
                         <input 
                             className="input" 
-                            type="email" 
+                            type="text" 
                             id="email"
                             placeholder="Enter your email" 
                             ref={emailRef} 
