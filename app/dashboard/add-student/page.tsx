@@ -5,6 +5,10 @@
  import NotificationPage from '../../notification/page';
  import styles from '../dashboard.module.css';
  
+
+ const baseUrl = "https://code-minds-website.vercel.app/api";
+ // const baseUrl = "http://localhost:4000/api";
+
  type Status = 'success' | 'error' | 'warning';
  
  interface Group {
@@ -59,7 +63,7 @@
  
    const fetchGroups = async (authToken: string) => {
      try {
-       const res = await fetch('http://localhost:4000/api/groups/', {
+       const res = await fetch(`${baseUrl}/groups/`, {
          method: 'GET',
          headers: {
            Authorization: `Bearer ${authToken}`,
@@ -85,7 +89,7 @@
          setK((x) => x + 1);
          return;
        }
-       const res = await fetch('http://localhost:4000/api/auth/register/phone', {
+       const res = await fetch(`${baseUrl}/auth/register/phone`, {
          method: 'POST',
          headers: {
            'Content-Type': 'application/json',
@@ -155,7 +159,7 @@
          setK((x) => x + 1);
          return;
        }
-       const res = await fetch('http://localhost:4000/api/groups/manage/addStudent', {
+       const res = await fetch(`${baseUrl}/groups/manage/addStudent`, {
          method: 'POST',
          headers: {
            'Content-Type': 'application/json',
