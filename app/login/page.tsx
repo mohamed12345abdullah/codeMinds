@@ -62,11 +62,11 @@ export default function LoginPage() {
         //     setResponseMsg("Email must contain @");
         //     return;
         // }
-        if (password.length < 8) {
-            showNotification("Password must be at least 8 characters", notificationStatus.warning);
-            setResponseMsg("Password must be at least 8 characters");
-            return;
-        }
+        // if (password.length < 8) {
+        //     showNotification("Password must be at least 8 characters", notificationStatus.warning);
+        //     setResponseMsg("Password must be at least 8 characters");
+        //     return;
+        // }
 
         try {
             const data = await loginApi({email, password, rememberMe: rememberMe || false});
