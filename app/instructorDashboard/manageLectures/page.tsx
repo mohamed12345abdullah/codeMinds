@@ -128,7 +128,7 @@ function ManageLecturesContent() {
         objectives: form.objectives.filter((s) => s.trim().length > 0),
         videos: form.videos.filter((s) => s.trim().length > 0),
       };
-      const res = await fetch(`${baseUrl}/editLecToGroup/${lectureId}`, {
+      const res = await fetch(`${baseUrl}/groups/editLecToGroup/${lectureId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
