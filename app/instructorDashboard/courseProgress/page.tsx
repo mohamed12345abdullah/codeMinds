@@ -1,20 +1,20 @@
 "use client";
-import { useEffect, useMemo, useState, Suspense } from "react";
+import { useEffect, useMemo, useState, Suspense, useCallback } from "react";
 import type React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import styles from "./courseProgress.module.css";
-
+import { 
+  FiArrowLeft, FiUser, FiBook, FiCalendar, 
+  FiCheckCircle, FiXCircle, FiClock, FiEdit2, 
+  FiSave, FiX, FiExternalLink, FiFileText, FiActivity 
+} from 'react-icons/fi';
+import NavbarPage from "../../components/Navbar";
 
 const baseUrl = "https://code-minds-website.vercel.app/api";
-// const baseUrl = "http://localhost:4000/api";
 
 interface UserInfo {
   _id: string;
   name: string;
   email: string;
-  phone?: string;
-  profileModel?: string;
-  profileRef?: string;
 }
 
 interface StudentRef {
@@ -43,9 +43,9 @@ interface LectureInfo {
 interface LectureProgressItem {
   _id: string;
   task: TaskInfo;
-  student: string; // student id
-  lecture: string | LectureInfo; // lecture id or populated object
-  engagement: number; // 0-100
+  student: string;
+  lecture: string | LectureInfo;
+  engagement: number;
   attendance: "absent" | "present" | "late" | string;
   lectureScore: number;
   notes: string;
@@ -67,62 +67,55 @@ interface ApiResponse<T> {
   message?: string;
 }
 
-function CourseProgressContent({ params }: { params?: { id?: string } }) {
+function CourseProgressContent() {
   const router = useRouter();
   const search = useSearchParams();
-  const idFromParams = params?.id;
-  const idFromQuery = search.get("id") || undefined;
-  const id = idFromParams || idFromQuery || "";
-  const student_Name = search.get("studentName") || undefined;
+  const id = search.get("id") || "";
+  const student_Name = search.get("studentName") || "";
 
   const [progress, setProgress] = useState<CourseProgressData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState<{
-    attendance: string;
-    engagement: number | string;
-    notes: string;
-    taskStatus: string;
-    submittedAt: string; // datetime-local string
-    score: number | string;
-    taskNotes: string;
-  }>({ attendance: "", engagement: 0, notes: "", taskStatus: "", submittedAt: "", score: 0, taskNotes: "" });
+  
+  const [form, setForm] = useState({
+    attendance: "",
+    engagement: 0 as number | string,
+    notes: "",
+    taskStatus: "",
+    submittedAt: "",
+    score: 0 as number | string,
+    taskNotes: "",
+  });
+
+  const fetchData = useCallback(async () => {
+    if (!id) return;
+    try {
+      setLoading(true);
+      const response = await fetch(`${baseUrl}/courseProgress/get/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      });
+      const json: ApiResponse<CourseProgressData> = await response.json();
+      if (response.ok && json?.success) {
+        setProgress(json.data);
+      } else {
+        if (response.status === 401) router.push("/login");
+        else setError(json?.message || "Failed to fetch data");
+      }
+    } catch (e) {
+      setError("Connection error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, [id, router]);
 
   useEffect(() => {
-    if (!id) return;
-    const fetchCourseProgress = async (pid: string) => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch(`${baseUrl}/courseProgress/get/${pid}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${window.localStorage.getItem("token")}`,
-          },
-        });
-        const json: ApiResponse<CourseProgressData> = await response.json();
-        if (response.ok && json?.success) {
-          setProgress(json.data);
-        } else {
-          if (response.status === 401) {
-            alert("⚠️ You are not authorized to view this page");
-            router.push("/login");
-          } else {
-            setError(json?.message || "❌ Failed to fetch course progress");
-          }
-        }
-      } catch (e) {
-        console.error(e);
-        setError("❌ Something went wrong while fetching course progress");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCourseProgress(id);
-  }, [id, router]);
+    fetchData();
+  }, [fetchData]);
 
   const openEdit = (lp: LectureProgressItem) => {
     setEditingId(lp._id);
@@ -137,21 +130,10 @@ function CourseProgressContent({ params }: { params?: { id?: string } }) {
     });
   };
 
-  const cancelEdit = () => {
-    setEditingId(null);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
   const submitEdit = async (lp: LectureProgressItem) => {
     if (!progress?._id) return;
     try {
       setSaving(true);
-      const token = window.localStorage.getItem("token");
-      const endpoint = `${baseUrl}/courseProgress/update/${progress._id}`;
       const payload = {
         lectureId: typeof lp.lecture === "string" ? lp.lecture : lp.lecture?._id,
         attendance: form.attendance,
@@ -162,200 +144,236 @@ function CourseProgressContent({ params }: { params?: { id?: string } }) {
         score: Number(form.score),
         taskNotes: form.taskNotes,
       };
-      const res = await fetch(endpoint, {
+      const res = await fetch(`${baseUrl}/courseProgress/update/${progress._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
         },
         body: JSON.stringify(payload),
       });
-      const json = await res.json();
-      if (!res.ok) {
-        throw new Error(json?.message || "Failed to update lecture progress");
-      }
-      // Optimistically update UI
-      setProgress((prev) => {
-        if (!prev) return prev;
-        const updated = prev.lectureProgress.map((item) =>
-          item._id === lp._id
-            ? {
-                ...item,
-                attendance: payload.attendance,
-                engagement: payload.engagement,
-                notes: payload.notes || item.notes,
-                lectureScore: item.lectureScore, // unchanged here
-                task: {
-                  ...item.task,
-                  taskStatus: payload.taskStatus,
-                  submittedAt: payload.submittedAt,
-                  score: payload.score,
-                  notes: payload.taskNotes,
-                },
-                updatedAt: new Date().toISOString(),
-              }
-            : item
-        );
-        return { ...prev, lectureProgress: updated };
-      });
+      if (!res.ok) throw new Error("Update failed");
+      await fetchData();
       setEditingId(null);
     } catch (e: any) {
-      console.error(e);
-      alert(`❌ ${e.message || "Update failed"}`);
+      alert(e.message);
     } finally {
       setSaving(false);
     }
   };
 
-  const studentName = progress?.student?.user?.name || "—";
-  const updatedAt = useMemo(
-    () => (progress?.updatedAt ? new Date(progress.updatedAt).toLocaleString() : "—"),
-    [progress?.updatedAt]
-  );
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'present': return '#10b981';
+      case 'absent': return '#ef4444';
+      case 'late': return '#f59e0b';
+      default: return '#64748b';
+    }
+  };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Course Progress</h1>
-          <p className={styles.subtitle}>Track student engagement, attendance, and tasks per lecture.</p>
-        </div>
-      </div>
+    <div style={{ background: '#0f172a', minHeight: '100vh', color: '#f1f5f9' }}>
+      <NavbarPage />
+      
+      <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '100px 20px 40px' }}>
+        <header style={{ marginBottom: '32px' }}>
+          <button 
+            onClick={() => router.back()} 
+            style={{ background: 'none', border: 'none', color: '#3b82f6', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '16px', fontWeight: 500 }}
+          >
+            <FiArrowLeft /> Back
+          </button>
+          <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: 0 }}>Course Progress</h1>
+          <p style={{ color: '#94a3b8', marginTop: '4px' }}>Detailed performance tracking for {student_Name || 'Student'}</p>
+        </header>
 
-      {!id && <div className={styles.warn}>⚠️ Missing id. Open with ?id=COURSE_PROGRESS_ID</div>}
-
-      {error && <div className={styles.error}>{error}</div>}
-
-      {loading && <div className={styles.loading}>Loading...</div>}
-
-      {!loading && progress && (
-        <div className={styles.grid}>
-          <section className={styles.card}>
-            <div className={styles.cardTitle}>Student</div>
-            <div className={styles.item}>
-              <span className={styles.label}>Name:</span> {student_Name}
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '100px' }}>
+            <div className="spinner"></div>
+            <p style={{ color: '#3b82f6', marginTop: '16px' }}>Loading progress data...</p>
+          </div>
+        ) : progress ? (
+          <div style={{ display: 'grid', gap: '32px' }}>
+            {/* Overview Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+              <div className="glass-card">
+                <h3 className="card-label"><FiUser /> Student Info</h3>
+                <p style={{ fontSize: '1.2rem', fontWeight: 600, margin: '8px 0 4px' }}>{student_Name}</p>
+                <p style={{ color: '#64748b', fontSize: '0.85rem' }}>ID: {progress.student?._id}</p>
+              </div>
+              <div className="glass-card">
+                <h3 className="card-label"><FiBook /> Course Details</h3>
+                <p style={{ fontSize: '1.1rem', fontWeight: 600, margin: '8px 0 4px' }}>{progress.course?.title}</p>
+                <p style={{ color: '#64748b', fontSize: '0.85rem' }}>Last Sync: {new Date(progress.updatedAt || '').toLocaleString()}</p>
+              </div>
             </div>
-          </section>
 
-          <section className={styles.card}>
-            <div className={styles.cardTitle}>Course</div>
-            <div className={styles.item}>
-              <span className={styles.label}>Title:</span> {progress.course?.title || "—"}
-            </div>
-            <div className={styles.item}>
-              <span className={styles.label}>Course ID:</span> {progress.course?._id || "—"}
-            </div>
-            <div className={styles.item}>
-              <span className={styles.label}>Last Updated:</span> {updatedAt}
-            </div>
-          </section>
-
-          <section className={styles.card}>
-            <div className={styles.cardTitle}>Lecture Progress ({progress.lectureProgress?.length || 0})</div>
-            {progress.lectureProgress && progress.lectureProgress.length > 0 ? (
-              <ul className={styles.list}>
+            {/* Timeline */}
+            <section>
+              <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <FiActivity /> Lecture Timeline
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {progress.lectureProgress.map((lp) => (
-                  <li key={lp._id} className={styles.listItem}>
-                    <div className={styles.rowBetween}>
-                      <div className={styles.lectureId}>
-                        Lecture: {typeof lp.lecture === "string" ? lp.lecture : lp.lecture?.title || lp.lecture?._id}
+                  <div key={lp._id} className="lecture-row">
+                    {editingId === lp._id ? (
+                      <div style={{ padding: '24px', display: 'grid', gap: '20px' }}>
+                        <div className="edit-grid">
+                          <div className="input-group">
+                            <label>Attendance</label>
+                            <select value={form.attendance} onChange={e => setForm({...form, attendance: e.target.value})}>
+                              <option value="present">Present</option>
+                              <option value="absent">Absent</option>
+                              <option value="late">Late</option>
+                            </select>
+                          </div>
+                          <div className="input-group">
+                            <label>Engagement (%)</label>
+                            <input type="number" value={form.engagement} onChange={e => setForm({...form, engagement: e.target.value})} />
+                          </div>
+                          <div className="input-group">
+                            <label>Task Status</label>
+                            <select value={form.taskStatus} onChange={e => setForm({...form, taskStatus: e.target.value})}>
+                              <option value="pending">Pending</option>
+                              <option value="submitted">Submitted</option>
+                              <option value="graded">Graded</option>
+                            </select>
+                          </div>
+                          <div className="input-group">
+                            <label>Task Score</label>
+                            <input type="number" value={form.score} onChange={e => setForm({...form, score: e.target.value})} />
+                          </div>
+                        </div>
+                        <div className="input-group">
+                          <label>General Notes</label>
+                          <textarea rows={2} value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} />
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                          <button className="btn-secondary" onClick={() => setEditingId(null)}><FiX /> Cancel</button>
+                          <button className="btn-primary" onClick={() => submitEdit(lp)} disabled={saving}>
+                            {saving ? 'Saving...' : <><FiSave /> Save Changes</>}
+                          </button>
+                        </div>
                       </div>
-                      <div className={styles.metaDate}>{new Date(lp.createdAt).toLocaleDateString()}</div>
-                    </div>
-                    {false && <div className={styles.kv}><span className={styles.label}>Progress ID:</span> {lp._id}</div>}
-                    {false && <div className={styles.kv}><span className={styles.label}>Student ID:</span> {lp.student}</div>}
-                    <div className={styles.kv}><span className={styles.label}>Attendance:</span> {lp.attendance}</div>
-                    <div className={styles.kv}><span className={styles.label}>Engagement:</span> {lp.engagement}%</div>
-                    <div className={styles.kv}><span className={styles.label}>Lecture Score:</span> {lp.lectureScore}</div>
-                    <div className={styles.kv}><span className={styles.label}>Created At:</span> {new Date(lp.createdAt).toLocaleString()}</div>
-                    <div className={styles.kv}><span className={styles.label}>Updated At:</span> {new Date(lp.updatedAt).toLocaleString()}</div>
-                    <div className={styles.kv}><span className={styles.label}>Task Status:</span> {lp.task?.taskStatus || "—"}</div>
-                    <div className={styles.kv}><span className={styles.label}>Task Score:</span> {lp.task?.score ?? "—"}</div>
-                    {lp.task?.submittedAt && (
-                      <div className={styles.kv}><span className={styles.label}>Submitted At:</span> {new Date(lp.task.submittedAt).toLocaleString()}</div>
-                    )}
-                    {lp.task?.file && (
-                      <div className={styles.kv}><span className={styles.label}>File:</span>{" "}
-                        <a href={lp.task.file} target="_blank" rel="noreferrer" className={styles.link}>{lp.task.file}</a>
-                      </div>
-                    )}
-                    {lp.task?.notes && (
-                      <div className={styles.kv}><span className={styles.label}>Task Notes:</span> {lp.task.notes}</div>
-                    )}
-                    {lp.notes && (
-                      <div className={styles.notes}><span className={styles.label}>Notes:</span> {lp.notes}</div>
-                    )}
-                    <div className={styles.actions}>
-                      {editingId === lp._id ? (
-                        <>
-                          <div className={styles.inlineForm}>
-                            <div className={styles.fieldsGrid}>
-                              <label className={styles.fieldLabel}>
-                                Attendance
-                                <select name="attendance" value={form.attendance} onChange={handleChange} className={styles.select}>
-                                  <option value="">—</option>
-                                  <option value="present">present</option>
-                                  <option value="absent">absent</option>
-                                  <option value="late">late</option>
-                                </select>
-                              </label>
-                              <label className={styles.fieldLabel}>
-                                Engagement (%)
-                                <input type="number" name="engagement" value={form.engagement} onChange={handleChange} className={styles.input} min={0} max={100} />
-                              </label>
-                              <label className={styles.fieldLabel}>
-                                Task Status
-                                <select name="taskStatus" value={form.taskStatus} onChange={handleChange} className={styles.select}>
-                                  <option value="">—</option>
-                                  <option value="pending">pending</option>
-                                  <option value="submitted">submitted</option>
-                                  <option value="graded">graded</option>
-                                </select>
-                              </label>
-                              <label className={styles.fieldLabel}>
-                                Score
-                                <input type="number" name="score" value={form.score} onChange={handleChange} className={styles.input} min={0} />
-                              </label>
-                              <label className={styles.fieldLabel}>
-                                Submitted At
-                                <input type="datetime-local" name="submittedAt" value={form.submittedAt} onChange={handleChange} className={styles.input} />
-                              </label>
-                              <label className={styles.fieldLabel}>
-                                Notes
-                                <textarea name="notes" value={form.notes} onChange={handleChange} className={styles.input} rows={2} />
-                              </label>
-                              <label className={styles.fieldLabel}>
-                                Task Notes
-                                <textarea name="taskNotes" value={form.taskNotes} onChange={handleChange} className={styles.input} rows={2} />
-                              </label>
+                    ) : (
+                      <div style={{ padding: '20px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                          <div>
+                            <h4 style={{ margin: 0, color: '#fff', fontSize: '1.1rem' }}>
+                              {typeof lp.lecture === "string" ? "Lecture" : lp.lecture?.title}
+                            </h4>
+                            <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                              <FiCalendar /> {new Date(lp.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <span className="badge" style={{ background: `${getStatusColor(lp.attendance)}22`, color: getStatusColor(lp.attendance), border: `1px solid ${getStatusColor(lp.attendance)}44` }}>
+                              {lp.attendance.toUpperCase()}
+                            </span>
+                            <button className="icon-btn" onClick={() => openEdit(lp)} aria-label="Edit progress"><FiEdit2 /></button>
+                          </div>
+                        </div>
+
+                        <div className="stats-grid">
+                          <div className="stat-item">
+                            <span className="stat-label">Engagement</span>
+                            <div className="progress-bar-bg">
+                              <div className="progress-bar-fill" style={{ width: `${lp.engagement}%` }}></div>
                             </div>
+                            <span className="stat-value">{lp.engagement}%</span>
                           </div>
-                          <div className={styles.actionButtons}>
-                            <button className={`${styles.btn} ${styles.btnSecondary}`} onClick={cancelEdit} disabled={saving}>Cancel</button>
-                            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => submitEdit(lp)} disabled={saving}>{saving ? "Saving..." : "Save"}</button>
+                          <div className="stat-item">
+                            <span className="stat-label">Task Status</span>
+                            <span className="stat-value" style={{ color: lp.task?.taskStatus === 'graded' ? '#10b981' : '#f59e0b' }}>
+                              {lp.task?.taskStatus || 'N/A'}
+                            </span>
                           </div>
-                        </>
-                      ) : (
-                        <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => openEdit(lp)}>Edit</button>
-                      )}
-                    </div>
-                  </li>
+                          <div className="stat-item">
+                            <span className="stat-label">Task Score</span>
+                            <span className="stat-value">{lp.task?.score ?? 0}/100</span>
+                          </div>
+                        </div>
+
+                        {(lp.notes || lp.task?.file) && (
+                          <div style={{ marginTop: '16px', padding: '12px', background: '#0f172a', borderRadius: '8px', border: '1px solid #334155' }}>
+                            {lp.notes && <p style={{ margin: '0 0 8px', fontSize: '0.9rem', color: '#94a3b8' }}><FiFileText size={14} /> {lp.notes}</p>}
+                            {lp.task?.file && (
+                              <a href={lp.task.file} target="_blank" rel="noreferrer" className="file-link">
+                                <FiExternalLink /> View Submitted File
+                              </a>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 ))}
-              </ul>
-            ) : (
-              <div className={styles.muted}>No lecture progress yet.</div>
-            )}
-          </section>
-        </div>
-      )}
+              </div>
+            </section>
+          </div>
+        ) : (
+          <div className="error-box">{error || "No data found"}</div>
+        )}
+      </main>
+
+      <style jsx global>{`
+        .glass-card {
+          background: rgba(30, 41, 59, 0.7);
+          backdrop-filter: blur(12px);
+          padding: 24px;
+          border-radius: 16px;
+          border: 1px solid rgba(255,255,255,0.1);
+        }
+        .card-label { color: #3b82f6; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; display: flex; alignItems: center; gap: 8px; }
+        
+        .lecture-row {
+          background: #1e293b;
+          border-radius: 12px;
+          border: 1px solid #334155;
+          transition: transform 0.2s;
+        }
+        .lecture-row:hover { border-color: #3b82f655; }
+
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .stat-item { display: flex; flex-direction: column; gap: 4px; }
+        .stat-label { font-size: 0.75rem; color: #64748b; font-weight: 600; }
+        .stat-value { font-size: 0.95rem; color: #f1f5f9; font-weight: 600; }
+
+        .progress-bar-bg { height: 6px; background: #0f172a; border-radius: 3px; overflow: hidden; margin: 4px 0; }
+        .progress-bar-fill { height: 100%; background: #3b82f6; border-radius: 3px; }
+
+        .edit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        .input-group label { font-size: 0.8rem; color: #94a3b8; font-weight: 600; }
+        .input-group input, .input-group select, .input-group textarea {
+          padding: 10px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #fff;
+        }
+
+        .btn-primary { background: #3b82f6; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .btn-secondary { background: transparent; color: #94a3b8; border: 1px solid #334155; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .icon-btn { background: #0f172a; border: 1px solid #334155; color: #3b82f6; padding: 8px; border-radius: 8px; cursor: pointer; display: flex; }
+        
+        .file-link { color: #3b82f6; text-decoration: none; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+        .file-link:hover { text-decoration: underline; }
+
+        .spinner { width: 30px; height: 30px; border: 3px solid #1e293b; border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+          .edit-grid { grid-template-columns: 1fr; }
+          header h1 { font-size: 1.5rem; }
+        }
+      `}</style>
     </div>
   );
 }
 
-export default function CourseProgress({ params }: { params?: { id?: string } }) {
+export default function CourseProgress() {
   return (
-    <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
-      <CourseProgressContent params={params} />
+    <Suspense fallback={<div style={{ padding: '100px', textAlign: 'center', color: '#3b82f6' }}>Loading Workspace...</div>}>
+      <CourseProgressContent />
     </Suspense>
   );
 }

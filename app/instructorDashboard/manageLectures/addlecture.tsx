@@ -1,11 +1,10 @@
 "use client";
 
-
-import { useState, useEffect, useMemo, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FiPlus, FiTrash2, FiSave, FiArrowLeft, FiType, FiCalendar, FiAlignLeft, FiVideo, FiTarget } from 'react-icons/fi';
 
 const baseUrl = "https://code-minds-website.vercel.app/api";
-// const baseUrl = "http://localhost:4000/api";
 
 interface FormDataState {
   title: string;
@@ -17,8 +16,7 @@ interface FormDataState {
 
 export default function AddLecturePage({ groupId, onSuccess }: { groupId: string; onSuccess?: () => void }) {
   const router = useRouter();
-    
-
+  
   const [formData, setFormData] = useState<FormDataState>({
     title: "",
     date: "",

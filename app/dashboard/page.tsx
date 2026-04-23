@@ -1,19 +1,19 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { FiBook, FiUsers, FiLayers, FiCreditCard } from 'react-icons/fi';
+import { useState, useEffect, useMemo } from "react";
+import { FiBook, FiUsers, FiLayers, FiCreditCard, FiPlusCircle, FiActivity, FiExternalLink } from 'react-icons/fi';
 import styles from './dashboard.module.css';
 import NavbarPage from "../components/Navbar";
 
 export default function DashboardPage() {
     const router = useRouter();
-    const [token, setToken] = useState<string>('');
+    const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
         // Only access localStorage on the client side
         if (typeof window !== 'undefined') {
-            setToken(localStorage.getItem('token') || '');
+            setToken(localStorage.getItem('token'));
         }
     }, []);
 
@@ -49,28 +49,28 @@ export default function DashboardPage() {
         {
             title: "groups on lovable",
             description: "show all groups",
-            icon: <FiCreditCard />,
+            icon: <FiExternalLink />,
             path: token ? `https://code-camp-companion.lovable.app/?token=${token}` : '/dashboard',
-            color: '#FF9800'
+            color: '#E91E63'
         },
         {
             title: "progress",
             description: "show progress of groups",
-            icon: <FiCreditCard />,
+            icon: <FiActivity />,
             path: '/dashboard/progress',
-            color: '#FF9800'
+            color: '#00BCD4'
         },
         {
             title: "add student",
             description: "add new student",
-            icon: <FiUsers />,
+            icon: <FiPlusCircle />,
             path: '/dashboard/add-student',
-            color: '#6aff00ff'
+            color: '#8BC34A'
         }
     ];
 
     return (
-        <>
+        <div className={styles.pageWrapper}>
 
         <NavbarPage/>
         
@@ -85,12 +85,18 @@ export default function DashboardPage() {
                     <div 
                         key={index} 
                         className={styles.card}
+                        role="button"
+                        tabIndex={0}
                         onClick={() => {
                             if (item.path.startsWith('http')) {
                                 window.open(item.path, '_blank');
                             } else {
                                 router.push(item.path);
                             }
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') 
+                                e.currentTarget.click();
                         }}
                         style={{ '--card-color': item.color } as React.CSSProperties}
                     >
@@ -105,6 +111,6 @@ export default function DashboardPage() {
                 ))}
             </div>
         </div>
-        </>
+        </div>
     );
 }
