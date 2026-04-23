@@ -75,31 +75,19 @@ export default function InstructorDashboard() {
   }, [fetchGroups]);
 
   const stats = useMemo(() => {
-    const totalGroups = groups.length;
-    const uniqueCourses = new Set(groups.map((g) => g.course?._id)).size;
+    const totalGroups = groups.length; // Corrected to use groups.length
+    const uniqueCourses = new Set(groups.map((g) => g.course?._id)).size; // Corrected to use groups.map
     return { totalGroups, uniqueCourses };
   }, [groups]);
 
   return (
-    <div style={{ background: '#0f172a', minHeight: '100vh', color: '#f1f5f9' }}>
+    <div className="dashboard-container main-content">
       <NavbarPage />
       
-      <main style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto', 
-        padding: '120px 24px 40px', // Top padding accounts for fixed navbar
-      }}>
-        <header style={{ marginBottom: '40px' }}>
-          <h1 style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 800, 
-            color: '#fff', 
-            margin: 0,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px'
-          }}>
-            <FiMonitor style={{ color: '#3b82f6' }} /> Instructor Workspace
+      <main className="dashboard-main">
+        <header className="dashboard-header">
+          <h1 className="dashboard-title">
+            <FiMonitor className="dashboard-icon" /> Instructor Workspace
           </h1>
           <p style={{ color: '#94a3b8', fontSize: '1.1rem', marginTop: '8px' }}>
             Manage your active learning groups and track student performance.
@@ -152,23 +140,15 @@ export default function InstructorDashboard() {
         )}
 
         {/* Groups Grid */}
-        <section style={{
-          background: 'rgba(30, 41, 59, 0.3)',
-          border: '1px solid #96bef6ff',
-          padding: '32px',
-          borderRadius: '24px',
-          backdropFilter: 'blur(8px)'
-        }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '24px', color: '#fff' }}>Your Groups</h2>
+        <section className="groups-section">
+          <h2 className="groups-title">Your Groups</h2>
           
           {loading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
-              {[1, 2, 3].map(i => (
-                <div key={i} style={{ height: '160px', background: '#1e293b', borderRadius: '16px', animation: 'pulse 1.5s infinite' }} />
-              ))}
+            <div className="groups-grid">
+              {[1, 2, 3].map(i => <div key={i} className="loading-card" />)}
             </div>
           ) : groups.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 20px', background: '#1e293b', borderRadius: '20px', border: '2px dashed #334155' }}>
+            <div className="no-groups-message">
               <p style={{ color: '#94a3b8', fontSize: '1.2rem' }}>No groups assigned to your account yet.</p>
             </div>
           ) : (
@@ -178,34 +158,18 @@ export default function InstructorDashboard() {
                   key={group._id}
                   href={`/instructorDashboard/groupDetails?id=${group._id}`}
                   aria-label={`View details for ${group.title}`}
-                  className="group-card"
-                 style={{
-                    background: 'rgba(30, 41, 59, 0.7)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '16px',
-                    padding: '20px',
-                    animation: `fadeInUp 1.5s ease-in-out infinite alternate ${index * 0.15}s`,
-                    cursor: 'pointer',
-                    transition: 'transform 0.2s, border-color 0.2s',
-                    textDecoration: 'none',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    height: '100%',
-                    position: 'relative',
-                    overflow: 'hidden',
-                 }}
+                  className="group-card" // Apply class for styling
+                  style={{ animationDelay: `${index * 0.15}s` }} // Staggered animation delay
                 >
-                  <div style={{ marginBottom: '16px' }}>
-                    <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#fff', fontWeight: 700 }}>{group.title}</h3>
-                    <p style={{ margin: '4px 0 0', fontSize: '0.9rem', color: '#3b82f6', fontWeight: 500 }}>
+                  <div className="group-card-content">
+                    <h3 className="group-card-title">{group.title}</h3>
+                    <p className="group-card-course">
                       {group.course?.title || "General Course"}
                     </p>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                    <span style={{ fontSize: '0.8rem', color: '#64748b', fontFamily: 'monospace' }}>ID: {group._id.slice(-8)}</span>
-                    <span style={{ color: '#3b82f6', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', fontWeight: 600 }}>
+                  <div className="group-card-footer">
+                    <span className="group-card-id">ID: {group._id.slice(-8)}</span>
+                    <span className="group-card-details-link">
                       Details <FiArrowRight />
                     </span>
                   </div>
@@ -217,6 +181,69 @@ export default function InstructorDashboard() {
       </main>
 
       <style jsx global>{`
+        :root {
+          --bg-primary: #0f172a;
+          --text-primary: #f1f5f9;
+          --text-secondary: #94a3b8;
+          --color-blue: #3b82f6;
+          --color-green: #10b981;
+          --color-orange: #f59e0b;
+          --border-color-light: rgba(255, 255, 255, 0.1);
+          --card-bg-alpha: rgba(30, 41, 59, 0.7);
+          --card-bg-hover-alpha: rgba(30, 41, 59, 0.9);
+          --section-bg-alpha: rgba(30, 41, 59, 0.3);
+          --error-bg: rgba(239, 68, 68, 0.1);
+          --error-border: #ef4444;
+          --error-text: #fca5a5;
+          --loading-bg: #1e293b;
+          --navbar-height: 80px; /* Assuming a fixed navbar height. Adjust this value if your NavbarPage component has a different height. */
+        }
+
+        .dashboard-container {
+          background: var(--bg-primary);
+          min-height: 100vh;
+          color: var(--text-primary);
+        }
+        
+        .dashboard-main {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: calc(var(--navbar-height) + 40px) 24px 40px; /* Account for fixed navbar */
+        }
+
+        .dashboard-header {
+          margin-bottom: 40px;
+        }
+
+        .dashboard-title {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .dashboard-icon {
+          color: var(--color-blue);
+        }
+
+        .dashboard-subtitle {
+          color: var(--text-secondary);
+          font-size: 1.1rem;
+          margin-top: 8px;
+        }
+
+        .error-message {
+          padding: 16px;
+          background: var(--error-bg);
+          border: 1px solid var(--error-border);
+          border-radius: 12px;
+          color: var(--error-text);
+          margin-bottom: 32px;
+        }
+
         .stat-card {
           background: rgba(30, 41, 59, 0.7);
           backdrop-filter: blur(10px);
@@ -227,16 +254,82 @@ export default function InstructorDashboard() {
           align-items: center;
           gap: 20px;
         }
+
+        .stat-label {
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+
+        .stat-value {
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: var(--text-primary);
+        }
+
+        .stats-overview {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 20px;
+          margin-bottom: 48px;
+        }
+
+        .groups-section {
+          background: var(--section-bg-alpha);
+          border: 1px solid #96bef6ff;
+          padding: 32px;
+          border-radius: 24px;
+          backdrop-filter: blur(8px);
+        }
+
+        .groups-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin-bottom: 24px;
+          color: var(--text-primary);
+        }
+
+        .groups-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 24px;
+        }
+
+        .loading-card {
+          height: 160px;
+          background: var(--loading-bg);
+          border-radius: 16px;
+          animation: pulse 1.5s infinite;
+        }
+
+        .no-groups-message {
+          text-align: center;
+          padding: 80px 20px;
+          background: var(--loading-bg);
+          border-radius: 20px;
+          border: 2px dashed #334155;
+        }
+
+        .no-groups-message p {
+          color: var(--text-secondary);
+          font-size: 1.1rem;
+        }
+
         .group-card {
-          background: rgba(30, 41, 59, 0.7);
+          background: var(--card-bg-alpha);
           backdrop-filter: blur(10px);
           padding: 24px;
           border-radius: 16px;
-          border: 1px solid rgba(244, 248, 251, 0.85);
+          border: 1px solid var(--border-color-light);
           text-decoration: none;
           display: flex;
           flex-direction: column;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          height: 100%; /* Ensure cards take full height in grid */
+          position: relative;
+          overflow: hidden;
+          animation: fadeInUp 0.5s ease forwards; /* Changed to forwards */
         }
         .group-card:hover {
           transform: translateY(-5px);
@@ -244,6 +337,47 @@ export default function InstructorDashboard() {
           background: rgba(30, 41, 59, 0.9);
           box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
         }
+
+        .group-card-content {
+          margin-bottom: 16px;
+        }
+
+        .group-card-title {
+          margin: 0;
+          font-size: 1.25rem;
+          color: var(--text-primary);
+          font-weight: 700;
+        }
+
+        .group-card-course {
+          margin: 4px 0 0;
+          font-size: 0.9rem;
+          color: var(--color-blue);
+          font-weight: 500;
+        }
+
+        .group-card-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: auto;
+        }
+
+        .group-card-id {
+          font-size: 0.8rem;
+          color: #64748b;
+          font-family: monospace;
+        }
+
+        .group-card-details-link {
+          color: var(--color-blue);
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
         @keyframes fadeInUp {
           from {
             opacity: 0.6;
@@ -259,9 +393,12 @@ export default function InstructorDashboard() {
           50% { opacity: 0.5; }
           100% { opacity: 1; }
         }
+
         @media (max-width: 768px) {
-          main { padding-top: 100px; }
-          h1 { font-size: 1.8rem; }
+          .dashboard-main {
+            padding-top: calc(var(--navbar-height) + 20px);
+          }
+          .dashboard-title { font-size: 1.8rem; }
         }
       `}</style>
     </div>

@@ -1,11 +1,15 @@
 .instructorFormContainer {
   max-width: 800px;
-  margin: 90px auto;
-  padding: 1rem;
+  margin: 0 auto;
+  padding: 2.5rem;
   background-color: var(--card);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px var(--card-shadow);
-  margin-top: 80px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  /* Ensure space for fixed navbar (usually 60-80px) plus extra breathing room */
+  margin-top: 100px;
+  margin-bottom: 40px;
+  transition: transform 0.3s ease;
 }
 
 .instructorFormContainer h2 {
@@ -22,9 +26,14 @@
   gap: 1.5rem;
 }
 
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .instructorFormLabel {
   display: block;
-  margin-bottom: 0.5rem;
   color: var(--text);
   font-weight: 500;
   font-size: 1rem;
@@ -33,7 +42,7 @@
 .instructorFormInput {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 2px solid var(--input-border);
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -43,8 +52,8 @@
 
 .instructorFormInput:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px var(--primary-soft);
 }
 
 .instructorFormInput::placeholder {
@@ -75,17 +84,16 @@
   transform: none;
 }
 
-/* Password field container */
-.instructorFormInput {
+/* Password/Icon field container */
+.inputWrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-/* Password toggle button */
-.instructorFormInput button {
+.inputWrapper .toggleButton {
   position: absolute;
-  left: 1rem;
+  right: 1rem;
   background: none;
   border: none;
   color: var(--text);
@@ -95,13 +103,13 @@
   z-index: 1;
 }
 
-.instructorFormInput button:hover {
+.inputWrapper .toggleButton:hover {
   color: var(--primary);
 }
 
 /* Error message styling */
 .text-red-500 {
-  color: #e53e3e;
+  color: #f87171;
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
@@ -109,8 +117,9 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .instructorFormContainer {
-    margin: 1rem;
+    margin: 80px 1rem 2rem 1rem;
     padding: 1.5rem;
+    border-radius: 12px;
   }
 
   .instructorFormContainer h2 {
@@ -134,21 +143,22 @@
 }
 
 .file-input {
-  padding: 0.5rem;
+  padding: 0.6rem;
   border: 1px solid var(--border);
   border-radius: 8px;
   background-color: var(--input-bg);
   color: var(--text);
   cursor: pointer;
   width: 100%;
+  font-size: 0.875rem;
 }
 
 .file-input::-webkit-file-upload-button {
   background-color: var(--primary);
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   margin-right: 1rem;
   transition: background-color 0.2s;
@@ -166,7 +176,3 @@
   text-overflow: ellipsis;
   max-width: 200px;
 }
-
-
-
-
