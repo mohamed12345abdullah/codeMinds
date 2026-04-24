@@ -1,19 +1,19 @@
-/* ProfilePage.module.css - Blue Dark Night Sky Theme */
+/* Main Layout Container */
 .profileContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 2rem 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #e6e6ff;
-  background: linear-gradient(135deg, #0a192f 0%, #0d1b2a 50%, #1b263b 100%);
-  min-height: 100vh;
+  color: var(--foreground);
+  background: linear-gradient(135deg, var(--background) 0%, #0d1b2a 100%);
+  min-height: calc(100vh - 80px);
   position: relative;
   overflow-x: hidden;
-  opacity: 0.8;
-  margin-top: 80px;
+  margin-top: 0;
+  padding-top: 100px; /* Safe distance from fixed navbar */
 }
 
-/* Add a moon effect */
+/* Decorative Background Elements (Moon Effect) */
 .profileContainer::before {
   content: "";
   position: fixed;
@@ -21,26 +21,27 @@
   right: 50px;
   width: 80px;
   height: 80px;
-  background: radial-gradient(circle, #f8f7ff 0%, #d6e4ff 30%, transparent 70%);
+  background: radial-gradient(circle, #fff 0%, var(--secondary) 30%, transparent 70%);
   border-radius: 50%;
-  box-shadow: 0 0 40px 15px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 40px 15px rgba(100, 221, 23, 0.1);
   z-index: 0;
   opacity: 0.8;
   animation: pulseMoon 8s infinite alternate;
 }
 
+/* Animation for the Moon Effect */
 @keyframes pulseMoon {
   0% {
-    box-shadow: 0 0 40px 15px rgba(255, 255, 255, 0.3);
-    opacity: 0.8;
+    transform: scale(1);
+    opacity: 0.6;
   }
   100% {
-    box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.4);
-    opacity: 1;
+    transform: scale(1.1);
+    opacity: 0.8;
   }
 }
 
-/* Add some stars */
+/* Starfield Background Effect */
 .profileContainer::after {
   content: "";
   position: fixed;
@@ -63,19 +64,22 @@
   background-size: 400px 400px;
   z-index: 0;
   opacity: 0.6;
+  will-change: opacity;
   animation: twinkle 8s infinite alternate;
 }
 
+/* Animation for the Starfield */
 @keyframes twinkle {
   0% { opacity: 0.4; }
   100% { opacity: 0.8; }
 }
 
+/* Status Indicators */
 .loading, .error {
   text-align: center;
   padding: 40px;
   font-size: 18px;
-  color: #a8d0e6;
+  color: var(--primary);
   position: relative;
   z-index: 2;
 }
@@ -84,22 +88,23 @@
   color: #ff6b6b;
 }
 
+/* Profile Header Section */
 .profileHeader {
   margin-bottom: 30px;
   position: relative;
   z-index: 2;
 }
 
+/* User Information Card */
 .userInfoCard {
   display: flex;
   align-items: center;
-  background: rgba(26, 36, 56, 0.8);
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 25px;
-  color: #e6e6ff;
-  box-shadow: 0 8px 32px rgba(13, 27, 42, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px var(--card-shadow);
+  border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
 }
@@ -111,7 +116,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, rgba(66, 135, 245, 0.1) 0%, rgba(21, 101, 192, 0.2) 100%);
+  background: linear-gradient(45deg, rgba(0, 200, 83, 0.05) 0%, transparent 100%);
   z-index: -1;
 }
 
@@ -120,25 +125,24 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid rgba(100, 181, 246, 0.3);
+  border: 4px solid var(--primary);
   margin-right: 25px;
-  box-shadow: 0 0 20px rgba(100, 181, 246, 0.4);
+  box-shadow: 0 0 20px rgba(0, 200, 83, 0.2);
 }
 
 .userDetails h1 {
   margin: 0 0 8px 0;
   font-size: 28px;
   font-weight: 700;
-  color: #e6f7ff;
-  text-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
+  color: var(--foreground);
 }
 
 .userRole {
   margin: 0 0 12px 0;
   text-transform: capitalize;
   font-style: italic;
-  opacity: 0.9;
-  color: #89c2ef;
+  color: var(--primary);
+  font-weight: 500;
 }
 
 .userEmail, .userPhone {
@@ -146,7 +150,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #c5d9f1;
+  color: var(--text-light);
 }
 
 .userMeta {
@@ -157,14 +161,15 @@
 }
 
 .userMeta span {
-  background: rgba(41, 98, 158, 0.3);
+  background: var(--hover-bg);
   padding: 5px 12px;
   border-radius: 20px;
   font-size: 14px;
-  color: #c5d9f1;
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
+/* Main Content Sections */
 .profileContent {
   display: flex;
   flex-direction: column;
@@ -174,60 +179,62 @@
 }
 
 .contentSection {
-  background: rgba(26, 36, 56, 0.8);
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 25px;
-  box-shadow: 0 8px 32px rgba(13, 27, 42, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px var(--card-shadow);
+  border: 1px solid var(--border);
 }
 
 .contentSection h2 {
   margin-top: 0;
-  color: #89c2ef;
-  border-bottom: 2px solid rgba(100, 181, 246, 0.3);
+  color: var(--primary);
+  border-bottom: 2px solid var(--border);
   padding-bottom: 15px;
   margin-bottom: 20px;
-  text-shadow: 0 0 8px rgba(100, 181, 246, 0.3);
 }
 
+/* Courses Listing Grid */
 .coursesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 15px;
 }
 
+/* Individual Course Card */
 .courseCard {
-  background: rgba(41, 98, 158, 0.2);
+  background: var(--background);
   padding: 15px;
   border-radius: 12px;
-  border-left: 4px solid #64b5f6;
+  border-left: 4px solid var(--primary);
   transition: all 0.3s ease;
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  border: 1px solid var(--border);
 }
 
 .courseCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(13, 27, 42, 0.6);
-  background: rgba(41, 98, 158, 0.3);
+  border-color: var(--primary);
 }
 
 .courseCard h3 {
   margin: 0;
-  color: #e6f7ff;
+  color: var(--foreground);
 }
 
+/* Group and Lecture Lists */
 .groupsList {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Group Entry Styling */
 .groupCard {
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(26, 36, 56, 0.6);
+  background: var(--background);
 }
 
 .groupHeader {
@@ -235,36 +242,40 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
-  background: rgba(41, 98, 158, 0.2);
+  background: var(--card-bg);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
+.groupHeader:focus-visible {
+  outline: 2px solid var(--primary);
+}
+
 .groupHeader:hover {
-  background: rgba(41, 98, 158, 0.3);
+  background: var(--hover-bg);
 }
 
 .groupHeader h3 {
   margin: 0;
-  color: #e6f7ff;
+  color: var(--foreground);
   flex-grow: 1;
 }
 
 .toggleIcon {
   margin: 0 15px;
   font-weight: bold;
-  color: #89c2ef;
+  color: var(--primary);
 }
 
 .dateRange {
-  color: #89c2ef;
+  color: var(--text-light);
   font-size: 14px;
   margin-right: 15px;
 }
 
 .lectureCount {
-  background: rgba(100, 181, 246, 0.3);
-  color: #e6f7ff;
+  background: var(--primary);
+  color: white;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 12px;
@@ -273,20 +284,22 @@
 
 .groupContent {
   padding: 20px;
-  background: rgba(26, 36, 56, 0.4);
+  background: var(--background);
 }
 
+/* Lecture List within Groups */
 .lecturesList {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Individual Lecture Entry */
 .lectureCard {
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(26, 36, 56, 0.5);
+  background: var(--card-bg);
 }
 
 .lectureHeader {
@@ -294,51 +307,52 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
-  background: rgba(41, 98, 158, 0.2);
+  background: var(--hover-bg);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .lectureHeader:hover {
-  background: rgba(41, 98, 158, 0.3);
+  opacity: 0.9;
 }
 
 .lectureHeader h4 {
   margin: 0;
-  color: #e6f7ff;
+  color: var(--foreground);
   flex-grow: 1;
 }
 
 .lectureDate {
-  color: #89c2ef;
+  color: var(--text-light);
   font-size: 14px;
   margin-right: 15px;
 }
 
 .lectureContent {
   padding: 20px;
-  background: rgba(26, 36, 56, 0.3);
+  background: var(--background);
 }
 
 .lectureDescription {
   margin: 0 0 15px 0;
   line-height: 1.5;
-  color: #c5d9f1;
+  color: var(--text);
 }
 
+/* Video Resources */
 .lectureVideos {
   margin: 20px 0;
 }
 
 .lectureVideos h5 {
   margin: 0 0 15px 0;
-  color: #89c2ef;
+  color: var(--primary);
   font-size: 16px;
 }
 
 .videoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 15px;
 }
 
@@ -359,13 +373,13 @@
 
 .videoLink {
   padding: 15px;
-  background: rgba(41, 98, 158, 0.2);
+  background: var(--card-bg);
   border-radius: 12px;
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  border: 1px solid var(--border);
 }
 
 .videoLink a {
-  color: #64b5f6;
+  color: var(--primary);
   text-decoration: none;
   font-size: 14px;
   display: flex;
@@ -375,7 +389,7 @@
 }
 
 .videoLink a:hover {
-  color: #90caf9;
+  color: var(--primary-dark);
   text-decoration: underline;
 }
 
@@ -384,13 +398,14 @@
   font-size: 12px;
 }
 
+/* Lecture Learning Objectives */
 .lectureObjectives {
   margin-top: 20px;
 }
 
 .lectureObjectives h5 {
   margin: 0 0 10px 0;
-  color: #89c2ef;
+  color: var(--primary);
   font-size: 16px;
 }
 
@@ -402,11 +417,11 @@
 .lectureObjectives li {
   margin-bottom: 5px;
   font-size: 14px;
-  color: #c5d9f1;
+  color: var(--text);
 }
 
 .noLectures {
-  color: #89c2ef;
+  color: var(--text-light);
   font-style: italic;
   text-align: center;
   padding: 20px;
@@ -420,10 +435,10 @@
 }
 
 .progressCard {
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(26, 36, 56, 0.6);
+  background: var(--background);
 }
 
 .progressHeader {
@@ -431,18 +446,18 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
-  background: rgba(41, 98, 158, 0.2);
+  background: var(--card-bg);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .progressHeader:hover {
-  background: rgba(41, 98, 158, 0.3);
+  background: var(--hover-bg);
 }
 
 .progressHeader h3 {
   margin: 0;
-  color: #e6f7ff;
+  color: var(--foreground);
   flex-grow: 1;
 }
 
@@ -455,23 +470,23 @@
 
 .progressPercentage {
   font-weight: bold;
-  color: #64b5f6;
+  color: var(--primary);
   font-size: 14px;
 }
 
 .lectureCount {
-  color: #89c2ef;
+  color: var(--text-light);
   font-size: 12px;
 }
 
 .progressDetails {
   padding: 20px;
-  background: rgba(26, 36, 56, 0.4);
+  background: var(--background);
 }
 
 .progressBar {
   height: 10px;
-  background: rgba(41, 98, 158, 0.2);
+  background: var(--border);
   border-radius: 5px;
   margin-bottom: 20px;
   overflow: hidden;
@@ -479,10 +494,10 @@
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, #64b5f6 0%, #42a5f5 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: 5px;
   transition: width 0.5s ease;
-  box-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
+  box-shadow: 0 0 10px var(--card-shadow);
 }
 
 .lectureProgressList {
@@ -491,17 +506,17 @@
 
 .lectureProgressList h4 {
   margin: 0 0 15px 0;
-  color: #89c2ef;
-  border-bottom: 1px solid rgba(100, 181, 246, 0.3);
+  color: var(--primary);
+  border-bottom: 1px solid var(--border);
   padding-bottom: 10px;
 }
 
 .lectureProgressItem {
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 15px;
   margin-bottom: 15px;
-  background: rgba(26, 36, 56, 0.5);
+  background: var(--card-bg);
 }
 
 .lectureProgressHeader {
@@ -513,7 +528,7 @@
 
 .lectureProgressHeader h5 {
   margin: 0;
-  color: #e6f7ff;
+  color: var(--foreground);
   flex-grow: 1;
 }
 
@@ -557,12 +572,12 @@
 
 .infoLabel {
   font-weight: bold;
-  color: #89c2ef;
+  color: var(--text-light);
   font-size: 14px;
 }
 
 .infoValue {
-  color: #c5d9f1;
+  color: var(--text);
   font-size: 14px;
 }
 
