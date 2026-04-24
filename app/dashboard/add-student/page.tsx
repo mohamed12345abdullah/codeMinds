@@ -5,6 +5,7 @@ import NavbarPage from '../../components/Navbar';
 import styles from './add-student.module.css';
 
 const BASE_URL = 'https://code-minds-website.vercel.app/api';
+// const BASE_URL = 'http://localhost:4000/api';
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 
