@@ -30,7 +30,7 @@ interface CourseRef {
 }
 
 interface TaskInfo {
-  taskStatus: "pending" | "submitted" | "graded" | string;
+  taskStatus: "pending" | "submitted" | "graded" | "failed" | "completed" | string;
   submittedAt: string | null;
   file: string;
   score: number;
