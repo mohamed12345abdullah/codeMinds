@@ -18,6 +18,7 @@
 
 .content {
     padding: 1.5rem;
+
 }
 
 .content h3 {
@@ -30,7 +31,10 @@
     margin: 0 0 1rem;
     color: #666;
     font-size: 0.875rem;
-    line-height: 1.5;
+    white-space: pre-line; /* هذا السطر السحري سيقوم بفصل الأسطر تلقائياً */
+    line-height: 1.8;      /* يعطي مسافة مريحة بين الأسطر للقراءة */
+    text-align: right;     /* يضمن محاذاة النص للغة العربية */
+    direction: rtl;        /* يضبط اتجاه الكتابة من اليمين لليسار */    
 }
 
 .meta {
