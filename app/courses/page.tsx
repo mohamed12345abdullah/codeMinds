@@ -287,7 +287,11 @@ export default function CoursesPage() {
                             </div>
                             <div className={styles.courseContent}>
                                 <h3>{courseDetails.title}</h3>
-                                <p>{courseDetails.description}</p>
+                                <p>
+                                    {courseDetails.description.length > 120
+                                        ? `${courseDetails.description.substring(0, 120)}...`
+                                        : courseDetails.description}
+                                </p>
                                 <div className={styles.courseMeta}>
                                     <div> {courseDetails.isOpen ? 'Open' : 'Closed'}</div>
                                     {(courseDetails.avilableGroups && courseDetails.avilableGroups.length > 0) && <div> next group start in {courseDetails.avilableGroups?.[0].startDate}</div>}
@@ -299,7 +303,7 @@ export default function CoursesPage() {
                                         setIsModalOpen(true);
                                     }}
                                 >
-                                    Learn More
+                                  تفاصيل
                                 </button>
                                 <div className={styles.coursePrice}>
                                     <span className={styles.price}>${courseDetails.price}</span>
@@ -307,7 +311,7 @@ export default function CoursesPage() {
                                         onClick={() => handleEnroll(courseDetails._id || null)}
                                         className={styles.enrollButton}
                                     >
-                                        Enroll Now
+                                     سجل الان
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                             <path d="M5 12h14M12 5l7 7-7 7" />
                                         </svg>

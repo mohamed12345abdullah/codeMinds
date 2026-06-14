@@ -31,7 +31,11 @@ export default function CourseCard({ course }: CourseCardProps) {
             </div>
             <div className={styles.content}>
                 <h3>{course.title}</h3>
-                <p>{course.description}</p>
+                <p>
+                    {course.description.length > 100
+                        ? `${course.description.substring(0, 100)}...`
+                        : course.description}
+                </p>
                 <div className={styles.meta}>
                     <span>Instructor: {course.instructor}</span>
                     <span>{course.students} students</span>
