@@ -6,8 +6,9 @@ import "./groups.css";
 // const baseUrl = "http://localhost:4000/api";
 
 // production url
-const baseUrl = "https://code-minds-website.vercel.app/api";
+import {back_end_base_url} from "@/config/config"
 
+const baseUrl = `${back_end_base_url}api`;
 import NotificationPage from "../../notification/page";
 import Navbar from "@/app/components/Navbar";
 import { get } from "http";

@@ -9,8 +9,8 @@ import { useState, useEffect, useRef } from 'react';
 import Courses from './courses/page';
 import { sendIpApi } from './apis/auth';
 import NotificationPage from './notification/page';
-
-
+import {back_end_base_url} from "@/config/config"
+console.log("hello this is the back edn api ",back_end_base_url)
 const sliderSlides = [
     {
         title: 'Learn Without Limits',
@@ -170,7 +170,10 @@ export default function HomePage() {
         }
     };
 
-    const videoId = "6BHrCLCnj8A";
+    const videoIdAhmed = "6BHrCLCnj8A";
+    const videoIdNour = "lraKW0j1T3c";
+    const roadmapId = "GwMWcLz78rM";
+    const mohamedMedhatCalcId = "3EQdyYmTaP4";
 
     return (
         <div className={styles.container}>
@@ -306,19 +309,49 @@ export default function HomePage() {
                     <span className={styles.sectionBadge}>شاهد وتعلّم</span>
                     <h2>نموذج من محتوانا</h2>
                 </div>
-                <div className={styles.videoWrapper}>
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
-                        title="YouTube video player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                    />
+
+                <div className={styles.videoGrid}>
+                    <div className={styles.videoWrapper}>
+                        <iframe
+                            src={`https://www.youtube.com/embed/${videoIdAhmed}?autoplay=1&mute=1`}
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        />
+                    </div>
+
+                    <div className={styles.videoWrapper}>
+                        <iframe
+                            src={`https://www.youtube.com/embed/${mohamedMedhatCalcId}?autoplay=1&mute=1`}
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        />
+                    </div>
+
+                    <div className={styles.videoWrapper}>
+                        <iframe
+                            src={`https://www.youtube.com/embed/${roadmapId}?autoplay=1&mute=1`}
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        />
+                    </div>
+
+                    <div className={styles.videoWrapper}>
+                        <iframe
+                            src={`https://www.youtube.com/embed/${videoIdNour}?autoplay=1&mute=1`}
+                            title="YouTube video player"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        />
+                    </div>
                 </div>
             </section>
-
             {/* ── Features Section ───────────────────────────────────── */}
             <section className={styles.features}>
                 <div className={styles.sectionHeader}>

@@ -7,9 +7,10 @@ import {
   FiCheckCircle, FiAlertCircle, FiVideo, FiTarget 
 } from "react-icons/fi";
 import Navbar from "../../components/Navbar";
+import {back_end_base_url} from "@/config/config"
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
 
+const baseUrl = `${back_end_base_url}api`;
 interface Group {
   _id: string;
   title: string;

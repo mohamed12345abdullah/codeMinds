@@ -5,9 +5,10 @@ import Navbar from "../components/Navbar";
 import NotificationPage from "../notification/page";
 import { useState, useEffect } from "react";
 import styles from "./question.module.css";
-const baseUrl = "https://code-minds-website.vercel.app/api";
-// const baseUrl = "http://localhost:4000/api";
+import {back_end_base_url} from "@/config/config"
 
+
+const baseUrl = `${back_end_base_url}api`;
 
 
 const getQuestions = async (category:string) => {

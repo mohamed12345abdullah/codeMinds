@@ -14,7 +14,10 @@ interface CompleteDateOfInstructorProps {
 }
 
 // Prefer to keep baseUrl aligned with app usage. Adjust if you need localhost during development.
-const baseUrl = "https://code-minds-website.vercel.app/api";
+import {back_end_base_url} from "@/config/config"
+
+
+const baseUrl = `${back_end_base_url}api`;
 
 export default function CompleteDateOfInstructor({ isOpen, onClose, onSubmit }: CompleteDateOfInstructorProps) {
   const [age, setAge] = useState<string>("");

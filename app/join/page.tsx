@@ -1,7 +1,9 @@
 "use client";
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
-// const baseUrl = "http://localhost:4000/api";
+import {back_end_base_url} from "@/config/config"
+
+
+const baseUrl = `${back_end_base_url}api`;
 // search params
 
 

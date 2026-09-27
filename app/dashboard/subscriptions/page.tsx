@@ -37,8 +37,11 @@ type SortDir = "asc" | "desc" | null;
 // ============================================================================
 
 // const API_URL = "http://localhost:4000/api";
+import {back_end_base_url} from "@/config/config"
 
-const API_URL = "https://code-minds-website.vercel.app/api";
+const API_URL = `${back_end_base_url}api`;
+
+
 const fetchWithAuth = async <T,>(url: string, options: RequestInit = {}): Promise<T> => {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const headers: HeadersInit = {

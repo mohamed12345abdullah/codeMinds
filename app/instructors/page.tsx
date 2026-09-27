@@ -5,7 +5,10 @@ import Navbar from "../components/Navbar";
 import { verifyTokenApi } from "../apis/auth";
 import { FiBriefcase, FiGithub, FiLinkedin, FiFileText, FiBookOpen, FiUser, FiSend, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
+import {back_end_base_url} from "@/config/config"
+
+
+const baseUrl = `${back_end_base_url}api`;
 
 interface FormState {
   specialization: string;

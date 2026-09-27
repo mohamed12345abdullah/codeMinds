@@ -68,8 +68,10 @@ type FilterKey = 'all' | 'paid' | 'unpaid';
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 // const API_BASE = 'http://localhost:4000/api';
-const API_BASE = 'https://code-minds-website.vercel.app/api';
+import {back_end_base_url} from "@/config/config"
 
+
+const API_BASE =`${back_end_base_url}api`;
 // Change this key if your localStorage uses a different name
 const TOKEN_KEY = 'token';
 

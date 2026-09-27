@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import styles from "./statistics.module.css";
+import {back_end_base_url} from "@/config/config"
 
 type Role = "all" | "student" | "instructor" | "manager" | "admin";
 
@@ -179,8 +180,10 @@ export default function StatisticsPage() {
     googleSignups: 0, duplicatePhones: 0,
   });
 
+  // const API_BASE = 'http://localhost:4000/api';
+
   // const baseUrl = "http://localhost:4000/";
-  const baseUrl = "https://code-minds-website.vercel.app/";
+  const baseUrl = back_end_base_url;
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

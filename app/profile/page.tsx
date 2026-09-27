@@ -25,6 +25,10 @@ import { verifyTokenApi } from '../apis/auth'
 import NavbarPage from '../components/Navbar'
 import Link from 'next/link'
 
+import {back_end_base_url} from "@/config/config"
+
+
+const baseUrl = `${back_end_base_url}api`;
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface User {
@@ -350,7 +354,7 @@ const ProfilePage = () => {
         const token = localStorage.getItem('token')
         if (!token) { router.push('/login'); return }
 
-        const res = await fetch('https://code-minds-website.vercel.app/api/auth/verifyToken', {
+        const res = await fetch(`${back_end_base_url}api/auth/verifyToken`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',

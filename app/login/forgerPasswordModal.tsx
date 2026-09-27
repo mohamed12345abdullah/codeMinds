@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import './forgerPasswordModal.css';
+import {back_end_base_url} from "@/config/config"
 
-const BASE_URL= 'https://code-minds-website.vercel.app/api/auth';
+
+const BASE_URL= `${back_end_base_url}api/auth`;
 
 // const BASE_URL = 'http://localhost:4000/api/auth';
 

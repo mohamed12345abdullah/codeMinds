@@ -5,8 +5,9 @@ import Link from "next/link";
 import { FiBook, FiLayers, FiActivity, FiArrowRight, FiMonitor } from 'react-icons/fi';
 import NavbarPage from "../components/Navbar";
 import { group } from "console";
+import {back_end_base_url} from "@/config/config"
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
+const baseUrl = `${back_end_base_url}api`;
 // const baseUrl = "http://localhost:4000/api";
 
 

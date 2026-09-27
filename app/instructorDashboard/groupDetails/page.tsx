@@ -7,8 +7,10 @@ import { FiCalendar, FiUsers, FiBookOpen, FiUser, FiArrowLeft, FiExternalLink, F
 import styles from "./groubDetails.module.css";
 import NavbarPage from "../../components/Navbar";
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
-// const baseUrl = "http://localhost:4000/api";
+import {back_end_base_url} from "@/config/config"
+
+
+const baseUrl = `${back_end_base_url}api`;
 
 interface Instructor {
   _id: string;

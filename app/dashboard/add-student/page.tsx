@@ -3,8 +3,10 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import NavbarPage from '../../components/Navbar';
 import styles from './add-student.module.css';
+import {back_end_base_url} from "@/config/config"
 
-const BASE_URL = 'https://code-minds-website.vercel.app/api';
+const BASE_URL = `${back_end_base_url}api`;
+
 // const BASE_URL = 'http://localhost:4000/api';
 
 /* ─── Types ─────────────────────────────────────────────────────── */

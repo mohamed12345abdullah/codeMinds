@@ -5,8 +5,9 @@ import styles from './enrollmentRequests.module.css';
 import NotificationPage from '../../notification/page';
 
 
+import {back_end_base_url} from "@/config/config"
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
+const baseUrl = `${back_end_base_url}api`;
 // const baseUrl = "http://localhost:4000/api/auth";
 console.log("baseUrl", baseUrl)
 

@@ -1,9 +1,8 @@
 import { config } from 'dotenv';
 config();
-
-const baseUrl = "https://code-minds-website.vercel.app/api/auth";
+import {back_end_base_url} from "@/config/config"
+const baseUrl = back_end_base_url;
 // const baseUrl = "http://localhost:4000/api/auth";
-console.log("baseUrl", baseUrl)
 
 
 
@@ -116,7 +115,7 @@ const sendIpApi = async (page:string) => {
     try{
     const clientIP = await getClientIP();
     console.log("api function ", page, clientIP)
-    const response = await fetch(`https://code-minds-website.vercel.app/api/users/view`,{
+    const response = await fetch(`${baseUrl}api/users/view`,{
         method: "POST",
         headers: {
             "Content-type": "application/json"

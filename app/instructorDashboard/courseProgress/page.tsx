@@ -8,8 +8,10 @@ import {
   FiSave, FiX, FiExternalLink, FiFileText, FiActivity 
 } from 'react-icons/fi';
 import NavbarPage from "../../components/Navbar";
+import {back_end_base_url} from "@/config/config"
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
+
+const baseUrl = `${back_end_base_url}api`;
 // const baseUrl = "http://localhost:4000/api";
 
 

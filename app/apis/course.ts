@@ -9,8 +9,9 @@ interface Course {
     createdAt?: string;
     updatedAt?: string;
 }
+import {back_end_base_url} from "@/config/config"
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
+const baseUrl = `${back_end_base_url}api`;
 // const baseUrl = "http://localhost:4000/api";
 
 // Course API endpoints

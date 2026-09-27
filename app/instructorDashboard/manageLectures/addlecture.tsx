@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiPlus, FiTrash2, FiSave, FiArrowLeft, FiType, FiCalendar, FiAlignLeft, FiVideo, FiTarget } from 'react-icons/fi';
+import {back_end_base_url} from "@/config/config"
 
-const baseUrl = "https://code-minds-website.vercel.app/api";
 
+const baseUrl = `${back_end_base_url}api`;
 interface FormDataState {
   title: string;
   date: string; // yyyy-mm-dd or ISO date string

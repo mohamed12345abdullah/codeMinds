@@ -6,9 +6,10 @@ import "./courses.css"
 import { getCourses ,deleteCourse } from "../../apis/course";
 // import "./courses.module.css";
 import NavbarPage from "../../components/Navbar";
+import {back_end_base_url} from "@/config/config"
 
+const baseUrl = `${back_end_base_url}api`;
 // لو عندك baseUrl ثابت
-const baseUrl = "https://code-minds-website.vercel.app/api";
 // const baseUrl = "http://localhost:4000/api";
 interface FormDataType {
   _id: string;

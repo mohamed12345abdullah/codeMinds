@@ -4,7 +4,10 @@
 // const baseUrl = "http://localhost:4000/api";
 
 // production url
-const baseUrl = "https://code-minds-website.vercel.app/api";
+import {back_end_base_url} from "@/config/config"
+
+
+const baseUrl = `${back_end_base_url}api`;
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './dashboardInstructor.module.css';

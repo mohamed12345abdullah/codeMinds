@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import './instructors.css';
+import {back_end_base_url} from "@/config/config"
 
+const baseUrl = `${back_end_base_url}api`;
 interface Instructor {
   _id: string;
   name: string;
@@ -37,7 +39,7 @@ export default function InstructorsRequests() {
     try {
  
 
-      const response = await fetch(`https://code-minds-website.vercel.app/api/instructor`);
+      const response = await fetch(`${baseUrl}/instructor`);
       const data = await response.json();
       if (data.success) {
         setInstructors(data.data);
@@ -51,7 +53,7 @@ export default function InstructorsRequests() {
 
   const handleAccept = async (instructorId: string, profileRefId: string) => {
     try {
-      const response = await fetch(`https://code-minds-website.vercel.app/api/instructors/${profileRefId}/status`, {
+      const response = await fetch(`${baseUrl}/instructors/${profileRefId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +82,7 @@ export default function InstructorsRequests() {
 
   const handleReject = async (instructorId: string, profileRefId: string) => {
     try {
-      const response = await fetch(`https://code-minds-website.vercel.app/api/instructor/${profileRefId}/status`, {
+      const response = await fetch(`${baseUrl}/instructor/${profileRefId}/status`, {
         method: 'PATCH',
         headers: {  
           'Content-Type': 'application/json',

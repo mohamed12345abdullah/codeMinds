@@ -24,9 +24,9 @@ export default function Footer() {
                 <div className={styles.footerSection}>
                     <h3>Contact Us</h3>
                     <ul>
-                        <li>Email: support@learn.com</li>
-                        <li>Phone: +1 234 567 890</li>
-                        <li>Address: 123 Learning Street</li>
+                        <li>Email: codeminds1124@gmail.com</li>
+                        <li>Phone: 01125713724</li>
+                        <li>WhatsApp: <a href="https://wa.me/201125713724" target="_blank" style={{textDecoration: 'none'}} title="Chat on WhatsApp" rel="noopener noreferrer">Chat on WhatsApp</a></li>
                     </ul>
                 </div>
 
@@ -53,7 +53,7 @@ export default function Footer() {
                 </div>
             </div>
             <div className={styles.footerBottom}>
-                <p>&copy; {new Date().getFullYear()} Learn Without Limits. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} Code Minds. All rights reserved.</p>
             </div>
         </footer>
     );

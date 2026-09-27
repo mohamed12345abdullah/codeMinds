@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { FiCopy, FiCheck, FiExternalLink, FiUsers, FiBookOpen } from 'react-icons/fi';
 import NavbarPage from "../../components/Navbar";
 
-const BASE_URL = "https://code-minds-website.vercel.app/api";
+import {back_end_base_url} from "@/config/config"
+
+const BASE_URL  = `${back_end_base_url}api`;
 // const BASE_URL = "http://localhost:4000/api";
 const JOIN_BASE_URL = "https://code-minds.vercel.app/join";
 
