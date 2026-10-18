@@ -40,7 +40,7 @@ const loginApi= async (params :loginParams)=>{
     try{
     const clientIP = await getClientIP();
     console.log("login api function ",params)
-    const response = await fetch(`${baseUrl}api/login`,{
+    const response = await fetch(`${baseUrl}api/auth/login`,{
         method: "POST",
         headers: {
             "Content-type": "application/json"
@@ -78,7 +78,7 @@ const registerApi = async (params :registerParams)=>{
     try{
     const clientIP = await getClientIP();
     console.log("register api function ",params)
-    const response = await fetch(`${baseUrl}api/register`,{
+    const response = await fetch(`${baseUrl}api/auth/register`,{
         method: "POST",
         headers: {
             "Content-type": "application/json"
